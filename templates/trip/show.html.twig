@@ -9,13 +9,13 @@
         </div>
     </div>
     <div class="max-w-screen-xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
             <img src="{{ asset('imgs/planetMiller.png') }}"></img>
             <div class="mx-auto">
-                <h1 class="text-6xl">Swim Planet Miller</h1>
+                <h1 class="text-6xl mt-8 lg:mt-0">Swim Planet Miller</h1>
                 <p class="text-lg opacity-60">This trip is recommended for expert level swimmers!</p>
                 <form>
-                    <div class="space-y-12">
+                    <div class="space-y-10">
                         <div>
                             <h2 class="mt-10 mb-4 text-base font-semibold leading-7">Sign up for this adventure!</h2>
                             <div class="grid grid-cols-1 gap-x-6 gap-y-8">
@@ -42,10 +42,10 @@
                                     <div class="space-y-6">
                                         <div class="relative flex gap-x-3">
                                             <div class="flex h-6 items-center">
-                                                <input id="candidates" name="candidates" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                                                <input id="subscribe" name="subscribe" type="checkbox" class="accent-[#009BE3] appearance-none bg-[#16202A] border border-[#465568] cursor-pointer h-4 w-4 rounded focus:ring-indigo-600">
                                             </div>
                                             <div class="text-sm leading-6">
-                                                <label for="candidates" class="font-medium">Subscribe to our newsletter</label>
+                                                <label for="subscribe" class="font-medium">Subscribe to our newsletter</label>
                                             </div>
                                         </div>
                                         
@@ -54,9 +54,9 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="mt-6">
-                        <button type="submit" class="rounded-md bg-[#009BE3] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#0082CA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Book Trip</button>
+                        <button type="submit" class="text-center w-full rounded-[45px] bg-[#009BE3] py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#0082CA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Book Trip</button>
+                        <div class="mt-5 text-sm opacity-60">We'll reach out to you with all the important details for your trip!</div>
                     </div>
                 </form>
             </div>
