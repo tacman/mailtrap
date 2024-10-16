@@ -3,21 +3,36 @@
 {% block body %}
     <div class="bg-[url('/imgs/hero.png')] bg-cover w-full h-auto">
         <div class="max-w-6xl mx-auto">
-            <header>
-                <div class="flex justify-between pt-5 mx-5">
-                    <div class="flex gap-5 items-center">
-                        <div class="font-bold text-xl">Universal Travel</div>
-                        <div>Destinations</div>
-                        <div>Inspiration</div>
-                        <div>Journal</div>
+            
+            {# START #}
+            <nav class="flex items-center justify-between flex-wrap p-6">
+                <div class="flex items-center flex-shrink-0 text-white mr-6">
+                    <span class="font-semibold text-xl tracking-tight">Universal Travel</span>
+                </div>
+                <div class="block lg:hidden">
+                    <button class="flex items-center px-3 py-2 border rounded border-white hover:text-[#6cc7cd] hover:border-[#6cc7cd]">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                    </button>
+                </div>
+                <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+                    <div class="text-sm lg:flex-grow">
+                    <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 hover:text-[#6cc7cd] mr-4">
+                        Destinations
+                    </a>
+                    <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 hover:text-[#6cc7cd] mr-4">
+                        Inspiration
+                    </a>
+                    <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 hover:text-[#6cc7cd]">
+                        Journal
+                    </a>
                     </div>
-                    <div class="flex gap-5 items-center">
-                        <div>Login</div>
-                        <div class="text-black bg-white p-2 rounded-[45px] w-[101px] text-center">Signup</div>
+                    <div class="lg:flex gap-5 items-center">
+                        <div class="mt-4 lg:mt-0 text-sm lg:text-base hover:text-[#6cc7cd] cursor-pointer">Login</div>
+                        <button class="mt-4 lg:mt-0 text-sm lg:text-base text-black bg-white p-1 lg:p-2 rounded-[45px] w-16 lg:w-[101px] text-center hover:bg-slate-200">Signup</button>
                     </div>
                 </div>
-            </header>
-        
+            </nav>
+            {# END #}
 
             <h1 class="text-7xl text-center mt-10 md:mt-32">Explore <span style="font-family: Playfair, serif;" class="italic">the</span> Cosmos</h1>
             <p class="text-center opacity-60 pb-10 md:pb-32">Explore new galaxies with our team of trusted guides</p>
@@ -31,19 +46,19 @@
         <p class="opacity-60 mb-6">Most popular trips</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
-                <img class="h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/krypton.png') }}"></img>
-                <div class="pt-4 pb-2 font-semibold">Visit Krypton</div>
-                <div class="opacity-60">Explore this advanced culture's science and technology museums and bring home some crystalline souvenirs!</div>
+                <img class="mb-4 h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/krypton.png') }}"></img>
+                <a href="#" class="cursor-pointer font-semibold hover:text-[#6cc7cd]">Visit Krypton</a>
+                <div class="pt-2 opacity-60">Explore this advanced culture's science and technology museums and bring home some crystalline souvenirs!</div>
             </div>
             <div>
-                <img class="h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/pleiades.png') }}"></img>
-                <div class="pt-4 pb-2 font-semibold">See the Pleiades</div>
-                <div class="opacity-60">Get an up-close look at the more than 1,000 starts that make up the Pleiades.</div>
+                <img class="mb-4 h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/pleiades.png') }}"></img>
+                <a href="#" class="cursor-pointer font-semibold hover:text-[#6cc7cd]">See the Pleiades</a>
+                <div class="pt-2 opacity-60">Get an up-close look at the more than 1,000 starts that make up the Pleiades.</div>
             </div>
             <div>
-                <img class="h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/iss.png') }}"></img>
-                <div class="pt-4 pb-2 font-semibold">Culinary Tour on the ISS</div>
-                <div class="opacity-60">Try freeze-dried, thermo-stabilized, and irradiated foods on this unique culinary adventure!</div>
+                <img class="mb-4 h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/iss.png') }}"></img>
+                <a href="#" class="cursor-pointer font-semibold hover:text-[#6cc7cd]">Culinary Tour on the ISS</a>
+                <div class="pt-2 opacity-60">Try freeze-dried, thermo-stabilized, and irradiated foods on this unique culinary adventure!</div>
             </div>
         </div>
         
@@ -54,19 +69,19 @@
         <p class="opacity-60 mb-6">Check out our newest travel offerings!</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
-                <img class="h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/arrakis.png') }}"></img>
-                <div class="pt-4 pb-2 font-semibold">Arrakis at sunset</div>
-                <div class="opacity-60">Rolling over the sands, you can see spice in the air!</div>
+                <img class="mb-4 h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/arrakis.png') }}"></img>
+                <a href="#" class="cursor-pointer font-semibold hover:text-[#6cc7cd]">Arrakis at sunset</a>
+                <div class="pt-2 opacity-60">Rolling over the sands, you can see spice in the air!</div>
             </div>
             <div>
-                <img class="h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/planetMiller.png') }}"></img>
-                <div class="pt-4 pb-2 font-semibold">Swim Planet Miller</div>
-                <div class="opacity-60">This trip is recommended for expert level swimmers!</div>
+                <img class="mb-4 h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/planetMiller.png') }}"></img>
+                <a href="#" class="cursor-pointer font-semibold hover:text-[#6cc7cd]">Swim Planet Miller</a>
+                <div class="pt-2 opacity-60">This trip is recommended for expert level swimmers!</div>
             </div>
             <div>
-                <img class="h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/cybertron.png') }}"></img>
-                <div class="pt-4 pb-2 font-semibold">Robotics Camp on Cybertron</div>
-                <div class="opacity-60">Try your hand at creating your own vehicle transformers</div>
+                <img class="mb-4 h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/cybertron.png') }}"></img>
+                <a href="#" class="cursor-pointer font-semibold hover:text-[#6cc7cd]">Robotics Camp on Cybertron</a>
+                <div class="pt-2 opacity-60">Try your hand at creating your own vehicle transformers</div>
             </div>
         </div>
     </div>
