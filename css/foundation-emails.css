@@ -13,6 +13,11 @@
 .wrapper {
   width: 100%; }
 
+.universal-travel-btn {
+  border-radius: 45px;
+  border: none!important;
+}
+
 #outlook a {
   padding: 0; }
 
@@ -1059,13 +1064,13 @@ table.button:active table a {
   border: 0 solid #147dc2; }
 
 table.button.secondary table td {
-  background: #777777;
+  background: #16202A;
   color: #fefefe;
-  border: 0px solid #777777; }
+  border: 0px solid #16202A; }
 
 table.button.secondary table a {
   color: #fefefe;
-  border: 0 solid #777777; }
+  border: 0 solid #16202A; }
 
 table.button.secondary:hover table td {
   background: #919191;
