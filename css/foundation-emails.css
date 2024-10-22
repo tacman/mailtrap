@@ -1,3 +1,15 @@
+.trip-name {
+  font-size: 32px;
+}
+
+.accent-title {
+  color: #666666;
+}
+
+.trip-image {
+  border-radius: 12px;
+}
+
 .wrapper {
   width: 100%; }
 
@@ -894,8 +906,8 @@ small {
   color: #cacaca; }
 
 a {
-  color: #2199e8;
-  text-decoration: none; }
+  color: #000000;
+  text-decoration: underline; }
   a:hover {
     color: #147dc2; }
   a:active {
