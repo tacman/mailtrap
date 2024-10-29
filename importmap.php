@@ -22,4 +22,7 @@ return [
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+    'flowbite-datepicker' => [
+        'version' => '1.3.0',
+    ],
 ];
