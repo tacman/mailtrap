@@ -24,7 +24,7 @@ final class TripController extends AbstractController
         ]);
     }
 
-    #[Route('/trip/{slug}', name: 'trip_show')]
+    #[Route('/trip/{slug:trip}', name: 'trip_show')]
     public function show(Trip $trip, Request $request, CustomerRepository $customers, EntityManagerInterface $em): Response {
         $form = $this->createForm(BookingType::class)->handleRequest($request);
 

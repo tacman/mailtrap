@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class BookingController extends AbstractController
 {
-    #[Route('/bookings/{uid}', name: 'bookings')]
+    #[Route('/bookings/{uid:customer}', name: 'bookings')]
     public function bookings(Customer $customer, BookingRepository $bookings): Response
     {
         return $this->render('booking/index.html.twig', [
@@ -21,7 +21,7 @@ final class BookingController extends AbstractController
         ]);
     }
 
-    #[Route('/booking/{uid}', name: 'booking_show')]
+    #[Route('/booking/{uid:booking}', name: 'booking_show')]
     public function show(Booking $booking): Response
     {
         return $this->render('booking/show.html.twig', [
