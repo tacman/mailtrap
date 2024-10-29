@@ -10,7 +10,7 @@ use Symfony\Component\Uid\Ulid;
 class Customer
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'ulid')]
+    #[ORM\Column]
     private Ulid $id;
 
     #[ORM\Column]

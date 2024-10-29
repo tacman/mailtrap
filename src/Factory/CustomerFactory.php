@@ -19,7 +19,7 @@ final class CustomerFactory extends PersistentProxyObjectFactory
     {
         return [
             'email' => self::faker()->unique()->email(),
-            'name' => self::faker()->name(),
+            'name' => implode(' ', [self::faker()->firstName(), self::faker()->lastName()]),
         ];
     }
 }
