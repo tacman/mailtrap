@@ -1,5 +1,19 @@
 {% extends 'base.html.twig' %}
 
+{% use 'tailwind_2_layout.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block form_label %}
+    {% set label_class = 'block text-sm font-medium leading-6' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block widget_attributes %}
+    {% set widget_class = 'block w-full rounded-md border-0 p-1.5 shadow-sm ring-1 ring-inset ring-[#465568] bg-transparent placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
     <div class="border-b border-white/20 py-8 px-4 mb-16">
         <div class="max-w-screen-xl px-4">
@@ -16,51 +30,40 @@
                 <h1 class="text-6xl mt-8 lg:mt-0">{{ trip.name }}</h1>
                 <p class="text-lg opacity-60">{{ trip.tagLine }}</p>
 
-                <form>
+                {{ form_start(form) }}
                     <div class="space-y-10">
                         <div>
                             <h2 class="mt-10 mb-4 text-base font-semibold leading-7">Sign up for this adventure!</h2>
                             <div class="grid grid-cols-1 gap-x-6 gap-y-8">
                                 <div>
-                                    <label for="full-name" class="block text-sm font-medium leading-6">Full Name</label>
+                                    {{ form_label(form.name, 'Full Name') }}
                                     <div class="mt-2">
-                                        <input type="text" name="full-name" id="full-name" autocomplete="legal-name" class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#465568] bg-transparent placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        {{ form_widget(form.name) }}
+                                        {{ form_errors(form.name) }}
                                     </div>
                                 </div>
-
                                 <div>
-                                    <label for="email" class="block text-sm font-medium leading-6">Email address</label>
+                                    {{ form_label(form.email) }}
                                     <div class="mt-2">
-                                        <input id="email" name="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-[#465568] bg-transparent placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        {{ form_widget(form.email) }}
+                                        {{ form_errors(form.email) }}
                                     </div>
                                 </div>
-
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="space-y-10">
-                                <fieldset>
-                                    <div class="space-y-6">
-                                        <div class="relative flex gap-x-3">
-                                            <div class="flex h-6 items-center">
-                                                <input id="subscribe" name="subscribe" type="checkbox" class="accent-[#009BE3] appearance-none bg-[#16202A] border border-[#465568] cursor-pointer h-4 w-4 rounded focus:ring-indigo-600">
-                                            </div>
-                                            <div class="text-sm leading-6">
-                                                <label for="subscribe" class="font-medium">Subscribe to our newsletter</label>
-                                            </div>
-                                        </div>
-
+                                <div>
+                                    {{ form_label(form.date, 'Travel Date') }}
+                                    <div class="mt-2">
+                                        {{ form_widget(form.date) }}
+                                        {{ form_errors(form.date) }}
                                     </div>
-                                </fieldset>
+                                </div>
                             </div>
                         </div>
+                        <div class="mt-6">
+                            <button type="submit" class="text-center w-full rounded-[45px] bg-[#009BE3] py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#0082CA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Book Trip</button>
+                            <div class="text-center mt-5 text-sm opacity-60">We'll reach out to you with all the important details for your trip!</div>
+                        </div>
                     </div>
-                    <div class="mt-6">
-                        <button type="submit" class="text-center w-full rounded-[45px] bg-[#009BE3] py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#0082CA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Book Trip</button>
-                        <div class="text-center mt-5 text-sm opacity-60">We'll reach out to you with all the important details for your trip!</div>
-                    </div>
-                </form>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>

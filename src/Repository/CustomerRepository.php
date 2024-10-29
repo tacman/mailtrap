@@ -15,4 +15,15 @@ class CustomerRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Customer::class);
     }
+
+    public function findOrCreate(string $name, string $email): Customer
+    {
+        if ($existing = $this->findOneBy(['email' => $email])) {
+            $existing->setName($name);
+
+            return $existing;
+        }
+
+        return new Customer($name, $email);
+    }
 }

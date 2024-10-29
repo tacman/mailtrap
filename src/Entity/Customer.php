@@ -45,6 +45,11 @@ class Customer
         return $this->name;
     }
 
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
