@@ -16,7 +16,8 @@ final class BookingController extends AbstractController
     {
         return $this->render('booking/index.html.twig', [
             'customer' => $customer,
-            'bookings' => $bookings->findBy(['customer' => $customer]),
+            'upcoming' => $bookings->findUpcomingFor($customer),
+            'previous' => $bookings->findPreviousFor($customer),
         ]);
     }
 

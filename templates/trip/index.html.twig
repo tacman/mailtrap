@@ -35,7 +35,7 @@
 
 {% macro trip(trip) %}
     <div class="mx-auto">
-        <img class="mb-4 h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ asset('imgs/{slug}.png'|replace({'{slug}': trip.slug})) }}"></img>
+        <img class="mb-4 h-[280px] w-auto border border-neutral-600 rounded-lg" src="{{ path('trip_image', {slug: trip.slug}) }}" />
         <a href="{{ path('trip_show', {slug: trip.slug}) }}" class="cursor-pointer font-semibold hover:text-[#6cc7cd]">{{ trip.name }}</a>
         <div class="w-[411px] md:w-full pt-2 opacity-60">{{ trip.tagLine }}</div>
     </div>

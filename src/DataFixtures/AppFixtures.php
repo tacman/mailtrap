@@ -58,6 +58,12 @@ class AppFixtures extends Fixture
             'uid' => 'clark',
         ]);
 
+        CustomerFactory::createOne([
+            'name' => 'Bruce Wayne',
+            'email' => 'bruce@wayneenterprises.com',
+            'uid' => 'bruce',
+        ]);
+
         BookingFactory::createOne([
             'customer' => $clark,
             'trip' => $krypton,

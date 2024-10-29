@@ -11,7 +11,7 @@
     </div>
     <div class="max-w-screen-xl mx-auto px-4">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <img class="rounded-[20px]" src="{{ asset('imgs/{slug}.png'|replace({'{slug}': trip.slug})) }}"></img>
+            <img class="rounded-[20px]" src="{{ path('trip_image', {slug: trip.slug}) }}" />
             <div class="mx-auto">
                 <h1 class="text-6xl mt-8 lg:mt-0">{{ trip.name }}</h1>
                 <p class="text-lg opacity-60">{{ trip.tagLine }}</p>
