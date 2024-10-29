@@ -4,29 +4,40 @@ namespace App\Entity;
 
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Ulid;
+use Symfony\Component\String\ByteString;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 class Customer
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
     #[ORM\Column]
-    private Ulid $id;
-
-    #[ORM\Column]
-    private ?string $name = null;
+    private ?int $id = null;
 
     #[ORM\Column(unique: true)]
-    private ?string $email = null;
+    private string $uid;
 
-    public function __construct()
+    #[ORM\Column]
+    private string $name;
+
+    #[ORM\Column(unique: true)]
+    private string $email;
+
+    public function __construct(string $name, string $email, ?string $uid = null)
     {
-        $this->id = new Ulid();
+        $this->uid = $uid ?? ByteString::fromRandom();
+        $this->name = $name;
+        $this->email = $email;
     }
 
-    public function getId(): Ulid
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUid(): string
+    {
+        return $this->uid;
     }
 
     public function getName(): ?string
@@ -34,22 +45,8 @@ class Customer
         return $this->name;
     }
 
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
     }
 }
