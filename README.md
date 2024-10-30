@@ -32,6 +32,12 @@ symfony console doctrine:schema:create
 symfony console doctrine:fixtures:load
 ```
 
+**Build Tailwind CSS**
+
+```
+symfony console tailwind:build
+```
+
 **Start the Symfony web server**
 
 You can use Nginx or Apache, but Symfony's local web server
