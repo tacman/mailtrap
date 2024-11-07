@@ -21,7 +21,8 @@
                 </div>
             </div>
         {% else %}
-            <div class="mt-6"><em>No upcoming trips.</em></div>
+            <div class="mt-6"><em>No trips are currently booked</em></div>
+            <a href="{{ path('home') }}" class="inline-block text-center rounded-[45px] bg-[#009BE3] mt-8 lg:mt-10 p-3 lg:p-4 text-sm lg:text-lg font-semibold text-white shadow-sm hover:bg-[#0082CA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Find your next adventure</a>
         {% endfor %}
 
         <h1 class="text-4xl mt-14 pb-6">Past Trips</h1>
@@ -36,7 +37,7 @@
                 </div>
             </div>
         {% else %}
-            <div><em>No previous trips.</em></div>
+            <div><em>Your previous trips will show here after you're back from your first adventure with us!</em></div>
         {% endfor %}
     </div>
 {% endblock %}
