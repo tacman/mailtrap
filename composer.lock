@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38ea3b37c53cf010689e6b7452299937",
+    "content-hash": "10e1ba0cf8a95f22bb5b520dd191480a",
     "packages": [
         {
             "name": "composer/semver",
@@ -8460,16 +8460,16 @@
         },
         {
             "name": "zenstruck/foundry",
-            "version": "v2.3.1",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zenstruck/foundry.git",
-                "reference": "6f744b05706c1780e61368f23bf77e18c83d8fcd"
+                "reference": "cbdb4de02874505cc2c99669ee97f93c3cb8e028"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zenstruck/foundry/zipball/6f744b05706c1780e61368f23bf77e18c83d8fcd",
-                "reference": "6f744b05706c1780e61368f23bf77e18c83d8fcd",
+                "url": "https://api.github.com/repos/zenstruck/foundry/zipball/cbdb4de02874505cc2c99669ee97f93c3cb8e028",
+                "reference": "cbdb4de02874505cc2c99669ee97f93c3cb8e028",
                 "shasum": ""
             },
             "require": {
@@ -8497,7 +8497,6 @@
                 "symfony/dotenv": "^6.4|^7.0",
                 "symfony/maker-bundle": "^1.55",
                 "symfony/phpunit-bridge": "^6.4|^7.0",
-                "symfony/runtime": "^6.4|^7.0",
                 "symfony/translation-contracts": "^3.4",
                 "symfony/var-dumper": "^6.4|^7.0",
                 "symfony/yaml": "^6.4|^7.0"
@@ -8517,7 +8516,7 @@
                 "files": [
                     "src/functions.php",
                     "src/Persistence/functions.php",
-                    "src/symfony_console.php"
+                    "src/phpunit_helper.php"
                 ],
                 "psr-4": {
                     "Zenstruck\\Foundry\\": "src/",
@@ -8551,7 +8550,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zenstruck/foundry/issues",
-                "source": "https://github.com/zenstruck/foundry/tree/v2.3.1"
+                "source": "https://github.com/zenstruck/foundry/tree/v2.3.0"
             },
             "funding": [
                 {
@@ -8559,7 +8558,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-12T09:03:06+00:00"
+            "time": "2024-12-11T15:46:23+00:00"
         }
     ],
     "aliases": [],

@@ -84,7 +84,8 @@
         ]
     },
     "conflict": {
-        "symfony/symfony": "*"
+        "symfony/symfony": "*",
+        "zenstruck/foundry": "2.3.1"
     },
     "extra": {
         "symfony": {
