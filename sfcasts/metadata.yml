@@ -1,1 +1,3 @@
-chapters: []
+chapters:
+  - installing-mailer
+  - sending-first-email
