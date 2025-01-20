@@ -270,4 +270,4 @@
   - And in the top right, there's our attachment!
     - Download and open to make sure it's correct - Nice!
   - Note the image isn't considered an attachment - it's embedded in the email
-- Next, Global From and Custom Email Classes
+- Next, Mailer events and "Global From" address!
