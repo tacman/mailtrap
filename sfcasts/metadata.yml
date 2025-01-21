@@ -1,3 +1,7 @@
 chapters:
   - installing-mailer
   - sending-first-email
+  - better-email
+  - mailtrap-email-testing
+  - html-email
+  - css-email
