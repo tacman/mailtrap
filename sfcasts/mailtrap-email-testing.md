@@ -10,19 +10,18 @@ Start by going to `mailtrap.io` and sign up for a free account. Their free tier 
 has some limits but is perfect for getting started. Once you're in, you'll
 be on their app homepage. What we're interested in right now is *email testing*,
 so click that. You should see something like this. If you don't have an inbox yet,
-you can add one here.
+add one here.
 
-Open the inbox. This is where our emails with show up. We need to configure the
-SMTP server in our app. This is all the details we need, but check this out: down here
-in "Code Samples", choose "PHP" and then "Symfony". This is the exact `MAILER_DSN`
-we need to integrate this test inbox into our app. Beautiful! Copy it.
+Open the inbox: our emails will show up here. We need to configure our app to send
+emails to this SMTP server. Click "SMTP Settings", "PHP" then "Symfony". This is the
+exactly what we need! Copy the `MAILER_DSN`.
 
 Because this is a sensitive value, and may vary between different developers, I don't
 want to add it to `.env` as that's commited to git. Instead, create a new `.env.local`
 file at the root of your project. This file is ignored by git and is just for your
 local environment variable overrides. Paste the `MAILER_DSN` here.
 
-We are setup for Mailtrap testing! That was easy! Test'r out!
+We are set up for Mailtrap testing! That was easy! Test'r out!
 
 Back in our app, book a new trip: Name: `Steve`, Email: `steve@minecraft.com`, any
 date in the future, and book. This request takes a bit longer than before because
