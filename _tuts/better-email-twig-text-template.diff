@@ -1,0 +1,53 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index f32b7b9..7ce127f 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -9,12 +9,12 @@ use App\Form\BookingType;
+ use App\Repository\CustomerRepository;
+ use App\Repository\TripRepository;
+ use Doctrine\ORM\EntityManagerInterface;
++use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+ use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\HttpFoundation\Response;
+ use Symfony\Component\Mailer\MailerInterface;
+ use Symfony\Component\Mime\Address;
+-use Symfony\Component\Mime\Email;
+ use Symfony\Component\Routing\Attribute\Route;
+ 
+ final class TripController extends AbstractController
+@@ -47,11 +47,16 @@ final class TripController extends AbstractController
+             $em->persist($booking);
+             $em->flush();
+ 
+-            $email = (new Email())
++            $email = (new TemplatedEmail())
+                 ->from(new Address('info@universal-travel.com', 'Universal Travel'))
+                 ->to(new Address($customer->getEmail()))
+                 ->subject('Booking Confirmation for '.$trip->getName())
+-                ->text('Your booking has been confirmed!')
++                ->textTemplate('email/booking_confirmation.txt.twig')
++                ->context([
++                    'customer' => $customer,
++                    'trip' => $trip,
++                    'booking' => $booking,
++                ])
+             ;
+ 
+             $mailer->send($email);
+diff --git a/templates/email/booking_confirmation.txt.twig b/templates/email/booking_confirmation.txt.twig
+new file mode 100644
+index 0000000..119e611
+--- /dev/null
++++ b/templates/email/booking_confirmation.txt.twig
+@@ -0,0 +1,10 @@
++Hey {{ customer.name|split(' ')|first }},
++
++Get ready for your trip to {{ trip.name }}!
++
++Departure: {{ booking.date|date('Y-m-d') }}
++
++Manage your booking: {{ url('booking_show', {uid: booking.uid}) }}
++
++Regards,
++The Universal Travel Team

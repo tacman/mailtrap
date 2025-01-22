@@ -1,0 +1,27 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index f604643..9ad270c 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
+ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+ use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\HttpFoundation\Response;
++use Symfony\Component\Mailer\MailerInterface;
+ use Symfony\Component\Routing\Attribute\Route;
+ 
+ final class TripController extends AbstractController
+@@ -25,7 +26,13 @@ final class TripController extends AbstractController
+     }
+ 
+     #[Route('/trip/{slug:trip}', name: 'trip_show')]
+-    public function show(Trip $trip, Request $request, CustomerRepository $customers, EntityManagerInterface $em): Response {
++    public function show(
++        Trip $trip,
++        Request $request,
++        CustomerRepository $customers,
++        EntityManagerInterface $em,
++        MailerInterface $mailer,
++    ): Response {
+         $form = $this->createForm(BookingType::class)->handleRequest($request);
+ 
+         if ($form->isSubmitted() && $form->isValid()) {

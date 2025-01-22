@@ -1,0 +1,80 @@
+{
+    "steps": [
+        {
+            "id": "start",
+            "name": "start",
+            "description": null
+        },
+        {
+            "id": "install-mailer",
+            "name": "Install Mailer",
+            "description": null
+        },
+        {
+            "id": "first-email-inject-mailer",
+            "name": "First Email: inject mailer",
+            "description": null
+        },
+        {
+            "id": "first-email-new-email",
+            "name": "First Email: new email",
+            "description": null
+        },
+        {
+            "id": "first-email-add-parts",
+            "name": "First Email: add parts",
+            "description": null
+        },
+        {
+            "id": "first-email-send",
+            "name": "First Email: send",
+            "description": null
+        },
+        {
+            "id": "better-email-address-name",
+            "name": "Better Email: address name",
+            "description": null
+        },
+        {
+            "id": "better-email-subject",
+            "name": "Better Email: subject",
+            "description": null
+        },
+        {
+            "id": "better-email-twig-text-template",
+            "name": "Better Email: twig text template",
+            "description": null
+        },
+        {
+            "id": "html-add-template",
+            "name": "HTML: add template",
+            "description": null
+        },
+        {
+            "id": "html-remove-text-version",
+            "name": "HTML: remove text version",
+            "description": null
+        },
+        {
+            "id": "html-markdown",
+            "name": "HTML: markdown",
+            "description": null
+        },
+        {
+            "id": "css-add-style-tag",
+            "name": "CSS: add style tag",
+            "description": null
+        },
+        {
+            "id": "css-inlinecss",
+            "name": "CSS: inlinecss",
+            "description": null
+        },
+        {
+            "id": "css-external-stylesheet",
+            "name": "CSS: external stylesheet",
+            "description": null
+        }
+    ],
+    "sha": "4c9c778a2c9657b16d1b72289bed3dbf2dfa987a"
+}

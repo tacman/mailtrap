@@ -1,0 +1,13 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index d17d2e3..9b7375a 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -53,6 +53,8 @@ final class TripController extends AbstractController
+                 ->text('Your booking has been confirmed!')
+             ;
+ 
++            $mailer->send($email);
++
+             return $this->redirectToRoute('booking_show', ['uid' => $booking->getUid()]);
+         }
+ 

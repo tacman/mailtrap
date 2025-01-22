@@ -1,0 +1,39 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index 7ce127f..ae2d292 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -51,6 +51,7 @@ final class TripController extends AbstractController
+                 ->from(new Address('info@universal-travel.com', 'Universal Travel'))
+                 ->to(new Address($customer->getEmail()))
+                 ->subject('Booking Confirmation for '.$trip->getName())
++                ->htmlTemplate('email/booking_confirmation.html.twig')
+                 ->textTemplate('email/booking_confirmation.txt.twig')
+                 ->context([
+                     'customer' => $customer,
+diff --git a/templates/email/booking_confirmation.html.twig b/templates/email/booking_confirmation.html.twig
+new file mode 100644
+index 0000000..1578049
+--- /dev/null
++++ b/templates/email/booking_confirmation.html.twig
+@@ -0,0 +1,21 @@
++<html>
++<head></head>
++<body>
++<p>Hey {{ customer.name|split(' ')|first }},</p>
++
++<p>Get ready for your trip to {{ trip.name }}!</p>
++
++<p>Departure: {{ booking.date|date('Y-m-d') }}</p>
++
++<p>
++    <a href="{{ url('booking_show', {uid: booking.uid}) }}">
++        Manage your booking
++    </a>
++</p>
++
++<p>
++    Regards,<br>
++    The Universal Travel Team
++</p>
++</body>
++</html>

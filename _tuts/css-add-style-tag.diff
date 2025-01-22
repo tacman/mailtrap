@@ -1,0 +1,20 @@
+diff --git a/templates/email/booking_confirmation.html.twig b/templates/email/booking_confirmation.html.twig
+index 1578049..0b4257f 100644
+--- a/templates/email/booking_confirmation.html.twig
++++ b/templates/email/booking_confirmation.html.twig
+@@ -1,7 +1,13 @@
+ <html>
+-<head></head>
++<head>
++    <style>
++        .text-red {
++            color: red;
++        }
++    </style>
++</head>
+ <body>
+-<p>Hey {{ customer.name|split(' ')|first }},</p>
++<p class="text-red">Hey {{ customer.name|split(' ')|first }},</p>
+ 
+ <p>Get ready for your trip to {{ trip.name }}!</p>
+ 

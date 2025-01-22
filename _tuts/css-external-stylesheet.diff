@@ -1,0 +1,40 @@
+diff --git a/assets/styles/email.css b/assets/styles/email.css
+new file mode 100644
+index 0000000..ac45938
+--- /dev/null
++++ b/assets/styles/email.css
+@@ -0,0 +1,3 @@
++.text-red {
++    color: red;
++}
+diff --git a/config/packages/twig.yaml b/config/packages/twig.yaml
+index 3f795d9..f489e1b 100644
+--- a/config/packages/twig.yaml
++++ b/config/packages/twig.yaml
+@@ -1,5 +1,7 @@
+ twig:
+     file_name_pattern: '*.twig'
++    paths:
++        '%kernel.project_dir%/assets/styles': styles
+ 
+ when@test:
+     twig:
+diff --git a/templates/email/booking_confirmation.html.twig b/templates/email/booking_confirmation.html.twig
+index 1865182..955dbc1 100644
+--- a/templates/email/booking_confirmation.html.twig
++++ b/templates/email/booking_confirmation.html.twig
+@@ -1,12 +1,6 @@
+-{% apply inline_css %}
++{% apply inline_css(source('@styles/email.css')) %}
+ <html>
+-<head>
+-    <style>
+-        .text-red {
+-            color: red;
+-        }
+-    </style>
+-</head>
++<head></head>
+ <body>
+ <p class="text-red">Hey {{ customer.name|split(' ')|first }},</p>
+ 

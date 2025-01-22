@@ -1,0 +1,23 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index 9b7375a..08fe35a 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+ use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\HttpFoundation\Response;
+ use Symfony\Component\Mailer\MailerInterface;
++use Symfony\Component\Mime\Address;
+ use Symfony\Component\Mime\Email;
+ use Symfony\Component\Routing\Attribute\Route;
+ 
+@@ -47,8 +48,8 @@ final class TripController extends AbstractController
+             $em->flush();
+ 
+             $email = (new Email())
+-                ->from('info@universal-travel.com')
+-                ->to($customer->getEmail())
++                ->from(new Address('info@universal-travel.com', 'Universal Travel'))
++                ->to(new Address($customer->getEmail()))
+                 ->subject('Booking Confirmation')
+                 ->text('Your booking has been confirmed!')
+             ;

@@ -1,0 +1,13 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index 08fe35a..f32b7b9 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -50,7 +50,7 @@ final class TripController extends AbstractController
+             $email = (new Email())
+                 ->from(new Address('info@universal-travel.com', 'Universal Travel'))
+                 ->to(new Address($customer->getEmail()))
+-                ->subject('Booking Confirmation')
++                ->subject('Booking Confirmation for '.$trip->getName())
+                 ->text('Your booking has been confirmed!')
+             ;
+ 
