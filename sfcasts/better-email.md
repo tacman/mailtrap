@@ -6,10 +6,17 @@ stinks. It doesn't provide any value. Let's improve it!
 First, we can add a name to the email. This will show up in most email
 clients instead of just the email address: it just looks smoother. Wrap the `from` with
 `new Address()`, the one from `Symfony\Component\Mime`. The first argument is the
-email, and the second is the name - how about `Universal Travel`. We can also wrap the `to` with
-`new Address()`. and pass `$customer->getName()` for the name.
+email, and the second is the name - how about `Universal Travel`:
 
-For the `subject`, add the trip name: `'Booking Confirmation for ' . $trip->getName()`.
+[[[ code('5cd55f5238') ]]]
+
+We can also wrap the `to` with `new Address()`. and pass `$customer->getName()` for the name:
+
+[[[ code('f882ff10c6') ]]]
+
+For the `subject`, add the trip name: `'Booking Confirmation for ' . $trip->getName()`:
+
+[[[ code('0cbcddf670') ]]]
 
 For the `text` body. We could inline all the text right here. That would get ugly,
 so let's use Twig! We need a template. 
@@ -20,10 +27,19 @@ But Twig doesn't care about the that - it's just to satisfy our human brains.
 We'll return to this file in a second.
 
 Back in `TripController::show()`, instead of `new Email()`, use `new TemplatedEmail()`
-(the one from `Symfony\Bridge\Twig`).
-Replace `->text()` with `->textTemplate('email/booking_confirmation.txt.twig')`.
+(the one from `Symfony\Bridge\Twig`):
+
+[[[ code('6514c7bf48') ]]]
+
+Replace `->text()` with `->textTemplate('email/booking_confirmation.txt.twig')`:
+
+[[[ code('cc24ae05ee') ]]]
+
 To pass variables to the template, use `->context()` with
-`'customer' => $customer, 'trip' => $trip, 'booking' => $booking`.
+`'customer' => $customer, 'trip' => $trip, 'booking' => $booking`:
+
+[[[ code('2a75581051') ]]]
+
 Note that we aren't technically *rendering* the Twig template here: Mailer will do that for us
 before it sends the email.
 
@@ -31,7 +47,9 @@ This is normal, boring Twig code. Let's render the user's first name using a che
 the trip name, the departure date, and a link to manage the booking. We need to use
 absolute URLs in emails - like https://univeral-travel.com/booking - so we'll leverage
 the `url()` Twig function instead of `path()`: `{{ url('booking_show', {'uid': booking.uid}) }}`.
-End politely with, `Regards, the Universal Travel team`.
+End politely with, `Regards, the Universal Travel team`:
+
+[[[ code('a2f32b8263') ]]]
 
 Email body done! Test it out. Back in your browser, choose a trip, name: `Steve`, email:
 `steve@minecraft.com`, any date in the future, and book the trip. Open the profiler for the

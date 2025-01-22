@@ -9,6 +9,8 @@ way to preview your emails. But don't worry, the concepts we'll cover are univer
 and can be applied to any email service. And bonus! We'll also cover how to track email *events* like
 bounces, opens, and link clicks by leveraging some relatively new Symfony components: Webhook and RemoteEvent.
 
+## Transactional vs Bulk Emails
+
 Before we start spamming, ahem, delivering important info via email, we need to clarify something:
 Symfony Mailer is for what's called *transactional*
 emails *only*. These are user-specific emails that occur when something specific
@@ -51,6 +53,8 @@ git status
 
 to see what we got. Looks like the recipe added some environment variables
 in `.env` and added the mailer configuration in `config/packages/mailer.yaml`.
+
+## `MAILER_DSN`
 
 In your IDE, open `.env`. The Mailer recipe added this `MAILER_DSN` environment variable.
 This is a special URL-looking string that configures your *mailer transport*:

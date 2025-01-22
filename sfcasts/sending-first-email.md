@@ -16,17 +16,32 @@ if the form is valid, create or fetch a customer and create a booking
 for this customer and trip. Then we redirect to the booking details page.
 Delightfully boring so far, just how I like my code, and weekends.
 
+## Inject `MailerInterface`
+
 I want to send an email after the booking is created. Give yourself some room
 by moving each method argument to its own line. Then, add `MailerInterface $mailer` to get
-the main service for sending emails.
+the main service for sending emails:
+
+[[[ code('8148567b63') ]]]
+
+## Create the Email
+
 After `flush()`, which inserts the booking into the database, create a new email object: `$email = new Email()` (the one
 from `Symfony\Component\Mime`). Wrap it in parentheses so we can chain methods. So what
 does every email need? A `from` email address: `->from()` how about `info@univeral-travel.com`.
 A `to` email address: `->to($customer->getEmail())`.
 Now, the `subject`: `->subject('Booking Confirmation')`. And finally, the email
-needs a body: `->text('Your booking has been confirmed')` - good enough for now.
+needs a body: `->text('Your booking has been confirmed')` - good enough for now:
 
-Finish with `$mailer->send($email)`. Let's test this out!
+[[[ code('2e7e7d563a') ]]]
+
+## Send the Email
+
+Finish with `$mailer->send($email)`:
+
+[[[ code('7843d188cc') ]]]
+
+Let's test this out!
 
 Back in our app, go back to the homepage and choose a trip. For the name, use "Steve",
 email, "steve@minecraft.com", any date in the future, and book the trip.
