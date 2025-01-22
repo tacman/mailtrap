@@ -17,7 +17,7 @@ for this customer and trip. Then we redirect to the booking details page.
 Delightfully boring so far, just how I like my code, and weekends.
 
 I want to send an email after the booking is created. Give yourself some room
-by moving each argument to its own line. Then, add `MailerInterface $mailer` to get
+by moving each method argument to its own line. Then, add `MailerInterface $mailer` to get
 the main service for sending emails.
 After `flush()`, which inserts the booking into the database, create a new email object: `$email = new Email()` (the one
 from `Symfony\Component\Mime`). Wrap it in parentheses so we can chain methods. So what
