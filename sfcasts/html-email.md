@@ -1,28 +1,33 @@
-# HTML in Email
+# HTML-powered Emails
 
+Emails should always have a plain-text version, but they can also have an HTML version.
+And that's where the fun is! 
 Time to make this email more presentable by adding an HTML version!
 
-First, we need to make an HTML version of our email template. In `templates/email/`,
-copy `booking_confirmation.txt.twig` and name it `booking_confirmation.html.twig`.
-In this new file, wrap everything in an `<html>` tag, add an empty `<head>` and wrap
-the content in a `<body>` tag. Now, wrap each line of content in `<p>` tags. For the
-last lines, wrap it all in a `<p>` tag and add a `<br>` after "Regards,". This URL
-needs to be a proper anchor tag, give ourselves some room and copy the text. Add an
-`<a>` tag with the URL as the `href` and paste the text inside.
+In `templates/email/`, copy `booking_confirmation.txt.twig` and name it `booking_confirmation.html.twig`.
+In the new file
+The email acts a bit like a full HTML page.
+Wrap everything in an `<html>` tag, add an empty `<head>` and wrap
+the content in a `<body>`. I'll also add some `<p>` tags to get some spacing...
+and a `<br>` tag after "Regards," to add a line break.
 
-We need to tell our email to use this HTML template. In `TripController::show()`,
+This URL can now live in a proper `<a>` tag. Give yourself some room and copy the URL. Add an
+`<a>` tag with `href` and paste inside.
+
+Finally, we need to tell Mailer to use this HTML template. In `TripController::show()`,
 above `->textTemplate()`, add `->htmlTemplate()` with `email/booking_confirmation.html.twig`.
 
 Test it out by booking a trip: `Steve`, `steve@minecraft.com`, any date in the future,
-and book.
+book... then check Mailtrap. The email looks the same, but now we have an HTML tab!
 
-Check Mailtrap to see the email. The HTML tab is now available. This looks like I expect.
-The text version is still there and we can see the "HTML Source".
-This "HTML Check" is really neat. It gives you a gauge of what percentage of email
-clients support the HTML in this email. Back in the HTML tab, click the link to make
-sure it works - and it does!
+Oh and the  "HTML Check" is really neat. It gives you a gauge of what percentage of email
+clients support the HTML in this email. If you didn't know, email clients are a pain
+in the butt: it's like the 90s all over again with different browsers. This tool helps
+with that.
+Back in the HTML tab, click the link to make
+sure it works. It does!
 
-So our email now has text and HTML versions but... it's kind of a drag to maintain both.
+So our email now has both a text and HTML version but... it's kind of a drag to maintain both.
 Who uses a text-only email client anyway? Probably nobody or a very low percentage of your
 users.
 
