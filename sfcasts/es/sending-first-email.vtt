@@ -1,0 +1,197 @@
+WEBVTT
+
+00:00:01.066 --> 00:00:01.836 align:middle
+¡Vamos de viaje!
+
+00:00:02.256 --> 00:00:05.006 align:middle
+"Visitar Krypton", ¡Esperemos
+que aún no haya sido destruido!
+
+00:00:05.416 --> 00:00:07.466 align:middle
+Sin molestarme en comprobarlo, ¡reservémoslo!
+
+00:00:07.896 --> 00:00:10.116 align:middle
+Utilizaré el nombre: "Kevin",
+el correo electrónico
+
+00:00:10.116 --> 00:00:13.566 align:middle
+"kevin@example.com" y una
+fecha cualquiera en el futuro.
+
+00:00:14.326 --> 00:00:15.296 align:middle
+Pulsa "Reservar viaje".
+
+00:00:16.216 --> 00:00:18.016 align:middle
+Esta es la página de "detalles de la reserva".
+
+00:00:18.336 --> 00:00:21.926 align:middle
+Fíjate en la URL: tiene un token
+único específico para esta reserva.
+
+00:00:22.416 --> 00:00:26.586 align:middle
+Si un usuario necesita volver aquí más tarde,
+actualmente, tiene que marcar esta página
+
+00:00:26.586 --> 00:00:28.926 align:middle
+o enviarse a sí mismo la URL si es como yo.
+
+00:00:29.286 --> 00:00:33.816 align:middle
+¡Lamentable! Enviémosles un correo electrónico de
+confirmación que incluya un enlace a esta página.
+
+00:00:34.306 --> 00:00:36.896 align:middle
+Quiero que esto ocurra después de
+guardar la reserva por primera vez.
+
+00:00:37.266 --> 00:00:39.776 align:middle
+Abre TripController y busca el método show().
+
+00:00:40.386 --> 00:00:44.756 align:middle
+Esto hace la reserva: si el formulario
+es válido, crea o recupera un cliente
+
+00:00:44.916 --> 00:00:47.406 align:middle
+y crea una reserva para este cliente y viaje.
+
+00:00:48.036 --> 00:00:50.326 align:middle
+Luego redirigimos a la página
+de detalles de la reserva.
+
+00:00:50.616 --> 00:00:54.836 align:middle
+Encantadoramente aburrido hasta ahora, tal y
+como me gusta mi código, y los fines de semana.
+
+00:00:55.556 --> 00:00:58.066 align:middle
+Quiero enviar un correo electrónico
+después de crear la reserva.
+
+00:00:58.616 --> 00:01:02.246 align:middle
+Date algo de espacio moviendo cada
+argumento del método a su propia línea.
+
+00:01:07.026 --> 00:01:13.496 align:middle
+A continuación, añade MailerInterface $mailer para obtener el servicio
+principal de envío de correos electrónicos: Después de flush(),
+
+00:01:13.546 --> 00:01:17.416 align:middle
+que inserta la reserva en la base de datos,
+crea un nuevo objeto de correo electrónico:
+
+00:01:17.416 --> 00:01:21.886 align:middle
+$email = new Email() (el
+de Symfony\Component\Mime).
+
+00:01:21.886 --> 00:01:26.056 align:middle
+Envuélvelo entre paréntesis para
+que podamos encadenar métodos.
+
+00:01:26.976 --> 00:01:28.466 align:middle
+¿Qué necesita cada correo electrónico?
+
+00:01:28.896 --> 00:01:35.226 align:middle
+Una dirección de correo electrónico from:
+->from() qué tal info@univeral-travel.com.
+
+00:01:35.756 --> 00:01:40.996 align:middle
+Una dirección de correo electrónico
+to: ->to($customer->getEmail()).
+
+00:01:41.616 --> 00:01:45.366 align:middle
+Ahora, el subject:
+->subject('Booking Confirmation').
+
+00:01:46.096 --> 00:01:51.376 align:middle
+Y por último, el correo electrónico necesita un
+cuerpo: ->text('Your booking has been confirmed')
+
+00:01:51.896 --> 00:01:57.696 align:middle
+- suficiente por ahora: Termina con
+$mailer->send($email): ¡Vamos a probarlo!
+
+00:01:58.236 --> 00:02:01.266 align:middle
+De vuelta en nuestra aplicación, vuelve
+a la página de inicio y elige un viaje.
+
+00:02:02.446 --> 00:02:06.626 align:middle
+Para el nombre, utiliza "Steve", correo
+electrónico, "steve@minecraft.com",
+
+00:02:07.076 --> 00:02:09.346 align:middle
+cualquier fecha en el
+futuro, y reserva el viaje.
+
+00:02:10.456 --> 00:02:13.796 align:middle
+Vale... esta página tiene exactamente
+el mismo aspecto que antes.
+
+00:02:14.186 --> 00:02:15.236 align:middle
+¿Se ha enviado un correo electrónico?
+
+00:02:15.766 --> 00:02:18.726 align:middle
+Nada en la barra de herramientas de
+depuración web parece indicarlo...
+
+00:02:19.286 --> 00:02:23.496 align:middle
+En realidad, el correo electrónico se envió en
+la petición anterior: el envío del formulario.
+
+00:02:24.116 --> 00:02:26.686 align:middle
+Ese controlador nos redirigió a esta página.
+
+00:02:26.926 --> 00:02:31.926 align:middle
+Pero la barra de herramientas de depuración web nos ofrece un
+acceso directo para acceder al perfilador de la petición anterior:
+
+00:02:32.386 --> 00:02:35.886 align:middle
+pasa el ratón por encima de 200 y haz clic en
+el enlace del perfilador para acceder a él.
+
+00:02:37.006 --> 00:02:39.966 align:middle
+Echa un vistazo a la barra lateral: ¡tenemos
+una nueva pestaña "Correos electrónicos"!
+
+00:02:40.136 --> 00:02:42.106 align:middle
+Y muestra que se ha enviado
+1 correo electrónico.
+
+00:02:42.486 --> 00:02:43.126 align:middle
+¡Lo hemos conseguido!
+
+00:02:43.526 --> 00:02:45.096 align:middle
+Haz clic en él, ¡y aquí está
+nuestro correo electrónico!
+
+00:02:45.526 --> 00:02:49.516 align:middle
+Los campos "de", "a", "asunto"
+y "cuerpo" son los esperados.
+
+00:02:50.146 --> 00:02:54.646 align:middle
+Recuerda que estamos utilizando el transporte de correo
+null, así que este correo no se ha enviado realmente, ¡pero
+
+00:02:55.026 --> 00:02:57.796 align:middle
+es genial que podamos
+previsualizarlo en el perfilador!
+
+00:02:58.256 --> 00:02:58.686 align:middle
+Aunque...
+
+00:02:58.856 --> 00:03:00.406 align:middle
+Creo que ambos sabemos que este correo...
+
+00:03:00.406 --> 00:03:01.866 align:middle
+es... bastante cutre.
+
+00:03:02.426 --> 00:03:04.336 align:middle
+¡No da ninguna información útil!
+
+00:03:04.806 --> 00:03:09.926 align:middle
+Ni URL a la página de detalles de la
+reserva, ni destino, ni fecha, ¡ni nada!
+
+00:03:10.366 --> 00:03:14.626 align:middle
+Es tan inútil que me alegro de que el
+transporte null lo tire por la ventana espacial.
+
+00:03:15.186 --> 00:03:16.466 align:middle
+¡Eso a continuación!
