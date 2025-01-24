@@ -1,29 +1,29 @@
 diff --git a/composer.json b/composer.json
-index c4dcf70..6250b30 100644
+index 8a423e0..ecfc1a7 100644
 --- a/composer.json
 +++ b/composer.json
 @@ -26,6 +26,7 @@
          "symfony/validator": "7.2.*",
          "symfony/yaml": "7.2.*",
-         "symfonycasts/tailwind-bundle": "^0.6.0",
+         "symfonycasts/tailwind-bundle": "^0.7.1",
 +        "twig/cssinliner-extra": "^3.18",
          "twig/extra-bundle": "^3.0",
          "twig/twig": "^3.0"
      },
 diff --git a/composer.lock b/composer.lock
-index 0c96d99..90e963e 100644
+index ae62617..d1e3799 100644
 --- a/composer.lock
 +++ b/composer.lock
 @@ -4,7 +4,7 @@
          "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
          "This file is @generated automatically"
      ],
--    "content-hash": "6f00a0925cc337ea3e32ecbd7b257a9d",
-+    "content-hash": "81591df4da612dff9979add64936c572",
+-    "content-hash": "031de703f2c811718c9707fd0c99bc91",
++    "content-hash": "ba41e4c166f5f937eeac1b60372ffe13",
      "packages": [
          {
              "name": "composer/semver",
-@@ -2234,6 +2234,71 @@
+@@ -2233,6 +2233,71 @@
              ],
              "time": "2024-12-11T03:49:26+00:00"
          },
@@ -95,9 +95,9 @@ index 0c96d99..90e963e 100644
          {
              "name": "symfony/dependency-injection",
              "version": "v7.2.0",
-@@ -6055,6 +6120,130 @@
+@@ -6054,6 +6119,130 @@
              },
-             "time": "2024-11-06T18:41:22+00:00"
+             "time": "2025-01-23T14:54:07+00:00"
          },
 +        {
 +            "name": "tijsverkoyen/css-to-inline-styles",
@@ -226,7 +226,7 @@ index 0c96d99..90e963e 100644
          {
              "name": "twig/extra-bundle",
              "version": "v3.18.0",
-@@ -8096,71 +8285,6 @@
+@@ -8095,71 +8284,6 @@
              ],
              "time": "2024-10-25T15:15:23+00:00"
          },

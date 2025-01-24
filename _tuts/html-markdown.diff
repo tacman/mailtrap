@@ -1,5 +1,5 @@
 diff --git a/composer.json b/composer.json
-index 6ef97d7..c4dcf70 100644
+index fb1d14c..8a423e0 100644
 --- a/composer.json
 +++ b/composer.json
 @@ -9,6 +9,7 @@
@@ -11,19 +11,19 @@ index 6ef97d7..c4dcf70 100644
          "symfony/asset-mapper": "7.2.*",
          "symfony/console": "7.2.*",
 diff --git a/composer.lock b/composer.lock
-index bcdd98e..0c96d99 100644
+index 144f34f..ae62617 100644
 --- a/composer.lock
 +++ b/composer.lock
 @@ -4,7 +4,7 @@
          "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
          "This file is @generated automatically"
      ],
--    "content-hash": "ed01f9a1c254b9a01189620e1bb6a112",
-+    "content-hash": "6f00a0925cc337ea3e32ecbd7b257a9d",
+-    "content-hash": "5fda607c71f52b6d1a661b7b26f37508",
++    "content-hash": "031de703f2c811718c9707fd0c99bc91",
      "packages": [
          {
              "name": "composer/semver",
-@@ -1350,6 +1350,95 @@
+@@ -1349,6 +1349,95 @@
              ],
              "time": "2024-12-27T00:36:43+00:00"
          },
@@ -119,21 +119,3 @@ index bcdd98e..0c96d99 100644
          {
              "name": "monolog/monolog",
              "version": "3.8.1",
-@@ -8875,7 +8964,7 @@
-     ],
-     "aliases": [],
-     "minimum-stability": "stable",
--    "stability-flags": {},
-+    "stability-flags": [],
-     "prefer-stable": false,
-     "prefer-lowest": false,
-     "platform": {
-@@ -8883,7 +8972,7 @@
-         "ext-ctype": "*",
-         "ext-iconv": "*"
-     },
--    "platform-dev": {},
-+    "platform-dev": [],
-     "platform-overrides": {
-         "php": "8.2"
-     },

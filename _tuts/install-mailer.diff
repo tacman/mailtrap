@@ -11,7 +11,7 @@ index ac9c422..3e05143 100644
 +MAILER_DSN=null://null
 +###< symfony/mailer ###
 diff --git a/composer.json b/composer.json
-index e0792b0..6ef97d7 100644
+index 5ca699f..fb1d14c 100644
 --- a/composer.json
 +++ b/composer.json
 @@ -16,6 +16,7 @@
@@ -23,21 +23,21 @@ index e0792b0..6ef97d7 100644
          "symfony/runtime": "7.2.*",
          "symfony/security-csrf": "7.2.*",
 diff --git a/composer.lock b/composer.lock
-index 33177a3..bcdd98e 100644
+index 1199550..144f34f 100644
 --- a/composer.lock
 +++ b/composer.lock
 @@ -4,7 +4,7 @@
          "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
          "This file is @generated automatically"
      ],
--    "content-hash": "10e1ba0cf8a95f22bb5b520dd191480a",
-+    "content-hash": "ed01f9a1c254b9a01189620e1bb6a112",
+-    "content-hash": "82897eb3ff2b57fff40bf19ce059051b",
++    "content-hash": "5fda607c71f52b6d1a661b7b26f37508",
      "packages": [
          {
              "name": "composer/semver",
-@@ -1283,6 +1283,73 @@
+@@ -1282,6 +1282,73 @@
              },
-             "time": "2024-10-21T18:21:57+00:00"
+             "time": "2025-01-24T11:45:48+00:00"
          },
 +        {
 +            "name": "egulias/email-validator",
@@ -109,7 +109,7 @@ index 33177a3..bcdd98e 100644
          {
              "name": "monolog/monolog",
              "version": "3.8.1",
-@@ -3449,6 +3516,170 @@
+@@ -3448,6 +3515,170 @@
              ],
              "time": "2024-12-31T14:59:40+00:00"
          },
@@ -280,7 +280,7 @@ index 33177a3..bcdd98e 100644
          {
              "name": "symfony/monolog-bridge",
              "version": "v7.2.0",
-@@ -3909,6 +4140,89 @@
+@@ -3908,6 +4139,89 @@
              ],
              "time": "2024-09-09T11:45:10+00:00"
          },
