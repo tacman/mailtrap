@@ -1,0 +1,210 @@
+WEBVTT
+
+00:00:00.096 --> 00:00:03.646 align:middle
+¡Hola amigos!
+
+00:00:03.916 --> 00:00:05.846 align:middle
+¡Bienvenidos a "Symfony Mailer con Mailtrap"!
+
+00:00:06.256 --> 00:00:09.106 align:middle
+Soy Kevin, y seré tu
+postmaster para este curso,
+
+00:00:09.306 --> 00:00:13.056 align:middle
+que trata sobre el envío de correos electrónicos
+bonitos con el componente Mailer de Symfony,
+
+00:00:13.296 --> 00:00:17.296 align:middle
+incluyendo la adición de HTML, CSS -
+y la configuración para producción.
+
+00:00:17.886 --> 00:00:22.366 align:middle
+En ese sentido, hay muchos servicios que puedes utilizar
+en producción para enviar tus correos electrónicos.
+
+00:00:22.786 --> 00:00:26.686 align:middle
+Este curso se centrará en uno
+llamado Mailtrap: (1) porque es genial
+
+00:00:26.906 --> 00:00:30.856 align:middle
+y (2) porque ofrece una forma fantástica
+de previsualizar tus correos electrónicos.
+
+00:00:31.296 --> 00:00:33.886 align:middle
+Pero no te preocupes, los conceptos
+que trataremos son universales
+
+00:00:33.886 --> 00:00:36.056 align:middle
+y pueden aplicarse a cualquier
+servicio de correo electrónico.
+
+00:00:36.656 --> 00:00:37.406 align:middle
+¡Y además!
+
+00:00:37.656 --> 00:00:41.956 align:middle
+También veremos cómo rastrear eventos de
+correo electrónico como rebotes, aperturas
+
+00:00:41.956 --> 00:00:47.376 align:middle
+y clics en enlaces aprovechando algunos componentes
+relativamente nuevos de Symfony: Webhook y RemoteEvent.
+
+00:00:48.006 --> 00:00:52.386 align:middle
+Antes de empezar a enviar información
+importante por correo electrónico,
+
+00:00:52.666 --> 00:00:58.166 align:middle
+tenemos que aclarar algo: Symfony Mailer es sólo para
+lo que se denomina correos electrónicos transaccionales.
+
+00:00:58.656 --> 00:01:03.066 align:middle
+Son correos específicos de usuario que se producen
+cuando ocurre algo concreto en tu aplicación.
+
+00:01:03.456 --> 00:01:08.336 align:middle
+Cosas como: un correo electrónico de bienvenida después de que
+un usuario se registre, un correo electrónico de confirmación de
+
+00:01:08.336 --> 00:01:10.876 align:middle
+pedido cuando realiza un pedido, o
+incluso correos electrónicos como
+
+00:01:10.906 --> 00:01:14.936 align:middle
+"tu publicación ha sido votada" son ejemplos
+de correos electrónicos transaccionales.
+
+00:01:15.536 --> 00:01:18.626 align:middle
+Symfony Mailer no es para
+emails masivos o de marketing.
+
+00:01:18.996 --> 00:01:23.356 align:middle
+Por ello, no tenemos que preocuparnos de ningún
+tipo de funcionalidad para darse de baja.
+
+00:01:24.066 --> 00:01:27.376 align:middle
+Existen servicios específicos para
+enviar correos masivos o boletines,
+
+00:01:27.606 --> 00:01:29.536 align:middle
+Mailtrap incluso puede hacerlo
+a través de su sitio web.
+
+00:01:30.306 --> 00:01:33.466 align:middle
+Como siempre, para sacar el máximo
+partido a tu dinero en screencast,
+
+00:01:33.626 --> 00:01:35.366 align:middle
+¡deberías codificar conmigo!
+
+00:01:35.916 --> 00:01:37.646 align:middle
+Descarga el código del curso en esta página.
+
+00:01:38.106 --> 00:01:41.916 align:middle
+Cuando descomprimas el archivo, encontrarás un
+directorio start/ con el código con el que empezaremos.
+
+00:01:42.486 --> 00:01:44.326 align:middle
+Sigue el archivo README.md para
+poner en marcha la aplicación.
+
+00:01:44.826 --> 00:01:48.766 align:middle
+Yo ya lo he hecho y he ejecutado symfony
+serve -d para iniciar el servidor web.
+
+00:01:49.416 --> 00:01:52.266 align:middle
+Bienvenido a "Viajes Universales":
+una agencia de viajes
+
+00:01:52.266 --> 00:01:55.506 align:middle
+donde los usuarios pueden reservar
+viajes a diferentes lugares galácticos.
+
+00:01:55.956 --> 00:01:57.796 align:middle
+Aquí tienes los viajes
+disponibles actualmente.
+
+00:01:58.196 --> 00:02:02.426 align:middle
+Los usuarios ya pueden reservarlos, pero no se envían
+correos electrónicos de confirmación cuando lo hacen.
+
+00:02:02.916 --> 00:02:03.806 align:middle
+¡Vamos a arreglarlo!
+
+00:02:04.346 --> 00:02:06.796 align:middle
+Si voy a gastar miles de
+créditos en un viaje a Naboo,
+
+00:02:07.046 --> 00:02:09.166 align:middle
+¡quiero saber que mi reserva
+se ha realizado correctamente!
+
+00:02:09.686 --> 00:02:12.066 align:middle
+Paso 1: ¡instalemos el Mailer de Symfony!
+
+00:02:12.476 --> 00:02:19.286 align:middle
+Abre tu terminal y ejecuta composer
+require mailer La receta de Symfony Flex
+
+00:02:19.286 --> 00:02:22.396 align:middle
+para el mailer nos pide que instalemos
+alguna configuración de Docker.
+
+00:02:22.846 --> 00:02:26.706 align:middle
+Esto es para un servidor SMTP local que nos ayude con
+la previsualización de los correos electrónicos.
+
+00:02:27.046 --> 00:02:29.316 align:middle
+Vamos a utilizar Mailtrap
+para esto, así que di "no".
+
+00:02:31.956 --> 00:02:32.656 align:middle
+¡Instalado!
+
+00:02:33.146 --> 00:02:35.226 align:middle
+Ejecuta: git status para ver lo que tenemos.
+
+00:02:36.076 --> 00:02:39.266 align:middle
+Parece que la receta añadió
+algunas variables de entorno en .env
+
+00:02:39.646 --> 00:02:43.996 align:middle
+y añadió la configuración del
+mailer en config/packages/mailer.yaml.
+
+00:02:44.696 --> 00:02:46.686 align:middle
+En tu IDE, abre .env.
+
+00:02:48.066 --> 00:02:51.666 align:middle
+La receta del Mailer añadió esta
+variable de entorno MAILER_DSN.
+
+00:02:52.156 --> 00:02:56.526 align:middle
+Se trata de una cadena especial con aspecto de
+URL que configura el transporte de tu mailer:
+
+00:02:56.826 --> 00:03:03.596 align:middle
+cómo se envían realmente tus correos, por ejemplo a
+través de SMTP, Mailtrap, etc. La receta utiliza por defecto
+
+00:03:03.596 --> 00:03:06.856 align:middle
+null://null y es perfecta para el
+desarrollo local y las pruebas.
+
+00:03:07.446 --> 00:03:09.666 align:middle
+Este transporte no hace nada cuando
+se envía un correo electrónico
+
+00:03:09.986 --> 00:03:13.326 align:middle
+Finge entregar el correo electrónico, pero
+en realidad lo envía por una esclusa de aire.
+
+00:03:13.776 --> 00:03:15.636 align:middle
+Previsualizaremos nuestros correos
+electrónicos de otra forma.
+
+00:03:16.576 --> 00:03:18.796 align:middle
+¡Vale! ¡Estamos listos para enviar
+nuestro primer correo electrónico!
+
+00:03:19.116 --> 00:03:20.226 align:middle
+¡Hagámoslo a continuación!
