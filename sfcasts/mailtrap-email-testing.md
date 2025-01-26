@@ -1,9 +1,9 @@
 # Previewing Emails with Mailtrap (Email Testing)
 
 Previewing emails in the profiler is okay for basic emails, but soon we'll
-add HTML styles and images of space cats. To properly see how our emails look
-like, we need a more robust tool. We're going to use [Mailtrap](https://mailtrap.io/)'s
-[Mailtrap](https://mailtrap.io/)'s *email testing tool*. This gives us a real SMTP
+add HTML styles and images of space cats. To properly see how our emails look,
+we need a more robust tool. We're going to use [Mailtrap](https://mailtrap.io/)'s
+*email testing tool*. This gives us a real SMTP
 server that we can connect to, but instead of delivering emails to real inboxes,
 they go into a fake inbox that we can check out! It's like we send an email for real,
 then hack that person's account to see it... but without the hassle
@@ -16,12 +16,12 @@ so click that. You should see something like this. If you don't have an inbox ye
 add one here.
 
 Open that shiny new inbox. Next, we need to configure our app to send emails via
-the Mailtrap SMTP server. This is easy! Click "SMTP Settings", "PHP" then "Symfony".
-Copy the `MAILER_DSN`.
+the Mailtrap SMTP server. This is easy! Down here, under "Code Examples", click
+"PHP" then "Symfony". Copy the `MAILER_DSN`.
 
 Because this is a sensitive value, and may vary between developers, don't
 add it to `.env` as that's commited to git. Instead, create a new `.env.local`
-file at the root of your project. Paste the `MAILER_DSN` here to override the fake
+file at the root of your project. Paste the `MAILER_DSN` here to override the
 value in `.env`.
 
 We are set up for Mailtrap testing! That was easy! Test'r out!
