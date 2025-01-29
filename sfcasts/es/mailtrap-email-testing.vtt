@@ -1,0 +1,141 @@
+WEBVTT
+
+00:00:01.086 --> 00:00:04.816 align:middle
+Previsualizar correos electrónicos en el
+perfilador está bien para correos básicos,
+
+00:00:05.096 --> 00:00:08.806 align:middle
+pero pronto añadiremos estilos HTML
+e imágenes de gatos espaciales.
+
+00:00:09.096 --> 00:00:12.526 align:middle
+Para ver correctamente el aspecto de nuestros correos
+electrónicos, necesitamos una herramienta más robusta.
+
+00:00:13.026 --> 00:00:15.536 align:middle
+Vamos a utilizar la herramienta de pruebas
+de correo electrónico de Mailtrap.
+
+00:00:15.976 --> 00:00:20.676 align:middle
+Esto nos proporciona un servidor SMTP real al que podemos
+conectarnos, pero en lugar de entregar los correos electrónicos
+
+00:00:20.676 --> 00:00:24.546 align:middle
+a bandejas de entrada reales, ¡van a una
+bandeja de entrada falsa que podemos comprobar!
+
+00:00:25.106 --> 00:00:28.886 align:middle
+Es como si enviáramos un correo de verdad y luego
+pirateáramos la cuenta de esa persona para verlo...
+
+00:00:28.886 --> 00:00:31.306 align:middle
+¡pero sin las molestias ni
+todas esas cosas ilegales!
+
+00:00:31.306 --> 00:00:35.356 align:middle
+Ve a https://mailtrap.io y regístrate
+para obtener una cuenta gratuita.
+
+00:00:35.916 --> 00:00:38.966 align:middle
+Su plan de nivel gratuito tiene algunos
+límites, pero es perfecto para empezar.
+
+00:00:39.526 --> 00:00:41.846 align:middle
+Una vez dentro, estarás en la
+página de inicio de su aplicación.
+
+00:00:42.276 --> 00:00:45.816 align:middle
+Lo que nos interesa ahora es probar el correo
+electrónico, así que haz clic en él.
+
+00:00:46.526 --> 00:00:48.006 align:middle
+Deberías ver algo así.
+
+00:00:48.346 --> 00:00:50.936 align:middle
+Si aún no tienes una bandeja
+de entrada, añade una aquí.
+
+00:00:51.596 --> 00:00:53.206 align:middle
+Abre esa nueva y brillante bandeja de entrada.
+
+00:00:53.906 --> 00:00:58.396 align:middle
+A continuación, tenemos que configurar nuestra aplicación para que
+envíe correos electrónicos a través del servidor SMTP Mailtrap.
+
+00:00:58.806 --> 00:00:59.556 align:middle
+Esto es muy fácil
+
+00:00:59.946 --> 00:01:03.796 align:middle
+Aquí abajo, en "Ejemplos de código",
+haz clic en "PHP" y luego en "Symfony".
+
+00:01:04.746 --> 00:01:06.066 align:middle
+Copia la dirección MAILER_DSN.
+
+00:01:06.686 --> 00:01:10.246 align:middle
+Como se trata de un valor sensible, y
+puede variar según el desarrollador,
+
+00:01:10.556 --> 00:01:13.286 align:middle
+no lo añadas a .env, ya
+que está compilado en git.
+
+00:01:13.846 --> 00:01:18.276 align:middle
+En su lugar, crea un nuevo archivo
+.env.local en la raíz de tu proyecto.
+
+00:01:18.866 --> 00:01:22.506 align:middle
+Pega aquí MAILER_DSN para
+anular el valor de .env.
+
+00:01:23.466 --> 00:01:25.366 align:middle
+¡Ya estamos preparados para probar Mailtrap!
+
+00:01:25.816 --> 00:01:26.496 align:middle
+¡Ha sido fácil!
+
+00:01:26.826 --> 00:01:27.506 align:middle
+¡A probar!
+
+00:01:28.136 --> 00:01:33.146 align:middle
+De vuelta en la aplicación, reserva
+un nuevo viaje: Nombre: Steve, Email:
+
+00:01:33.146 --> 00:01:36.896 align:middle
+steve@minecraft.com, cualquier
+fecha en el futuro, y...
+
+00:01:37.086 --> 00:01:40.626 align:middle
+¡reserva! Esta petición tarda un
+poco más porque se está conectando
+
+00:01:40.626 --> 00:01:43.026 align:middle
+al servidor SMTP externo de Mailtrap.
+
+00:01:43.676 --> 00:01:45.596 align:middle
+De vuelta en Mailtrap, ¡bam!
+
+00:01:45.846 --> 00:01:47.706 align:middle
+¡El correo electrónico ya está
+en nuestra bandeja de entrada!
+
+00:01:48.036 --> 00:01:48.946 align:middle
+Haz clic para comprobarlo.
+
+00:01:49.656 --> 00:01:51.786 align:middle
+Aquí tienes una vista previa
+"Texto" y una vista "Sin procesar".
+
+00:01:52.416 --> 00:01:55.296 align:middle
+También hay un "Análisis de Spam" - ¡genial!
+
+00:01:56.086 --> 00:02:00.006 align:middle
+la "Información técnica" muestra todas las "cabeceras
+de correo electrónico" en un formato fácil de leer.
+
+00:02:00.626 --> 00:02:05.236 align:middle
+Estas pestañas "HTML" están en gris porque no tenemos
+una versión HTML de nuestro correo electrónico...
+
+00:02:05.586 --> 00:02:07.596 align:middle
+todavía... ¡Cambiemos eso a continuación!
