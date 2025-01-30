@@ -7,11 +7,11 @@ Time to make this email more presentable by adding HTML!
 In `templates/email/`, copy `booking_confirmation.txt.twig` and name it `booking_confirmation.html.twig`.
 The HTML version acts a bit like a full HTML page.
 Wrap everything in an `<html>` tag, add an empty `<head>` and wrap
-the content in a `<body>`. I'll also add some `<p>` tags to get some spacing...
+the content in a `<body>`. I'll also wrap these lines in `<p>` tags to get some spacing...
 and a `<br>` tag after "Regards," to add a line break.
 
-This URL can now live in a proper `<a>` tag. Give yourself some room and copy the URL. Add an
-`<a>` tag with an `href` attribute and paste inside.
+This URL can now live in a proper `<a>` tag. Give yourself some room and cut "Manage your booking". Add an
+`<a>` tag with the URL as the `href` attribute and paste the text inside.
 
 Finally, we need to tell Mailer to use this HTML template. In `TripController::show()`,
 above `->textTemplate()`, add `->htmlTemplate()` with `email/booking_confirmation.html.twig`.
