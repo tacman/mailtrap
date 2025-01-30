@@ -1,64 +1,60 @@
-# HTML With Inky & Foundation for Emails
+# Real Email Styling with Inky & Foundation CSS
 
-To get this email looking really sharp, we're going to need to improve the HTML and
+To get this email looking really sharp, we need to improve the HTML and
 CSS.
 
-Let's start with CSS. With standard website CSS, you've likely used, or at least
-heard of CSS frameworks. Popular ones are Tailwind (which our app used), Bootstrap, and Foundation.
-These normalize the look of your site and make it easier to create a consistent
-experience for desktop and mobile users. I'd argue it's even more important
-to use a framework for emails as there are many more email clients.
+Let's start with CSS. With standard website CSS, you've likely used
+a CSS framework like Tailwind (which our app uses), Bootstrap, or Foundation.
+Does something like this exist for emails? Yes! And it's even more important
+to use one for emails because there are so many email clients that render
+differently.
 
-Foundation CSS has an email-specific CSS framework.
+For emails, we recommend using Foundation as it has a specific framework
+for emails. Google "Foundation CSS" and you should find this page. Foundation
 
-If you Google "Foundation CSS email", you should find this page. The easiest way to
-get started is to download the starter kit for the "CSS Version". This zip file
-includes some examples, but most importantly, a `foundation-emails.css` file that's
+Download the starter kit for the "CSS Version". This zip file
+includes a `foundation-emails.css` file that's
 the actual "framework".
 
-I have this already downloaded in the `tutorials/` directory so copy it to your
-`assets/styles` directory.
+I already included this in the `tutorials/` directory. Copy it to
+`assets/styles/`.
 
-In our `booking_confirmation.html.twig` template, this `inline_css` filter can take
-multiple arguments. Make the first argument `source(@styles/foundation-emails.css)`.
-`email.css` will be the second argument and will contain custom styles and overrides.
+In our `booking_confirmation.html.twig`, the `inline_css` filter can take
+multiple arguments. Make the first argument `source('@styles/foundation-emails.css')`
+and use `email.css` for the second argument. This will contain custom styles and overrides.
 
-Open `email.css` and paste in some custom CSS for our email.
+I'll open `email.css` and paste in some custom CSS for our email.
 
-Now, we need better HTML but... writing good-looking HTML for emails is a bit of a
-nightmare. For a nice layout, you need to use tables, inside tables, inside tables.
+Now we need to improve our HTML. But weird news! Most ofd the things we use for
+styling websites don't work in emails. For example, we can't use Flexbox or Grid.
+Instead, we need to use tables for layout. Tables! Tables, inside tables, inside tables.
 Gross!
 
-Luckily, there's a special templating language we can use to make this easier. Google
-"inky templating language" and you should find this page. Inky is developed by this
-Zurb Foundation. Zurb, Inky, Foundation... these are all really cool sci-fi names!
-I love it! Inky works seamlessly with Foundation for Emails.
+Luckily, there's a templating language we can use to make this easier. Search for
+"inky templating language" to find this page. Inky is developed by this
+Zurb Foundation. Zurb, Inky, Foundation... these names fit in perfectly with our
+space theme! And they all work together!
 
 You can get an idea of how it works on the overview. This is the HTML needed for a
-simple email. It's table-hell! If you click this "Switch to Inky" tab, you can see
-how Inky simplifies this. It's a lot cleaner and easier to read.
+simple email. It's table-hell! Click the "Switch to Inky" tab. Wow! This is much
+cleaner! We write in a more readable format and Inky converts it to the table-hell
+needed for emails.
 
-There's a bunch of "inky components" you can use: buttons, callouts, grids, etc.
+There are even "inky components": buttons, callouts, grids, etc.
 
-Let's use it!
-
-First, in your terminal, install an Inky filter for Twig with:
+In your terminal, install an Inky Twig filter that will convert our Inky markup to HTML.
 
 ```terminal
 composer require twig/inky-extra
 ```
 
-We're ready to use Inky! In `booking_confirmation.html.twig`, add the `inky_to_html`
+In `booking_confirmation.html.twig`, add the `inky_to_html`
 filter to `apply`, piping `inline_css` after. First, we apply the Inky filter, then
 inline the CSS.
 
 I'll copy in some inky markup for our email. We have a `<container>`, with `<rows>` and
-`<columns>`. This will be a single column email, but you can have multiple columns if
-you'd like. This `<spacer>` is the inky way to add vertical space for breathing room.
-
-We have basically the same content as before but with some custom classes from `email.css`.
-The first `<button>` is our link to manage the booking. This second `<button>` is a link
-to a page that lists all your bookings.
+`<columns>`. This will be a single column email, but you can have as many columns as
+you need. This `<spacer>` adds vertical space for breathing room.
 
 Let's see this email in action! Book a new trip for Steve, oops, must be a date in the
 future, and book!
@@ -70,6 +66,7 @@ Looking at the "HTML Check", seems like we have some issues, but, I think as lon
 we're using Foundation and Inky as intended, we should be good.
 
 Check the buttons. "Manage Booking", yep, that works. "My Account", yep, that works too.
+That was a lot of quick success thanks to Foundation and Inky!
 
-I'm happy with this look. Next, let's improve our email further by embedding the trip image and
-adding a "terms of service" PDF attachment to the email.
+Next, let's improve our email further by embedding the trip image and
+making the lawyers happy by adding a "terms of service" PDF attachment.
