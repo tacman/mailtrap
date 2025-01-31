@@ -2,6 +2,8 @@
 
 Creo que tú, yo, cualquiera que haya recibido alguna vez un correo electrónico, podemos estar de acuerdo en que nuestro primer correo electrónico apesta. No aporta ningún valor. ¡Mejorémoslo!
 
+## `Address` Objeto
+
 En primer lugar, podemos añadir un nombre al correo electrónico. Esto aparecerá en la mayoría de los clientes de correo electrónico en lugar de sólo la dirección de correo electrónico: tiene un aspecto más fluido. Envuelve el `from` con`new Address()`, el de `Symfony\Component\Mime`. El primer argumento es el correo electrónico, y el segundo es el nombre: ¿qué tal `Universal Travel`:
 
 [[[ code('5cd55f5238') ]]]
@@ -17,7 +19,9 @@ Para el `subject`, añade el nombre del viaje: `'Booking Confirmation for ' . $t
 Para el cuerpo `text`. Podríamos alinear todo el texto aquí. Eso se pondría feo, así que ¡utilicemos Twig! Necesitamos una plantilla. 
 En `templates/`, añade un nuevo directorio `email/` y, dentro, crea un nuevo archivo:`booking_confirmation.txt.twig`. Twig puede utilizarse para cualquier formato de texto, no sólo para `html`. Una buena práctica es incluir el formato - `.html` o `.txt` - en el nombre del archivo. Pero a Twig no le importa eso: es sólo para satisfacer nuestro cerebro humano. Volveremos a este archivo en un segundo.
 
-De vuelta en `TripController::show()`, en lugar de `new Email()`, utiliza `new TemplatedEmail()`(el de `Symfony\Bridge\Twig`):
+## Plantilla de correo Twig
+
+Vuelve a `TripController::show()`, en lugar de `new Email()`, utiliza `new TemplatedEmail()`(el de `Symfony\Bridge\Twig`):
 
 [[[ code('6514c7bf48') ]]]
 
