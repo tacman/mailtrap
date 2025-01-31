@@ -53,6 +53,8 @@ The email was *actually* sent on the previous request - the form submit. That co
 redirected us to this page. But the web debug toolbar gives us a shortcut to access the profiler
 for the previous request: hover over `200` and click the profiler link to get there.
 
+## Email in the Profiler
+
 Check out the sidebar - we have a new "Emails" tab! And it shows 1 email was sent. We did it!
 Click it, and here's our email! The from, to, subject, and body are all what we expect.
 

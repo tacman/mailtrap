@@ -3,6 +3,8 @@
 I think you, me, anyone that's ever received an email, can agree that our first email
 stinks. It doesn't provide any value. Let's improve it!
 
+## `Address` Object
+
 First, we can add a name to the email. This will show up in most email
 clients instead of just the email address: it just looks smoother. Wrap the `from` with
 `new Address()`, the one from `Symfony\Component\Mime`. The first argument is the
@@ -25,6 +27,8 @@ In `templates/`, add a new `email/` directory and inside, create a new file:
 A good practice is to include the format - `.html` or `.txt` - in the filename.
 But Twig doesn't care about the that - it's just to satisfy our human brains.
 We'll return to this file in a second.
+
+## Twig Email Template
 
 Back in `TripController::show()`, instead of `new Email()`, use `new TemplatedEmail()`
 (the one from `Symfony\Bridge\Twig`):

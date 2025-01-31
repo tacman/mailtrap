@@ -4,6 +4,8 @@ Emails should always have a plain-text version, but they can also have an HTML v
 And that's where the fun is! 
 Time to make this email more presentable by adding HTML!
 
+## HTML Email Template
+
 In `templates/email/`, copy `booking_confirmation.txt.twig` and name it `booking_confirmation.html.twig`.
 The HTML version acts a bit like a full HTML page.
 Wrap everything in an `<html>` tag, add an empty `<head>` and wrap
@@ -13,8 +15,12 @@ and a `<br>` tag after "Regards," to add a line break.
 This URL can now live in a proper `<a>` tag. Give yourself some room and cut "Manage your booking". Add an
 `<a>` tag with the URL as the `href` attribute and paste the text inside.
 
+[[[ code('9d292d3d7f') ]]]
+
 Finally, we need to tell Mailer to use this HTML template. In `TripController::show()`,
-above `->textTemplate()`, add `->htmlTemplate()` with `email/booking_confirmation.html.twig`.
+above `->textTemplate()`, add `->htmlTemplate()` with `email/booking_confirmation.html.twig`:
+
+[[[ code('5dda8f48b5') ]]]
 
 Test it out by booking a trip: `Steve`, `steve@minecraft.com`, any date in the future,
 book... then check Mailtrap. The email looks the same, but now we have an HTML tab!
@@ -23,12 +29,14 @@ Oh and the "HTML Check" is really neat. It gives you a gauge of what percentage 
 clients support the HTML in this email. If you didn't know, email clients are a pain
 in the butt: it's like the 90s all over again with different browsers. This tool helps
 with that.
-Back in the HTML tab, click the link to make
-sure it works. It does!
+
+Back in the HTML tab, click the link to make sure it works. It does!
 
 So our email now has both a text and HTML version but... it's kind of a drag to maintain both.
 Who uses a text-only email client anyway? Probably nobody or a very low percentage of your
 users.
+
+## Automatically Generating Text Version
 
 Let's try something: in `TripController::show()`, remove the `->textTemplate()` line.
 Our email now only has an HTML version.
@@ -42,6 +50,8 @@ anchor tag. We lost it when the tags were stripped.
 
 So, do we need to always manually maintain a text version? Not necessarily. Here's a
 little trick.
+
+## HTML to Markdown
 
 Over in your terminal, run:
 
