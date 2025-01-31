@@ -1,0 +1,221 @@
+WEBVTT
+
+00:00:01.066 --> 00:00:05.766 align:middle
+Los correos electrónicos siempre deben tener una versión en
+texto plano, pero también pueden tener una versión en HTML.
+
+00:00:06.126 --> 00:00:07.446 align:middle
+¡Y ahí es donde está la diversión!
+
+00:00:07.856 --> 00:00:11.266 align:middle
+¡Es hora de hacer este correo
+más presentable añadiendo HTML!
+
+00:00:11.846 --> 00:00:16.606 align:middle
+En templates/email/, copia
+booking_confirmation.txt.twig
+
+00:00:16.956 --> 00:00:20.296 align:middle
+y nómbralo booking_confirmation.html.twig.
+
+00:00:20.556 --> 00:00:24.326 align:middle
+La versión HTML actúa un poco
+como una página HTML completa.
+
+00:00:24.666 --> 00:00:31.386 align:middle
+Envuélvelo todo en una etiqueta <html>, añade una
+<head> vacía y envuelve el contenido en una <body>.
+
+00:00:31.386 --> 00:00:35.336 align:middle
+También envolveré estas líneas en etiquetas
+<p> para conseguir algo de espaciado...
+
+00:00:36.666 --> 00:00:39.776 align:middle
+y una etiqueta <br> después de
+"Saludos", para añadir un salto de línea.
+
+00:00:40.186 --> 00:00:42.836 align:middle
+Ahora esta URL puede vivir en
+una etiqueta <a> adecuada.
+
+00:00:43.276 --> 00:00:45.856 align:middle
+Déjate algo de espacio y
+corta "Gestiona tu reserva".
+
+00:00:46.786 --> 00:00:51.686 align:middle
+Añade una etiqueta <a> con la URL
+como atributo href y pega el texto dentro.
+
+00:00:51.826 --> 00:00:55.576 align:middle
+Por último, tenemos que decirle a
+Mailer que utilice esta plantilla HTML.
+
+00:00:55.926 --> 00:01:02.306 align:middle
+En TripController::show(), encima de
+->textTemplate(), añade ->htmlTemplate()
+
+00:01:02.306 --> 00:01:11.396 align:middle
+con email/booking_confirmation.html.twig:
+Pruébalo reservando un viaje: Steve,
+
+00:01:11.396 --> 00:01:15.206 align:middle
+steve@minecraft.com, cualquier
+fecha en el futuro, reserva...
+
+00:01:15.916 --> 00:01:16.946 align:middle
+y luego comprueba Mailtrap.
+
+00:01:18.346 --> 00:01:21.376 align:middle
+El correo electrónico tiene el mismo aspecto,
+¡pero ahora tenemos una pestaña HTML!
+
+00:01:22.136 --> 00:01:24.396 align:middle
+Ah, y la "Comprobación
+de HTML" está muy bien.
+
+00:01:24.736 --> 00:01:29.676 align:middle
+Te da un indicador de qué porcentaje de clientes de
+correo electrónico admiten el HTML de este correo.
+
+00:01:29.676 --> 00:01:34.846 align:middle
+Por si no lo sabías, los clientes de correo
+electrónico son un coñazo: es como volver a los 90
+
+00:01:34.846 --> 00:01:36.426 align:middle
+con distintos navegadores.
+
+00:01:36.696 --> 00:01:38.006 align:middle
+Esta herramienta te ayuda con eso.
+
+00:01:38.836 --> 00:01:42.016 align:middle
+De nuevo en la pestaña HTML, haz clic en
+el enlace para asegurarte de que funciona.
+
+00:01:42.676 --> 00:01:47.606 align:middle
+¡Funciona! Así que nuestro correo electrónico tiene
+ahora una versión en texto y otra en HTML, pero...
+
+00:01:47.836 --> 00:01:50.076 align:middle
+es una lata mantener ambas.
+
+00:01:50.076 --> 00:01:52.536 align:middle
+¿Quién utiliza un cliente de
+correo electrónico sólo de texto?
+
+00:01:52.886 --> 00:01:55.976 align:middle
+Probablemente nadie o un porcentaje
+muy bajo de tus usuarios.
+
+00:01:56.536 --> 00:02:01.666 align:middle
+Probemos algo: en TripController::show(),
+elimina la línea ->textTemplate().
+
+00:02:02.196 --> 00:02:04.806 align:middle
+Nuestro correo electrónico
+ahora sólo tiene versión HTML.
+
+00:02:05.506 --> 00:02:08.186 align:middle
+Reserva otro viaje y comprueba el
+correo electrónico en Mailtrap.
+
+00:02:13.046 --> 00:02:14.496 align:middle
+¿Todavía tenemos una versión de texto?
+
+00:02:15.096 --> 00:02:18.386 align:middle
+Se parece casi a nuestra plantilla de
+texto, pero con algún espaciado extra.
+
+00:02:18.386 --> 00:02:21.566 align:middle
+Si envías un correo electrónico
+sólo con una versión HTML,
+
+00:02:21.706 --> 00:02:26.096 align:middle
+Symfony Mailer crea automáticamente una
+versión de texto pero elimina las etiquetas.
+
+00:02:26.356 --> 00:02:28.946 align:middle
+Es una buena alternativa, pero no es perfecta.
+
+00:02:29.136 --> 00:02:29.996 align:middle
+¿Ves lo que falta?
+
+00:02:30.356 --> 00:02:32.076 align:middle
+El enlace Eso es...
+
+00:02:32.076 --> 00:02:33.046 align:middle
+algo crítico...
+
+00:02:33.486 --> 00:02:37.596 align:middle
+El enlace ha desaparecido porque estaba en
+el atributo href de la etiqueta de anclaje.
+
+00:02:37.956 --> 00:02:39.786 align:middle
+Lo perdimos cuando se eliminaron las etiquetas.
+
+00:02:40.256 --> 00:02:43.696 align:middle
+Entonces, ¿necesitamos mantener siempre
+manualmente una versión de texto?
+
+00:02:44.216 --> 00:02:45.426 align:middle
+No necesariamente.
+
+00:02:45.916 --> 00:02:46.786 align:middle
+He aquí un pequeño truco.
+
+00:02:47.296 --> 00:02:53.976 align:middle
+En tu terminal, ejecuta: composer require
+league/html-to-markdown Este es un paquete
+
+00:02:53.976 --> 00:02:56.266 align:middle
+que convierte HTML a markdown.
+
+00:02:56.816 --> 00:02:57.656 align:middle
+Espera, ¿qué?
+
+00:02:57.716 --> 00:03:00.566 align:middle
+¿No solemos convertir markdown a HTML?
+
+00:03:00.996 --> 00:03:04.146 align:middle
+Sí, pero para los correos
+HTML, ¡esto es perfecto!
+
+00:03:04.236 --> 00:03:05.076 align:middle
+¿Y adivina qué?
+
+00:03:05.346 --> 00:03:07.196 align:middle
+¡No tenemos que hacer nada más!
+
+00:03:07.196 --> 00:03:12.606 align:middle
+¡Symfony Mailer utiliza automáticamente este paquete en lugar
+de limitarse a eliminar las etiquetas si están disponibles!
+
+00:03:13.216 --> 00:03:15.986 align:middle
+Reserva otro viaje y comprueba el
+correo electrónico en Mailtrap.
+
+00:03:23.096 --> 00:03:26.126 align:middle
+El HTML parece el mismo, pero
+comprueba la versión de texto.
+
+00:03:26.576 --> 00:03:29.536 align:middle
+¡Nuestra etiqueta de anclaje se ha
+convertido en un enlace markdown!
+
+00:03:30.036 --> 00:03:32.386 align:middle
+Todavía no es perfecto,
+¡pero al menos está ahí!
+
+00:03:32.386 --> 00:03:36.206 align:middle
+Si necesitas un control total,
+necesitarás esa plantilla de texto aparte,
+
+00:03:36.496 --> 00:03:38.856 align:middle
+pero creo que esto es suficiente.
+
+00:03:38.856 --> 00:03:43.136 align:middle
+De vuelta en tu IDE, borra
+booking_confirmation.txt.twig.
+
+00:03:43.856 --> 00:03:46.736 align:middle
+A continuación, ¡avivaremos
+este HTML con CSS!
