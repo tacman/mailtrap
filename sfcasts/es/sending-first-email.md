@@ -32,7 +32,9 @@ Vale... esta página tiene exactamente el mismo aspecto que antes. ¿Se ha envia
 
 En realidad, el correo electrónico se envió en la petición anterior: el envío del formulario. Ese controlador nos redirigió a esta página. Pero la barra de herramientas de depuración web nos ofrece un atajo para acceder al perfilador de la petición anterior: pasa el ratón por encima de `200` y haz clic en el enlace del perfilador para acceder a él.
 
-Echa un vistazo a la barra lateral: ¡tenemos una nueva pestaña "Correos electrónicos"! Y muestra que se ha enviado 1 correo electrónico. ¡Lo hicimos! ¡Haz clic en él y aquí está nuestro correo electrónico! Los campos "de", "a", "asunto" y "cuerpo" son los esperados.
+## Correo electrónico en el perfilador
+
+Echa un vistazo a la barra lateral: ¡tenemos una nueva pestaña "Correos electrónicos"! Y muestra que se ha enviado 1 correo electrónico. ¡Lo hicimos! ¡Haz clic en él y aquí está nuestro correo electrónico! Los campos "De", "Para", "Asunto" y "Cuerpo" son los esperados.
 
 Recuerda que estamos utilizando el transporte de correo `null`, así que este correo no se ha enviado realmente, ¡pero es genial que podamos previsualizarlo en el perfilador!
 
