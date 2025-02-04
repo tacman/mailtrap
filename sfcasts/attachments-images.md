@@ -18,7 +18,7 @@ see what your IDE suggests. There are two methods: `attach()` and `attachFromPat
 our attachment is a real file on our filesystem, use `attachFromPath()` and pass
 `$termsPath` then a friendly name like `Terms of Service.pdf`. This will be the
 name of the file when it's downloaded.
-as the second. If the second argument *isn't* passed, it defaults to the file's name.
+If the second argument *isn't* passed, it defaults to the file's name.
 
 Attachment done. That was easy!
 
@@ -61,8 +61,8 @@ image! We rock! It fits perfectly and even has some nice rounded corners.
 
 Up here, in the top right, we see "Attachment (1)" - just like we expect. Click this and
 choose "Terms of Service.pdf" to download it. Open it up and... there's our PDF!
-Our space lawyers actually made this document fun - and it only cost us $500/hour!
-Investor money well spent!
+Our space lawyers actually made this document fun - and it only cost us 500 credits/hour!
+Investor credits well spent!
 
 Next, we're going to remove the need to manually set a `from` to each email by using
 events to add it globally.

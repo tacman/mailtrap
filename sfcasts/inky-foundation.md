@@ -10,7 +10,7 @@ to use one for emails because there are so many email clients that render
 differently.
 
 For emails, we recommend using Foundation as it has a specific framework
-for emails. Google "Foundation CSS" and you should find this page. Foundation
+for emails. Google "Foundation CSS" and you should find this page.
 
 Download the starter kit for the "CSS Version". This zip file
 includes a `foundation-emails.css` file that's
@@ -25,7 +25,7 @@ and use `email.css` for the second argument. This will contain custom styles and
 
 I'll open `email.css` and paste in some custom CSS for our email.
 
-Now we need to improve our HTML. But weird news! Most ofd the things we use for
+Now we need to improve our HTML. But weird news! Most of the things we use for
 styling websites don't work in emails. For example, we can't use Flexbox or Grid.
 Instead, we need to use tables for layout. Tables! Tables, inside tables, inside tables.
 Gross!
