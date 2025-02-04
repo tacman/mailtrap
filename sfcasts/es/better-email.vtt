@@ -91,11 +91,11 @@ Para
 
 00:01:35.906 --> 00:01:42.396 align:middle
 pasar variables a la plantilla, utiliza
-->context() con 'cliente' => $cliente, 'viaje'
+->context() con 'customer' => $customer,
 
 00:01:43.276 --> 00:01:47.526 align:middle
-=> $viaje, 'reserva'
-=> $reserva: Ten en cuenta
+'trip' => $trip, 'booking' => $booking: 
+Ten en cuenta
 
 00:01:47.526 --> 00:01:51.466 align:middle
 que aquí técnicamente no estamos
