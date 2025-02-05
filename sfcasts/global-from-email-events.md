@@ -1,34 +1,40 @@
-# Global From with Email Events
+# Global From (and Fun) with Email Events
 
-It's likely that most, if not all the emails your app sends will
-be *from* the same email address. In our case, `info@universal-travel.com`.
+I bet that most, if not every email your app sends will
+be *from* the same email address, something clever like
+`hal9000@universal-travel.com`
+
+Or the tried-and-true but sleepier `info@universal-travel.com`.
+Because every email will have the same *from* address, there's
+no point to set it in every email. Instead, let's set it globally.
+Oddly, there isn't any tiny config option for this. But that's
+great for us: it gives us a chance to learn about events! Very powerful,
+very nerdy.
 
 Let's prevent the need to add the same *from* address to every email by setting it
-globally. We can do this with a Mailer Event, specifically, the `MessageEvent`.
-This is dispatched before an email is sent, giving us a chance to modify it.
+globally. Before an email is sent, Mailer dispatches a `MessageEvent`
 
-To listen to an event, we need an event listener, and there's a maker for that! In
-your terminal, run:
+To listen to this, find your terminal and run:
 
 ```terminal
 symfony console make:listener
 ```
 
-Call it `GlobalFromEmailListener`. The command is giving us a list of events we
-can listen to. The first one is what we want: `Symfony\Component\Mailer\Event\MessageEvent`.
+Call it `GlobalFromEmailListener`. The gives us a list of events we
+can listen to. We want the first: `MessageEvent`.
 Start typing `Symfony` and it's autocompleted it for us. Hit enter.
 
 Listener created!
 
-I want to configure our global *from* address as a parameter. In `config/services.yaml`,
-under `parameters`, add a new parameter called `global_from_email`. This will be a string,
+To be extra cool, let'd set our global *from* address as a parameter. In `config/services.yaml`,
+under `parameters`, add a new one: `global_from_email`. This will be a string,
 but check this out: set it to `Universal Travel `, then in angle brackets, put the email:
-`<info@universal-travel.com>`. When Symfony sets a string that looks like this as an
+`<info@universal-travel.com>`. When Symfony sees a string that looks like this as an
 email address, it'll create the proper `Address` object with both a name and email set.
 Sweet!
 
-Find our new listener class in `src/EventListener/GlobalFromEmailListener.php`. First,
-add a constructor with a `private string $fromEmail` argument and an `#[Autowire]`
+Open the new classL `src/EventListener/GlobalFromEmailListener.php`.
+Add a constructor with a `private string $fromEmail` argument and an `#[Autowire]`
 attribute with our parameter name: `%global_from_email%`.
 
 Down here, the `#[AsEventListener]` attribute is what *marks* this method as an event
@@ -50,19 +56,22 @@ Now, we can set the global `from`: `$message->from($this->fromEmail)`. Perfect!
 
 Back in `TripController::show()`, remove the `->from()` for the email.
 
-Time to test this! In our app, book a trip, and check Mailtrap for the email. Here it is...
-and the `from` is set correctly! Our listener is working!
+Time to test this! In our app, book a trip and check Mailtrap for the email. Drumroll...
+the `from` is set correctly! Our listener works! I never doubted us.
 
-A quick aside to talk about a scenario you might encounter. Consider a contact form
+One more detail to make this completely airtight (like most of our ships).
+
+Imagine a contact form
 where the user fills their name, email, and a message. This fires off an email with
 these details to your support team. In their email clients, it'd be nice if, when
 they hit reply, it goes to the email from the form - not your "global from".
 
 You might think that you should set the `from` address to the user's email. We'll see
-why shortly, but this won't work. We're not authorized to send emails on behalf of
-that user. So, are you forced to make your support team copy-paste the email address?
+But that won't work as we're not authorized to send emails on behalf of
+that user. More on email security in a minute.
 
-Nope! There's a special email header called `Reply-To` for just this scenario.
-When building your email, use `->replyTo()` to set it.
+Fortunately, there's a special email header called `Reply-To` for just this scenario.
+When building your email, set it with `->replyTo()` and pass the user's email address.
 
-Ok! We're ready to send emails in production! That's next.
+Strap in because the booster tanks are full and ready for launch!
+Time to send *real* emails in production! That's next.
