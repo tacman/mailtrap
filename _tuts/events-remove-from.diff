@@ -1,0 +1,12 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index fd01dad..05a37e1 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -52,7 +52,6 @@ final class TripController extends AbstractController
+             $em->flush();
+ 
+             $email = (new TemplatedEmail())
+-                ->from(new Address('info@universal-travel.com', 'Universal Travel'))
+                 ->to(new Address($customer->getEmail()))
+                 ->subject('Booking Confirmation for '.$trip->getName())
+                 ->attachFromPath($termsPath, 'Terms of Service.pdf')

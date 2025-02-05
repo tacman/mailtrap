@@ -1,0 +1,18 @@
+diff --git a/assets/styles/email.css b/assets/styles/email.css
+index ac45938..19df09f 100644
+--- a/assets/styles/email.css
++++ b/assets/styles/email.css
+@@ -1,3 +1,11 @@
+-.text-red {
+-    color: red;
++.trip-name {
++    font-size: 32px;
++}
++
++.accent-title {
++    color: #666666;
++}
++
++.trip-image {
++    border-radius: 12px;
+ }

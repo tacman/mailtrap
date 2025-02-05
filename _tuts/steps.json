@@ -74,7 +74,82 @@
             "id": "css-external-stylesheet",
             "name": "CSS: external stylesheet",
             "description": null
+        },
+        {
+            "id": "inky-move-foundation",
+            "name": "Inky: move foundation",
+            "description": null
+        },
+        {
+            "id": "inky-add-custom-css",
+            "name": "Inky: add custom css",
+            "description": null
+        },
+        {
+            "id": "inky-install-inky",
+            "name": "Inky: install inky",
+            "description": null
+        },
+        {
+            "id": "inky",
+            "name": "Inky:",
+            "description": null
+        },
+        {
+            "id": "inky-add-inky-filter",
+            "name": "Inky: add inky filter",
+            "description": null
+        },
+        {
+            "id": "inky-add-inky-email-template",
+            "name": "Inky: add inky email template",
+            "description": null
+        },
+        {
+            "id": "attachments-copy-pdf",
+            "name": "Attachments: copy pdf",
+            "description": null
+        },
+        {
+            "id": "attachments-attach-pdf",
+            "name": "Attachments: attach pdf",
+            "description": null
+        },
+        {
+            "id": "attachments-add-public-imgs-to-twig",
+            "name": "Attachments: add public\/imgs to twig",
+            "description": null
+        },
+        {
+            "id": "attachments-add-image-to-email",
+            "name": "Attachments: add image to email",
+            "description": null
+        },
+        {
+            "id": "events-add-listener",
+            "name": "Events: add listener",
+            "description": null
+        },
+        {
+            "id": "events-configure-parameter",
+            "name": "Events: configure parameter",
+            "description": null
+        },
+        {
+            "id": "events-add-listener-constructor",
+            "name": "Events: add listener constructor",
+            "description": null
+        },
+        {
+            "id": "events-listener-method",
+            "name": "Events: listener method",
+            "description": null
+        },
+        {
+            "id": "events-remove-from",
+            "name": "Events: remove ->from()",
+            "description": null
         }
     ],
-    "sha": "4da433aa224669e5b0cc68f00f24e853410d8312"
+    "sha": "ffad19cf9fb220d80df5152cc7e3c106bb674d9e"
 }

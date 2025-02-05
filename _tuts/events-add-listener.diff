@@ -1,0 +1,21 @@
+diff --git a/src/EventListener/GlobalFromEmailListener.php b/src/EventListener/GlobalFromEmailListener.php
+new file mode 100644
+index 0000000..e4a0e44
+--- /dev/null
++++ b/src/EventListener/GlobalFromEmailListener.php
+@@ -0,0 +1,15 @@
++<?php
++
++namespace App\EventListener;
++
++use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
++use Symfony\Component\Mailer\Event\MessageEvent;
++
++final class GlobalFromEmailListener
++{
++    #[AsEventListener(event: MessageEvent::class)]
++    public function onMessageEvent(MessageEvent $event): void
++    {
++        // ...
++    }
++}

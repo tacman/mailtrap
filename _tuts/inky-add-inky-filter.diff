@@ -1,0 +1,10 @@
+diff --git a/templates/email/booking_confirmation.html.twig b/templates/email/booking_confirmation.html.twig
+index c5f7ca6..4778e4a 100644
+--- a/templates/email/booking_confirmation.html.twig
++++ b/templates/email/booking_confirmation.html.twig
+@@ -1,4 +1,4 @@
+-{% apply inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
++{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
+ <html>
+ <head></head>
+ <body>

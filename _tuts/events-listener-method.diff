@@ -1,0 +1,34 @@
+diff --git a/src/EventListener/GlobalFromEmailListener.php b/src/EventListener/GlobalFromEmailListener.php
+index a8904d5..0b8500c 100644
+--- a/src/EventListener/GlobalFromEmailListener.php
++++ b/src/EventListener/GlobalFromEmailListener.php
+@@ -2,6 +2,7 @@
+ 
+ namespace App\EventListener;
+ 
++use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+ use Symfony\Component\DependencyInjection\Attribute\Autowire;
+ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+ use Symfony\Component\Mailer\Event\MessageEvent;
+@@ -14,9 +15,19 @@ final class GlobalFromEmailListener
+     ) {
+     }
+ 
+-    #[AsEventListener(event: MessageEvent::class)]
++    #[AsEventListener]
+     public function onMessageEvent(MessageEvent $event): void
+     {
+-        // ...
++        $message = $event->getMessage();
++
++        if (!$message instanceof TemplatedEmail) {
++            return;
++        }
++
++        if ($message->getFrom()) {
++            return;
++        }
++
++        $message->from($this->fromEmail);
+     }
+ }

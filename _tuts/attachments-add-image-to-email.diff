@@ -1,0 +1,15 @@
+diff --git a/templates/email/booking_confirmation.html.twig b/templates/email/booking_confirmation.html.twig
+index cee0f26..e14804d 100644
+--- a/templates/email/booking_confirmation.html.twig
++++ b/templates/email/booking_confirmation.html.twig
+@@ -5,6 +5,10 @@
+                 <spacer size="40"></spacer>
+                 <p class="accent-title">Get Ready for your trip to</p>
+                 <h1 class="trip-name">{{ trip.name }}</h1>
++                <img
++                    class="trip-image float-center"
++                    src="{{ email.image('@images/%s.png'|format(trip.slug)) }}"
++                    alt="{{ trip.name }}">
+             </columns>
+         </row>
+         <row>

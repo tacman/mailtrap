@@ -1,0 +1,30 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index 3189a3c..fd01dad 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -11,6 +11,7 @@ use App\Repository\TripRepository;
+ use Doctrine\ORM\EntityManagerInterface;
+ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
++use Symfony\Component\DependencyInjection\Attribute\Autowire;
+ use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\HttpFoundation\Response;
+ use Symfony\Component\Mailer\MailerInterface;
+@@ -34,6 +35,9 @@ final class TripController extends AbstractController
+         CustomerRepository $customers,
+         EntityManagerInterface $em,
+         MailerInterface $mailer,
++
++        #[Autowire('%kernel.project_dir%/assets/terms-of-service.pdf')]
++        string $termsPath,
+     ): Response {
+         $form = $this->createForm(BookingType::class)->handleRequest($request);
+ 
+@@ -51,6 +55,7 @@ final class TripController extends AbstractController
+                 ->from(new Address('info@universal-travel.com', 'Universal Travel'))
+                 ->to(new Address($customer->getEmail()))
+                 ->subject('Booking Confirmation for '.$trip->getName())
++                ->attachFromPath($termsPath, 'Terms of Service.pdf')
+                 ->htmlTemplate('email/booking_confirmation.html.twig')
+                 ->context([
+                     'customer' => $customer,
