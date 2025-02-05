@@ -271,3 +271,38 @@
     - Download and open to make sure it's correct - Nice!
   - Note the image isn't considered an attachment - it's embedded in the email
 - Next, Mailer events and "Global From" address!
+
+## Global From with Email Events
+
+- Likely all/most emails with have the same "from" email
+- Let's create an event listener to add this globally
+- `symfony console make:listener`
+  - `GlobalFromEmailListener`
+  - `Symfony\Component\Mailer\Event\MessageEvent`
+- Set a global from parameter in `config/services.yaml`
+  - `global_from_email: 'Universal Travel <info@universal-travel.com>'`
+  - (note the special string format - this'll be parsed by the `Address` class)
+- Open `GlobalFromEmailListener`
+  - Add constructor with `private string $fromEmail` parameter
+  - We can remove the `event:` argument from the attribute (implied from method argument typehint)
+  - `$message = $event->getMessage()`
+  - `RawMessage`: `TemplatedEmail` extends
+  - `if (!$message instanceof TemplatedEmail) { return; }` (should always be the case but let's be sure)
+  - `if ($message->getFrom()) { return; }` (if already set, don't override)
+  - `$message->from($this->fromEmail);`
+- In `TripController::show()`
+  - Remove `->from()`
+- Book a trip
+  - from is set
+- Reply-to
+  - In `TripController::show()`:
+  - consider a contact form that has the following fields
+    - name
+    - email
+    - message
+  - When that form is filled out, our support staff gets this email
+  - When they hit reply, we want it to go to the contact form email
+  - You might think to set the from email to the contact form email
+  - But, as we'll see shortly, for production sending, your from email domain needs to be verified
+  - Instead, use `->replyTo()`
+  - Special email header for this purpose
