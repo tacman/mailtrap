@@ -284,6 +284,7 @@
   - (note the special string format - this'll be parsed by the `Address` class)
 - Open `GlobalFromEmailListener`
   - Add constructor with `private string $fromEmail` parameter
+  - `#[Autowire('%global_from_email%')]`
   - We can remove the `event:` argument from the attribute (implied from method argument typehint)
   - `$message = $event->getMessage()`
   - `RawMessage`: `TemplatedEmail` extends
