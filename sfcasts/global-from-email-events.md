@@ -2,17 +2,16 @@
 
 I bet that most, if not every email your app sends will
 be *from* the same email address, something clever like
-`hal9000@universal-travel.com`
+`hal9000@universal-travel.com` or the tried-and-true but sleepier
+`info@universal-travel.com`.
 
-Or the tried-and-true but sleepier `info@universal-travel.com`.
 Because every email will have the same *from* address, there's
 no point to set it in every email. Instead, let's set it globally.
 Oddly, there isn't any tiny config option for this. But that's
 great for us: it gives us a chance to learn about events! Very powerful,
 very nerdy.
 
-Let's prevent the need to add the same *from* address to every email by setting it
-globally. Before an email is sent, Mailer dispatches a `MessageEvent`
+Before an email is sent, Mailer dispatches a `MessageEvent`.
 
 To listen to this, find your terminal and run:
 
@@ -21,19 +20,19 @@ symfony console make:listener
 ```
 
 Call it `GlobalFromEmailListener`. The gives us a list of events we
-can listen to. We want the first: `MessageEvent`.
-Start typing `Symfony` and it's autocompleted it for us. Hit enter.
+can listen to. We want the first one: `MessageEvent`.
+Start typing `Symfony` and it's autocompleted for us. Hit enter.
 
 Listener created!
 
-To be extra cool, let'd set our global *from* address as a parameter. In `config/services.yaml`,
+To be extra cool, let's set our global *from* address as a parameter. In `config/services.yaml`,
 under `parameters`, add a new one: `global_from_email`. This will be a string,
 but check this out: set it to `Universal Travel `, then in angle brackets, put the email:
-`<info@universal-travel.com>`. When Symfony sees a string that looks like this as an
+`<info@universal-travel.com>`. When Symfony Mailer sees a string that looks like this as an
 email address, it'll create the proper `Address` object with both a name and email set.
 Sweet!
 
-Open the new classL `src/EventListener/GlobalFromEmailListener.php`.
+Open the new class `src/EventListener/GlobalFromEmailListener.php`.
 Add a constructor with a `private string $fromEmail` argument and an `#[Autowire]`
 attribute with our parameter name: `%global_from_email%`.
 
@@ -66,9 +65,9 @@ where the user fills their name, email, and a message. This fires off an email w
 these details to your support team. In their email clients, it'd be nice if, when
 they hit reply, it goes to the email from the form - not your "global from".
 
-You might think that you should set the `from` address to the user's email. We'll see
-But that won't work as we're not authorized to send emails on behalf of
-that user. More on email security in a minute.
+You might think that you should set the `from` address to the user's email.
+But that won't work, as we're not authorized to send emails on behalf of
+that user. More on email security soon.
 
 Fortunately, there's a special email header called `Reply-To` for just this scenario.
 When building your email, set it with `->replyTo()` and pass the user's email address.
