@@ -9,6 +9,8 @@ Does something like this exist for emails? Yes! And it's even more important
 to use one for emails because there are so many email clients that render
 differently.
 
+## Foundation CSS for Emails
+
 For emails, we recommend using Foundation as it has a specific framework
 for emails. Google "Foundation CSS" and you should find this page.
 
@@ -21,14 +23,24 @@ I already included this in the `tutorials/` directory. Copy it to
 
 In our `booking_confirmation.html.twig`, the `inline_css` filter can take
 multiple arguments. Make the first argument `source('@styles/foundation-emails.css')`
-and use `email.css` for the second argument. This will contain custom styles and overrides.
+and use `email.css` for the second argument:
 
-I'll open `email.css` and paste in some custom CSS for our email.
+[[[ code('c203a20a6d') ]]]
+
+This will contain custom styles and overrides.
+
+I'll open `email.css` and paste in some custom CSS for our email:
+
+[[[ code('ea52aa1065') ]]]
+
+## Tables!
 
 Now we need to improve our HTML. But weird news! Most of the things we use for
 styling websites don't work in emails. For example, we can't use Flexbox or Grid.
 Instead, we need to use tables for layout. Tables! Tables, inside tables, inside tables.
 Gross!
+
+## Inky Templating Language
 
 Luckily, there's a templating language we can use to make this easier. Search for
 "inky templating language" to find this page. Inky is developed by this
@@ -48,11 +60,20 @@ In your terminal, install an Inky Twig filter that will convert our Inky markup 
 composer require twig/inky-extra
 ```
 
-In `booking_confirmation.html.twig`, add the `inky_to_html`
-filter to `apply`, piping `inline_css` after. First, we apply the Inky filter, then
-inline the CSS.
+## `inky_to_html` Twig Filter
 
-I'll copy in some inky markup for our email. We have a `<container>`, with `<rows>` and
+In `booking_confirmation.html.twig`, add the `inky_to_html`
+filter to `apply`, piping `inline_css` after:
+
+[[[ code('73775f33bd') ]]]
+
+First, we apply the Inky filter, then inline the CSS.
+
+I'll copy in some inky markup for our email.
+
+[[[ code('fcbd92a5fb') ]]]
+
+We have a `<container>`, with `<rows>` and
 `<columns>`. This will be a single column email, but you can have as many columns as
 you need. This `<spacer>` adds vertical space for breathing room.
 

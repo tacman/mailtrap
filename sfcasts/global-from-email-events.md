@@ -11,6 +11,8 @@ Oddly, there isn't any tiny config option for this. But that's
 great for us: it gives us a chance to learn about events! Very powerful,
 very nerdy.
 
+## The `MessageEvent`
+
 Before an email is sent, Mailer dispatches a `MessageEvent`.
 
 To listen to this, find your terminal and run:
@@ -26,37 +28,65 @@ Start typing `Symfony` and it's autocompleted for us. Hit enter.
 Listener created!
 
 To be extra cool, let's set our global *from* address as a parameter. In `config/services.yaml`,
-under `parameters`, add a new one: `global_from_email`. This will be a string,
+under `parameters`, add a new one: `global_from_email`.
+
+## Special Email Address String
+
+This will be a string,
 but check this out: set it to `Universal Travel `, then in angle brackets, put the email:
-`<info@universal-travel.com>`. When Symfony Mailer sees a string that looks like this as an
+`<info@universal-travel.com>`:
+
+[[[ code('1ab2c11bb8') ]]]
+
+When Symfony Mailer sees a string that looks like this as an
 email address, it'll create the proper `Address` object with both a name and email set.
 Sweet!
 
+## `MessageEvent` Listener
+
 Open the new class `src/EventListener/GlobalFromEmailListener.php`.
 Add a constructor with a `private string $fromEmail` argument and an `#[Autowire]`
-attribute with our parameter name: `%global_from_email%`.
+attribute with our parameter name: `%global_from_email%`:
+
+[[[ code('bc4e150613') ]]]
 
 Down here, the `#[AsEventListener]` attribute is what *marks* this method as an event
 listener. We can actually remove this `event` argument - it'll be inferred from the
-method argument's type-hint: `MessageEvent`.
+method argument's type-hint: `MessageEvent`:
 
-Inside, first grab the message from the event: `$message = $event->getMessage()`. Jump
-into the `getMessage()` method to see what it returns. `RawMessage`... jump into this
+[[[ code('eed01fe852') ]]]
+
+Inside, first grab the message from the event: `$message = $event->getMessage()`:
+
+[[[ code('63ae11e65b') ]]]
+
+Jump into the `getMessage()` method to see what it returns. `RawMessage`... jump into this
 and look at what classes extend it. `TemplatedEmail`! Perfect!
 
-Back in our listener, write `if (!$message instanceof TemplatedEmail)`, and inside, `return;`.
+Back in our listener, write `if (!$message instanceof TemplatedEmail)`, and inside, `return;`:
+
+[[[ code('a22f86e267') ]]]
+
 This will likely never be the case, but it's good practice to double-check. Plus, it
 helps our IDE know that `$message` is a `TemplatedEmail` now.
 
 It's possible that an email might still set its own `from` address. In this case,
-we don't want to override it. So, add a guard clause: `if ($message->getFrom())`, `return;`.
+we don't want to override it. So, add a guard clause: `if ($message->getFrom())`, `return;`:
 
-Now, we can set the global `from`: `$message->from($this->fromEmail)`. Perfect!
+[[[ code('ac13586a11') ]]]
+
+Now, we can set the global `from`: `$message->from($this->fromEmail)`:
+
+[[[ code('18eea9c01f') ]]]
+
+Perfect!
 
 Back in `TripController::show()`, remove the `->from()` for the email.
 
 Time to test this! In our app, book a trip and check Mailtrap for the email. Drumroll...
 the `from` is set correctly! Our listener works! I never doubted us.
+
+## `Reply-To`
 
 One more detail to make this completely airtight (like most of our ships).
 

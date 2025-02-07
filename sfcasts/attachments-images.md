@@ -8,19 +8,28 @@ a `terms-of-service.pdf` file. Move this into `assets/`, though it could live an
 
 In `TripController::show()`, we need to get the path to this file. Add a new
 `string $termsPath` argument and with the `#[Autowire]` attribute and
-`%kernel.project_dir%/assets/terms-of-service.pdf'`.
+`%kernel.project_dir%/assets/terms-of-service.pdf'`:
+
+[[[ code('40d2e3d02e') ]]]
 
 Cool, right?
+
+## Attachments
 
 Down where we create the email, write `->attach` and
 see what your IDE suggests. There are two methods: `attach()` and `attachFromPath()`.
 `attach()` is for adding the raw content of a file (as a string or stream). Since
 our attachment is a real file on our filesystem, use `attachFromPath()` and pass
-`$termsPath` then a friendly name like `Terms of Service.pdf`. This will be the
-name of the file when it's downloaded.
+`$termsPath` then a friendly name like `Terms of Service.pdf`:
+
+[[[ code('71798b3459') ]]]
+
+This will be the name of the file when it's downloaded.
 If the second argument *isn't* passed, it defaults to the file's name.
 
 Attachment done. That was easy!
+
+## Embedding Images
 
 Next, let's add the trip image to the booking confirmation email. But we don't want it
 as an attachment. We want it embedded in the HTML. There are two ways to
@@ -34,8 +43,11 @@ available in Twig. `public/imgs/` contains our trip images and they're all named
 `<trip-slug.png>`.
 
 In `config/packages/twig.yaml`, add another `paths` entry:
-`%kernel.project_dir%/public/imgs: images`. Now we can access this directory in Twig with
-`@images/`. Close this file.
+`%kernel.project_dir%/public/imgs: images`:
+
+[[[ code('75ff27a66d') ]]]
+
+Now we can access this directory in Twig with `@images/`. Close this file.
 
 ## The `email` Variable
 
@@ -52,7 +64,9 @@ some classes: `trip-image` from our custom CSS file and `float-center` from Foun
 
 For the `src`, write `{{ email.image() }}`, this is the method on that
 `WrappedTemplatedEmail` object. Inside, write `'@images/%s.png'|format(trip.slug)`.
-Add an `alt="{{ trip.name }}"` and close the tag.
+Add an `alt="{{ trip.name }}"` and close the tag:
+
+[[[ code('457d06c3ca') ]]]
 
 Image embedded! Let's check it!
 
