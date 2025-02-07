@@ -4,6 +4,8 @@ Apuesto a que la mayoría, si no todos, los correos electrónicos que envíe tu 
 
 Como todos los correos tendrán la misma dirección de origen, no tiene sentido establecerla en todos los correos. Curiosamente, no hay ninguna opción de configuración minúscula para esto. Pero eso es genial para nosotros: ¡nos da la oportunidad de aprender sobre eventos! Muy potente, muy friki.
 
+## El `MessageEvent`
+
 Antes de enviar un correo electrónico, Mailer envía un mensaje `MessageEvent`.
 
 Para escucharlo, busca tu terminal y ejecuta:
@@ -16,23 +18,53 @@ Llámalo `GlobalFromEmailListener`. El nos da una lista de eventos que podemos e
 
 ¡Escucha creada!
 
-Para ser más guays, pongamos nuestra dirección global de origen como parámetro. En `config/services.yaml`, debajo de `parameters`, añade una nueva: `global_from_email`. Esto será una cadena, pero fíjate en esto: ponlo en `Universal Travel `, luego entre paréntesis angulares, pon el email:`<info@universal-travel.com>`. Cuando Symfony Mailer vea una cadena con este aspecto como dirección de correo electrónico, creará el objeto `Address` adecuado con un nombre y un correo electrónico establecidos. ¡Genial!
+Para ser más guays, pongamos nuestra dirección global de origen como parámetro. En `config/services.yaml`, debajo de `parameters`, añade una nueva: `global_from_email`.
 
-Abre la nueva clase `src/EventListener/GlobalFromEmailListener.php`. Añade un constructor con un argumento `private string $fromEmail` y un atributo `#[Autowire]`con el nombre de nuestro parámetro: `%global_from_email%`.
+## Cadena especial de dirección de correo electrónico
 
-Aquí abajo, el atributo `#[AsEventListener]` es lo que marca este método como un oyente de eventos. En realidad, podemos eliminar este argumento `event` - se deducirá de la sugerencia de tipo del argumento del método: `MessageEvent`.
+Esto será una cadena, pero fíjate en esto: ponlo en `Universal Travel `, luego entre paréntesis angulares, pon el correo electrónico:`<info@universal-travel.com>`:
 
-Dentro, coge primero el mensaje del evento: `$message = $event->getMessage()`. Salta al método `getMessage()` para ver lo que devuelve. `RawMessage`... salta a esto y mira qué clases lo extienden. `TemplatedEmail` ¡! ¡Perfecto!
+[[[ code('1ab2c11bb8') ]]]
 
-De vuelta a nuestro oyente, escribe `if (!$message instanceof TemplatedEmail)`, y dentro, `return;`. Es probable que esto no ocurra nunca, pero es una buena práctica volver a comprobarlo. Además, ayuda a nuestro IDE a saber que `$message` es ahora un `TemplatedEmail`.
+Cuando Symfony Mailer vea una cadena con este aspecto como dirección de correo electrónico, creará el objeto `Address` adecuado con un nombre y un correo electrónico establecidos. ¡Genial!
 
-Es posible que un correo electrónico aún establezca su propia dirección `from`. En este caso, no queremos anularla. Así que añade una cláusula de protección `if ($message->getFrom())`, `return;`.
+## `MessageEvent` Receptor
 
-Ahora, podemos establecer la global `from`: `$message->from($this->fromEmail)`. Perfecto
+Abre la nueva clase `src/EventListener/GlobalFromEmailListener.php`. Añade un constructor con un argumento `private string $fromEmail` y un atributo `#[Autowire]`con el nombre de nuestro parámetro: `%global_from_email%`:
+
+[[[ code('bc4e150613') ]]]
+
+Aquí abajo, el atributo `#[AsEventListener]` es lo que marca este método como un oyente de eventos. En realidad, podemos eliminar este argumento `event` - se deducirá de la sugerencia de tipo del argumento del método: `MessageEvent`:
+
+[[[ code('eed01fe852') ]]]
+
+Dentro, primero coge el mensaje del evento: `$message = $event->getMessage()`:
+
+[[[ code('63ae11e65b') ]]]
+
+Salta al método `getMessage()` para ver lo que devuelve. `RawMessage`... salta a esto y mira qué clases lo extienden. `TemplatedEmail` ¡! ¡Perfecto!
+
+De vuelta a nuestro oyente, escribe `if (!$message instanceof TemplatedEmail)`, y dentro, `return;`:
+
+[[[ code('a22f86e267') ]]]
+
+Es probable que esto no ocurra nunca, pero es una buena práctica volver a comprobarlo. Además, ayuda a nuestro IDE a saber que `$message` es ahora un `TemplatedEmail`.
+
+Es posible que un correo electrónico aún establezca su propia dirección `from`. En este caso, no queremos anularla. Así que añade una cláusula de protección `if ($message->getFrom())`, `return;`:
+
+[[[ code('ac13586a11') ]]]
+
+Ahora, podemos establecer la global `from`: `$message->from($this->fromEmail)`:
+
+[[[ code('18eea9c01f') ]]]
+
+¡Perfecto!
 
 De vuelta en `TripController::show()`, elimina el `->from()` para el correo electrónico.
 
 ¡Es hora de probarlo! En nuestra aplicación, reserva un viaje y comprueba Mailtrap para el correo electrónico. Redoble de tambores... ¡el `from` está configurado correctamente! ¡Nuestro oyente funciona! Nunca dudé de nosotros.
+
+## `Reply-To`
 
 Un detalle más para que esto sea completamente hermético (como la mayoría de nuestros barcos).
 
