@@ -1,0 +1,209 @@
+WEBVTT
+
+00:00:01.056 --> 00:00:02.916 align:middle
+¿Podemos añadir un archivo adjunto
+a nuestro correo electrónico?
+
+00:00:03.286 --> 00:00:03.996 align:middle
+Por supuesto que sí
+
+00:00:04.236 --> 00:00:07.186 align:middle
+Hacerlo manualmente es un
+proceso complejo y delicado.
+
+00:00:07.706 --> 00:00:10.196 align:middle
+Por suerte, el Mailer de
+Symfony te lo pone muy fácil.
+
+00:00:10.676 --> 00:00:14.596 align:middle
+En el directorio tutorial/, verás
+un archivo terms-of-service.pdf.
+
+00:00:15.036 --> 00:00:17.636 align:middle
+Muévelo a assets/, aunque
+podría estar en cualquier sitio.
+
+00:00:18.446 --> 00:00:22.096 align:middle
+En TripController::show(), necesitamos
+obtener la ruta a este archivo.
+
+00:00:22.616 --> 00:00:27.096 align:middle
+Añade un nuevo argumento string
+$termsPath y con el atributo #[Autowire]
+
+00:00:27.096 --> 00:00:34.276 align:middle
+y %kernel.project_dir%/assets/terms-of-service.pdf':
+Genial, ¿verdad? Abajo
+
+00:00:34.796 --> 00:00:40.456 align:middle
+, donde creamos el correo electrónico, escribe
+->attach y mira qué te sugiere tu IDE.
+
+00:00:40.836 --> 00:00:44.146 align:middle
+Hay dos métodos: attach()
+y attachFromPath(). attach()
+
+00:00:44.656 --> 00:00:48.826 align:middle
+es para añadir el contenido en bruto de
+un archivo (como cadena o flujo). Como
+
+00:00:49.346 --> 00:00:53.616 align:middle
+nuestro archivo adjunto es un archivo real en nuestro
+sistema de archivos, utiliza attachFromPath() y
+
+00:00:53.936 --> 00:00:59.696 align:middle
+pasa a $termsPath un nombre amigable como
+Terms of Service.pdf: Éste será el nombre
+
+00:00:59.696 --> 00:01:00.986 align:middle
+del archivo cuando se descargue. Si
+
+00:01:01.716 --> 00:01:05.266 align:middle
+no se pasa el segundo argumento, se utilizará
+por defecto el nombre del archivo. Adjunto
+
+00:01:05.896 --> 00:01:06.926 align:middle
+hecho. ¡
+
+00:01:07.316 --> 00:01:08.026 align:middle
+Ha sido fácil! A continuación, vamos
+
+00:01:08.686 --> 00:01:11.566 align:middle
+a añadir la imagen del viaje al correo
+electrónico de confirmación de la reserva. Pero
+
+00:01:11.566 --> 00:01:13.926 align:middle
+no la queremos como archivo adjunto.
+
+00:01:14.016 --> 00:01:15.996 align:middle
+La queremos incrustada en el HTML.
+
+00:01:16.616 --> 00:01:20.156 align:middle
+Hay dos formas de hacerlo: Primero,
+la forma estándar de la web: utilizar
+
+00:01:20.406 --> 00:01:24.626 align:middle
+una etiqueta <img> con una URL absoluta
+a la imagen alojada en tu sitio. Pero vamos
+
+00:01:25.226 --> 00:01:29.066 align:middle
+a ser inteligentes e incrustar la imagen
+directamente en el correo electrónico. Esto
+
+00:01:29.656 --> 00:01:33.826 align:middle
+es como un archivo adjunto, pero no está
+disponible para su descarga, sino que
+
+00:01:33.926 --> 00:01:36.436 align:middle
+haces referencia a ella en el HTML de
+tu correo electrónico. En primer lugar,
+
+00:01:37.116 --> 00:01:42.256 align:middle
+al igual que hicimos con nuestros archivos CSS externos, tenemos que
+hacer que nuestras imágenes estén disponibles en Twig. public/imgs/
+
+00:01:42.786 --> 00:01:48.856 align:middle
+contiene las imágenes de nuestro viaje y
+las nombra como <trip-slug.png>. En
+
+00:01:49.626 --> 00:02:00.176 align:middle
+config/packages/twig.yaml, añade otra entrada paths:
+%kernel.project_dir%/public/imgs: images: Ahora
+
+00:02:00.716 --> 00:02:03.866 align:middle
+podemos acceder a este directorio
+en Twig con @images/. Cierra
+
+00:02:04.296 --> 00:02:05.066 align:middle
+este archivo. Cuando
+
+00:02:05.886 --> 00:02:10.146 align:middle
+utilizas Twig para renderizar tus correos electrónicos,
+por supuesto tienes acceso a las variables pasadas a
+
+00:02:10.146 --> 00:02:14.296 align:middle
+->context() pero también hay una variable
+secreta disponible llamada email. Esta
+
+00:02:14.906 --> 00:02:19.896 align:middle
+es una instancia de WrappedTemplatedEmail y te da acceso
+a cosas relacionadas con el correo electrónico como
+
+00:02:19.936 --> 00:02:22.946 align:middle
+el asunto, la ruta de retorno, de, a, etc.
+
+00:02:23.096 --> 00:02:26.426 align:middle
+Lo que nos interesa es este método image(). ¡
+
+00:02:26.846 --> 00:02:28.746 align:middle
+Es el que se encarga de incrustar imágenes! ¡
+
+00:02:29.196 --> 00:02:29.826 align:middle
+Vamos a utilizarlo! En
+
+00:02:30.376 --> 00:02:38.006 align:middle
+booking_confirmation.html.twig, debajo de este <h1>,
+añade una etiqueta <img> con algunas clases trip-image
+
+00:02:38.196 --> 00:02:42.626 align:middle
+de nuestro archivo CSS personalizado
+y float-center de Foundation. Para
+
+00:02:43.356 --> 00:02:49.596 align:middle
+el src, escribe {{ email.image() }}, este es el
+método en ese objeto WrappedTemplatedEmail. Dentro,
+
+00:02:50.086 --> 00:02:58.196 align:middle
+escribe
+'@images/%s.png'|format(trip.slug). Añade
+
+00:02:59.456 --> 00:03:04.746 align:middle
+un alt="{{ trip.name }}" y cierra la
+etiqueta: ¡Imagen incrustada! ¡ Vamos
+
+00:03:05.256 --> 00:03:05.876 align:middle
+a comprobarlo! De vuelta
+
+00:03:06.406 --> 00:03:08.036 align:middle
+en la aplicación, reserva un viaje... y
+
+00:03:08.586 --> 00:03:09.586 align:middle
+comprueba Mailtrap. Aquí está
+
+00:03:14.376 --> 00:03:15.556 align:middle
+nuestro correo electrónico y... ¡aquí
+
+00:03:15.856 --> 00:03:16.716 align:middle
+está nuestra imagen! ¡
+
+00:03:16.946 --> 00:03:20.996 align:middle
+Somos lo máximo! Encaja perfectamente e
+incluso tiene unas bonitas esquinas redondeadas.
+
+00:03:21.726 --> 00:03:26.096 align:middle
+Aquí arriba, en la parte superior derecha, vemos
+"Adjunto (1)", tal y como esperábamos. Haz clic en
+
+00:03:26.626 --> 00:03:30.046 align:middle
+él y elige "Condiciones de
+servicio.pdf" para descargarlo. Ábrelo
+
+00:03:30.906 --> 00:03:31.866 align:middle
+y... ¡ahí está
+
+00:03:32.296 --> 00:03:33.296 align:middle
+nuestro PDF! Nuestros
+
+00:03:33.626 --> 00:03:38.836 align:middle
+abogados espaciales han hecho este documento realmente divertido,
+¡y sólo nos ha costado 500 créditos/hora! ¡ Créditos de inversor
+
+00:03:39.316 --> 00:03:41.126 align:middle
+bien gastados! A continuación, vamos
+
+00:03:41.896 --> 00:03:46.036 align:middle
+a eliminar la necesidad de poner manualmente
+un from a cada correo electrónico,
+
+00:03:46.156 --> 00:03:48.366 align:middle
+utilizando eventos para añadirlo globalmente.
