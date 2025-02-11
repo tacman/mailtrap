@@ -439,6 +439,23 @@
 
 ## Links in Async Emails
 
+- When the email is sent to the queue, it isn't yet rendered
+- It's rendered when the worker processes the message
+- Since the worker is a command, it doesn't have access to the request context
+- When generating urls with `url()`, it uses a default base url: `localhost`
+- We need to give the router the base url to use
+- We can set this in `config/packages/routing.yaml`
+  - Set `framework.router.default_uri`: `https://universal-travel.com`
+  - (you might want to use a parameter or env variable here)
+  - In development, we need this set to our local server: `https://127.0.0.1:8000/`
+  - But... there's no guarantee this will always be the same
+  - The Symfony CLI can use a different port
+  - So, add `when@dev.framework.router.default_url`: `%env(SYMFONY_PROJECT_DEFAULT_ROUTE_URL)%`
+  - This environment variable is only available when the server is running
+- Book a trip:
+  - In your terminal, run the worker `symfony console messenger:consume async`
+  - Check Mailtrap
+  - Link works!
 - Keeping the messenger queue running in development can be a pain
   - You have to keep a terminal open and remember to run the command
   - Symfony CLI has a cool trick!
@@ -447,3 +464,12 @@
     when the server is running
   - We already have our tailwind build command running here
   - Let's add our messenger worker!
+  - Under workers, add `messenger:`
+    - Then: `cmd: ['symfony', 'console', 'messenger:consume', 'async']`
+  - We need to restart the webserver to pick up this change
+  - At your terminal:
+    - Run `symfony server:stop`
+    - Then `symfony serve -d`
+    - Ensure our messenger worker is running with: `symfony server:status`
+- Book a trip and check Mailtrap: email is handled immediately!
+- Next, let's functional test our emails!
