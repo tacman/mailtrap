@@ -24,7 +24,7 @@ Adjunto hecho. ¡Ha sido fácil!
 
 A continuación, vamos a añadir la imagen del viaje al correo electrónico de confirmación de la reserva. Pero no la queremos como archivo adjunto. La queremos incrustada en el HTML. Hay dos formas de hacerlo: Primero, la forma estándar de la web: utilizar una etiqueta `<img>` con una URL absoluta a la imagen alojada en tu sitio. Pero vamos a ser inteligentes e incrustar la imagen directamente en el correo electrónico. Esto es como un archivo adjunto, pero no está disponible para su descarga, sino que haces referencia a ella en el HTML de tu correo electrónico.
 
-Primero, al igual que hicimos con nuestros archivos CSS externos, tenemos que hacer que nuestras imágenes estén disponibles en Twig. `public/imgs/` contiene las imágenes de nuestro viaje y todas se llaman`<trip-slug.png>`.
+Primero, como hicimos con nuestros archivos CSS externos, tenemos que hacer que nuestras imágenes estén disponibles en Twig. `public/imgs/` contiene las imágenes de nuestro viaje y todas se llaman`<trip-slug.png>`.
 
 En `config/packages/twig.yaml`, añade otra entrada `paths`:`%kernel.project_dir%/public/imgs: images`:
 
@@ -34,7 +34,7 @@ Ahora podemos acceder a este directorio en Twig con `@images/`. Cierra este arch
 
 ## La variable `email` 
 
-Cuando utilizas Twig para procesar tus correos electrónicos, por supuesto tienes acceso a las variables pasadas a `->context()` pero también hay una variable secreta disponible llamada `email`. Es una instancia de `WrappedTemplatedEmail` y te da acceso a cosas relacionadas con el correo electrónico como el asunto, la ruta de retorno, de, a, etc. Lo que nos interesa es este método `image()`. ¡Es el que se encarga de incrustar imágenes!
+Cuando utilizas Twig para procesar tus correos electrónicos, por supuesto tienes acceso a las variables pasadas a `->context()` pero también hay una variable secreta disponible llamada `email`. Ésta es una instancia de `WrappedTemplatedEmail` y te da acceso a cosas relacionadas con el correo electrónico como el asunto, la ruta de retorno, de, a, etc. Lo que nos interesa es este método `image()`. ¡Es el que se encarga de incrustar imágenes!
 
 ¡Vamos a utilizarlo!
 
