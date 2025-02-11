@@ -307,3 +307,143 @@
   - But, as we'll see shortly, for production sending, your from email domain needs to be verified
   - Instead, use `->replyTo()`
   - Special email header for this purpose
+
+## Production Sending with Mailtrap
+
+- Could set all this up yourself... but it's complicated
+- You can't just send emails as anyone to anyone like in the 90s
+- It's best to use an email service
+- Symfony Mailer has bridges for many to make integration easy!
+- We're going to use the Mailtrap bridge
+- `composer require symfony/mailtrap-mailer`
+  - Check the new lines added to `.env`
+  - We'll get the MAILER_DSN from Mailtrap
+- Back over in the Mailtrap App, we need to setup a "Sending Domain"
+  - You'll need to add a domain that you own to follow along
+  - Since our lawyers are still securing the univeral-travel.com domain
+  - I'm using my own domain, zenstruck.com for now
+  - In order to send on behalf of your domain, you need to verify it
+  - Basically, a bunch of DNS records you'll need to add
+  - Mailtrap makes it super easy
+  - This stuff is complex but Mailtrap makes it easy
+    - Domain Verification: prove we own the domain
+    - DKIM: verify emails are sent from our domain
+    - SPF: authorize Mailtrap to send emails from our domain
+    - DMARC: policy for what to do with emails that fail SPF/DKIM
+  - Do what you need to do to get the "green checkmark" for each item here
+    - Mailtrap walks you through each step
+  - Jump over to "Tracking Settings"
+    - We'll track "opens"
+    - We'd need to upgrade to track "link clicks" but that's available, and can be super helpful!
+  - Now over to "Integration"
+    - "Integrate" using the "Transactional Stream"
+    - Now we need to choose if we want to send using SMTP or API
+    - I like to use API as it's more portable
+    - Choose "API"
+    - Just like "Mailtrap Testing", choose PHP, then Symfony
+    - Copy the `MAILER_DSN`
+- Back in our app
+  - In `.env.local` (we don't want this sensitive value committed)
+  - Comment out the existing "Mailtrap Testing" `MAILER_DSN`
+  - Paste the new value and remove the comment above
+- We're almost ready for production sending but...
+  - We need to set our "global from" email to our verified domain
+  - In `config/services.yaml`, change the `global_from_email`
+    - To any email address on your verified Mailtrap domain
+    - I'll use `info@zenstruck.com` but you'll need to use your own
+- Let's test it out!
+  - Book a trip - remember, this is now sending a real email, so
+    use your personal email address - I'll use kevin@symfonycasts.com
+  - Check out your "Real" email's inbox
+  - Here it is!
+  - Check the "to" - it's our friend Steve - this is the benefit of using recipients
+    on the envelope instead of overriding "to" in the listener
+  - Click the link, works!
+
+## Email Tracking with Tags and Metadata
+
+- Our emails are successfully being sent in production
+- Mailtrap has a lot of cool tracking features
+- In the Mailtrap app, choose "Email API/SMTP"
+  - Here's the stats dashboard
+  - Choose "Email Logs"
+  - This is the history of sent emails
+  - Super useful for diagnosing email issues
+  - Click our sent email
+  - This looks similar to Mailtrap Testing
+  - Go to "Event History"
+    - Here we see tracked events:
+      - "send"
+      - "delivered"
+      - "open"
+    - If we had link tracking enabled, we'd see these here!
+  - Back in "Email Info", notice a "Category" is missing
+  - A "category" enables filtering on the different types of emails your app sends
+- Let's add a category
+- In Mailtrap, this is a category, but Symfony Mailer calls them "tags"
+- In `TripController::show()`
+  - After creating the email
+    - Add `$email->getHeaders()->add(new TagHeader());`
+    - This is a string that can be anything you want, let's use `booking`
+    - While we're here, we can also add some metadata to help with tracking
+    - Again, this can be anything, let's add the booking and customer uid
+    - `$email->getHeaders()->add(new MetadataHeader('booking_id', $booking->getUid()));`
+    - `$email->getHeaders()->add(new MetadataHeader('customer_id', $customer->getUid()));`
+- In our app, book a trip and check our email and open
+- In Mailtrap, find it in our "Email Logs"
+- Check it out, we now have a Category: "booking"
+- And down here, Mailtrap calls them "Custom Variables", but this is our metadata
+- Back in "Email Logs", we can filter on our category
+  - In the filter, choose "Categories", now, all our categories will be available in this dropdown
+- For the next several chapters, we don't need to send in production
+  - In `.env.local`, comment out our production `MAILER_DSN`
+  - And uncomment the "Mailtrap Testing" `MAILER_DSN`
+- Next, let's send our emails asynchronously with symfony/messenger!
+
+## Async Sending with Messenger
+
+- When a controller sends an email, it has to make a network request to an email server
+- This can potentially be slow
+- This could potentially fail, showing the user a 500 error - booo!
+- Let's send them to a message queue to be processed by a worker!
+  - This improves the request time + gives us more control over retries and failures
+- At your terminal, install `symfony/messenger` and the Doctrine Messenger transport
+  - `composer require messenger symfony/doctrine-messenger`
+- In `.env`, the recipe added the doctrine mailer dsn
+  - This requires a new table in our database
+  - We should create a migration for this but... we'll cheat for now
+  - In the DSN, set `auto_setup=0` (this auto creates the table when it's needed)
+- In `config/packages/messenger.yaml`:
+  - uncomment `failure_transport` and the `failed` transport
+    - When a message (in our case, email send message) fails, it's retried 3 times,
+      then sent to the `failed` transport for manual review
+  - uncomment `async` - this uses the DSN from `.env`
+  - Under routing, add `'Symfony\Component\Mailer\Messenger\SendEmailMessage': async`
+    - This is the Messenger message Symfony Mailer wraps our email in
+    - We want this sent to our `async` transport
+- We're ready to send our emails asynchronously - there's nothing needed in our code!
+- In our app, book a trip
+- Don't check mailtrap yet - it won't be there - it's Queued
+- Check the profiler for the previous request
+  - Check the "Emails" section - it's "queued"!
+  - Check the "Messages" section - there's our `SendEmailMessage`
+- In your terminal, process the queue with
+  - `symfony console messenger:consume async`
+- Check mailtrap
+  - There it is!
+- But... there's a problem!
+  - Click a link
+  - `localhost`? That's not right!
+- There's some special consideration needed when sending emails async
+- Let's fix this next!
+
+## Links in Async Emails
+
+- Keeping the messenger queue running in development can be a pain
+  - You have to keep a terminal open and remember to run the command
+  - Symfony CLI has a cool trick!
+  - Open `.symfony.local.yaml`
+  - This `workers` section allows you to run things in the background
+    when the server is running
+  - We already have our tailwind build command running here
+  - Let's add our messenger worker!
