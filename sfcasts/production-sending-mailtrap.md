@@ -26,7 +26,7 @@ sending capabilities. And, there's an official bridge for it!
 At your terminal, install it with:
 
 ```terminal
-composer require symfony/mailer-mailtrap
+composer require symfony/mailtrap-mailer
 ```
 
 After this is installed, check your IDE. In `.env`, the recipe for this package
