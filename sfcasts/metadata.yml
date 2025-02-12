@@ -8,3 +8,5 @@ chapters:
   - inky-foundation
   - attachments-images
   - global-from-email-events
+  - production-sending-mailtrap
+  - tags-metadata
