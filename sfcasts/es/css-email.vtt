@@ -1,0 +1,230 @@
+WEBVTT
+
+00:00:01.056 --> 00:00:02.826 align:middle
+El CSS en el correo electrónico requiere...
+
+00:00:02.826 --> 00:00:04.166 align:middle
+un cuidado especial.
+
+00:00:04.516 --> 00:00:06.676 align:middle
+Pero, pffff, ¡somos
+desarrolladores de Symfony!
+
+00:00:06.866 --> 00:00:09.366 align:middle
+¡Avancemos temerariamente y veamos qué pasa!
+
+00:00:09.916 --> 00:00:14.646 align:middle
+En email/booking_confirmation.html.twig, añade
+una etiqueta <style> en <head>
+
+00:00:14.976 --> 00:00:21.906 align:middle
+y añade una clase .text-red que establezca color en red:
+Ahora, añade esta clase a la primera etiqueta <p>:
+
+00:00:22.586 --> 00:00:25.356 align:middle
+En nuestra aplicación, reserva otro
+viaje para nuestro buen amigo Steve.
+
+00:00:25.776 --> 00:00:27.706 align:middle
+¡Realmente está acumulando parsecs!
+
+00:00:27.986 --> 00:00:31.546 align:middle
+¿Crees que le interesaría la tarjeta
+de crédito platino Universal Travel?
+
+00:00:32.066 --> 00:00:33.866 align:middle
+En Mailtrap, comprueba el correo electrónico.
+
+00:00:34.456 --> 00:00:36.756 align:middle
+Vale, este texto es rojo como esperamos...
+
+00:00:37.006 --> 00:00:37.896 align:middle
+¿cuál es el problema?
+
+00:00:38.416 --> 00:00:40.506 align:middle
+Comprueba el código HTML
+para obtener una pista.
+
+00:00:40.956 --> 00:00:46.166 align:middle
+Pasa el ratón por encima del primer error: La etiqueta style
+no es compatible con todos los clientes de correo electrónico.
+
+00:00:46.646 --> 00:00:49.276 align:middle
+El problema más importante
+es el atributo class:
+
+00:00:49.486 --> 00:00:52.176 align:middle
+tampoco es compatible con todos los
+clientes de correo electrónico.
+
+00:00:52.706 --> 00:00:56.526 align:middle
+¿Podemos viajar al espacio pero no podemos
+utilizar clases CSS en los correos electrónicos?
+
+00:00:56.926 --> 00:00:58.636 align:middle
+Sí, es un mundo extraño.
+
+00:00:59.206 --> 00:00:59.906 align:middle
+¿La solución?
+
+00:01:00.156 --> 00:01:03.436 align:middle
+Haz como si estuviéramos en
+1999 e inserta todos los estilos.
+
+00:01:03.796 --> 00:01:08.856 align:middle
+Así es, por cada etiqueta que tenga un class,
+tenemos que encontrar todos los estilos aplicados
+
+00:01:08.856 --> 00:01:12.146 align:middle
+de la clase y añadirlos como atributo style.
+
+00:01:12.626 --> 00:01:14.506 align:middle
+Manualmente, esto sería suuuuuck...
+
+00:01:15.056 --> 00:01:17.086 align:middle
+Por suerte, ¡Symfony Mailer te tiene cubierto!
+
+00:01:17.086 --> 00:01:22.746 align:middle
+En la parte superior de este archivo, añade una
+etiqueta Twig apply con el filtro inline_css.
+
+00:01:22.746 --> 00:01:28.806 align:middle
+Si no estás familiarizado, la etiqueta apply te permite
+aplicar cualquier filtro Twig a un bloque de contenido.
+
+00:01:29.226 --> 00:01:33.556 align:middle
+Al final del archivo, escribe endapply:
+Reserva otro viaje para Steve.
+
+00:01:38.456 --> 00:01:39.706 align:middle
+Uy, ¡un error!
+
+00:01:39.986 --> 00:01:43.606 align:middle
+El filtro inline_css forma parte de
+un paquete que no tenemos instalado
+
+00:01:43.846 --> 00:01:47.546 align:middle
+, ¡pero el mensaje de error nos da el
+comando composer require para instalarlo!
+
+00:01:47.956 --> 00:01:55.866 align:middle
+Cópialo, salta a tu terminal y pégalo:
+composer require twig/cssinliner-extra De vuelta
+
+00:01:55.866 --> 00:01:59.286 align:middle
+en la aplicación, vuelve a reservar el viaje de
+Steve y comprueba el correo electrónico en Mailtrap.
+
+00:02:06.186 --> 00:02:09.536 align:middle
+El HTML parece el mismo, pero
+comprueba la Fuente HTML.
+
+00:02:09.816 --> 00:02:12.836 align:middle
+¡Este atributo style se añadió
+automáticamente a la etiqueta <p>!
+
+00:02:12.836 --> 00:02:16.016 align:middle
+Es increíble y mucho mejor
+que hacerlo manualmente.
+
+00:02:16.016 --> 00:02:20.596 align:middle
+Si tu aplicación envía varios correos
+electrónicos, querrás que tengan un estilo coherente
+
+00:02:20.596 --> 00:02:25.396 align:middle
+desde un archivo CSS real, en lugar de definirlo
+todo en una etiqueta <style> en cada plantilla.
+
+00:02:26.026 --> 00:02:30.006 align:middle
+Por desgracia, no es tan sencillo como enlazar
+a un archivo CSS en la etiqueta <head>.
+
+00:02:30.356 --> 00:02:32.676 align:middle
+Eso es otra cosa que no gusta a los
+clientes de correo electrónico.
+
+00:02:33.246 --> 00:02:33.936 align:middle
+¡No hay problema!
+
+00:02:34.316 --> 00:02:38.146 align:middle
+Crea un nuevo archivo
+email.css en assets/styles/.
+
+00:02:39.866 --> 00:02:44.656 align:middle
+Copia el CSS de la plantilla de correo electrónico
+y pégalo aquí: De vuelta en la plantilla,
+
+00:02:44.656 --> 00:02:46.766 align:middle
+celébralo eliminando la
+etiqueta <style>.
+
+00:02:46.766 --> 00:02:50.996 align:middle
+Entonces, ¿cómo podemos hacer que nuestro correo
+electrónico utilice el archivo CSS externo?
+
+00:02:51.286 --> 00:02:52.736 align:middle
+¡Con trucos, por supuesto!
+
+00:02:53.426 --> 00:02:57.616 align:middle
+Abre config/packages/twig.yaml
+y crea una clave paths.
+
+00:02:59.316 --> 00:03:07.246 align:middle
+Dentro, añade %kernel.project_dir%/assets/styles:
+styles: Lo sé, esto parece raro,
+
+00:03:07.496 --> 00:03:09.896 align:middle
+pero crea un espacio de
+nombres Twig personalizado.
+
+00:03:10.306 --> 00:03:15.616 align:middle
+Gracias a esto ahora podemos renderizar plantillas
+dentro de este directorio con el prefijo @styles/.
+
+00:03:16.076 --> 00:03:17.766 align:middle
+Pero, ¡espera un momento!
+
+00:03:17.806 --> 00:03:20.646 align:middle
+email.css ¡el archivo no es una
+plantilla Twig que queramos renderizar!
+
+00:03:21.136 --> 00:03:24.876 align:middle
+No pasa nada, sólo necesitamos
+acceder a ella, no parsearla como Twig.
+
+00:03:25.506 --> 00:03:30.706 align:middle
+De vuelta en booking_confirmation.html.twig,
+para el argumento de inline_css,
+
+00:03:30.946 --> 00:03:38.976 align:middle
+utiliza source('@styles/email.css'): La función
+source() coge el contenido en bruto de un archivo.
+
+00:03:39.586 --> 00:03:43.416 align:middle
+Salta a nuestra aplicación, reserva otro viaje
+y comprueba el correo electrónico en Mailtrap.
+
+00:03:50.426 --> 00:03:51.166 align:middle
+¡Parece el mismo!
+
+00:03:51.496 --> 00:03:52.746 align:middle
+Aquí el texto es rojo.
+
+00:03:53.286 --> 00:03:57.186 align:middle
+Si comprobamos el código fuente HTML,
+las clases ya no están en <head>
+
+00:03:57.366 --> 00:04:00.486 align:middle
+, pero los estilos siguen
+alineados: se están cargando
+
+00:04:00.486 --> 00:04:03.286 align:middle
+desde nuestra hoja de
+estilos externa, ¡es genial!
+
+00:04:04.266 --> 00:04:09.936 align:middle
+A continuación, vamos a mejorar el HTML y el CSS para que este
+correo electrónico sea digno de la bandeja de entrada de Steve
+
+00:04:09.936 --> 00:04:11.736 align:middle
+y del costoso viaje que acaba de reservar.
