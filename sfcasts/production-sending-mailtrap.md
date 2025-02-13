@@ -4,7 +4,7 @@ Alrighty, it's finally time send *real* emails in production!
 
 ## Mailer Transports
 
-Mailer comes with various ways to send emails, called "transports". We've been
+Mailer comes with various ways to send emails, called "transports".
 This `smtp` one is what we're using for our Mailtrap testing. We *could* set up
 our own SMTP server to send emails... but... that's complex, and you need to
 do a lot of things to make sure your emails don't get marked as spam. Boo.
@@ -27,7 +27,7 @@ composer require symfony/mailtrap-mailer
 ```
 
 After this is installed, check your IDE. In `.env`, the recipe
-added some `MAILER_DSN` stubs. We can get the real DSN values from Mailtrap
+added some `MAILER_DSN` stubs. We can get the real DSN values from Mailtrap,
 but first, we need to do some setup.
 
 ## Sending Domain
