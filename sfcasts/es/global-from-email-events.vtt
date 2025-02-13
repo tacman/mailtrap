@@ -1,0 +1,232 @@
+WEBVTT
+
+00:00:01.056 --> 00:00:06.246 align:middle
+Apuesto a que la mayoría, si no todos, los correos electrónicos que envíe
+tu aplicación procederán de la misma dirección de correo electrónico,
+
+00:00:06.596 --> 00:00:10.166 align:middle
+algo ingenioso como
+hal9000@universal-travel.com
+
+00:00:10.576 --> 00:00:14.666 align:middle
+o el probado pero más soporífero
+info@universal-travel.com.
+
+00:00:15.326 --> 00:00:17.926 align:middle
+Como todos los correos tendrán
+la misma dirección de origen,
+
+00:00:18.056 --> 00:00:20.046 align:middle
+no tiene sentido establecerla
+en todos los correos.
+
+00:00:20.386 --> 00:00:22.036 align:middle
+En lugar de eso, fijémosla globalmente.
+
+00:00:22.676 --> 00:00:25.466 align:middle
+Curiosamente, no hay ninguna pequeña
+opción de configuración para esto.
+
+00:00:25.716 --> 00:00:29.166 align:middle
+Pero eso es genial para nosotros: ¡nos da
+la oportunidad de aprender sobre eventos!
+
+00:00:29.456 --> 00:00:31.366 align:middle
+Muy potente, muy friki.
+
+00:00:31.916 --> 00:00:35.406 align:middle
+Antes de enviar un correo electrónico,
+Mailer envía un mensaje MessageEvent.
+
+00:00:35.816 --> 00:00:38.286 align:middle
+Para escucharlo, busca tu terminal y ejecuta:
+
+00:00:38.286 --> 00:00:43.936 align:middle
+symfony console make:listener
+Llámalo GlobalFromEmailListener.
+
+00:00:44.686 --> 00:00:46.866 align:middle
+El nos da una lista de
+eventos que podemos escuchar.
+
+00:00:47.296 --> 00:00:49.386 align:middle
+Queremos el primero: MessageEvent.
+
+00:00:49.386 --> 00:00:53.006 align:middle
+Empieza a escribir Symfony y se
+autocompletará para nosotros.
+
+00:00:53.386 --> 00:00:53.936 align:middle
+Pulsa intro.
+
+00:00:54.586 --> 00:00:55.776 align:middle
+¡Escucha creada!
+
+00:00:56.236 --> 00:01:00.276 align:middle
+Para ser más guays, vamos a poner nuestra
+dirección global from como parámetro.
+
+00:01:00.806 --> 00:01:06.536 align:middle
+En config/services.yaml, debajo de parameters,
+añade una nueva: global_from_email.
+
+00:01:07.156 --> 00:01:13.276 align:middle
+Esto será una cadena, pero fíjate en esto: ponlo en
+Universal Travel , luego entre paréntesis angulares,
+
+00:01:13.276 --> 00:01:19.376 align:middle
+pon el correo electrónico: <info@universal-travel.com>:
+Cuando Symfony Mailer vea una cadena con este aspecto
+
+00:01:19.376 --> 00:01:23.546 align:middle
+como dirección de correo electrónico,
+creará el objeto Address adecuado
+
+00:01:23.596 --> 00:01:25.476 align:middle
+con un nombre y un correo
+electrónico establecidos.
+
+00:01:25.726 --> 00:01:33.486 align:middle
+¡Genial! Abre la nueva clase
+src/EventListener/GlobalFromEmailListener.php.
+
+00:01:33.486 --> 00:01:43.316 align:middle
+Añade un constructor con un argumento private
+string $fromEmail y un atributo #[Autowire]
+
+00:01:43.316 --> 00:01:48.696 align:middle
+con el nombre de nuestro parámetro:
+%global_from_email%: Aquí abajo,
+
+00:01:48.876 --> 00:01:53.076 align:middle
+el atributo #[AsEventListener] es lo que
+marca este método como un oyente de eventos.
+
+00:01:53.616 --> 00:01:55.666 align:middle
+En realidad, podemos eliminar
+este argumento event -
+
+00:01:55.856 --> 00:02:00.736 align:middle
+se deducirá de la sugerencia de tipo del
+argumento del método: MessageEvent: Dentro,
+
+00:02:00.736 --> 00:02:05.636 align:middle
+primero coge el mensaje del evento:
+$message = $event->getMessage():
+
+00:02:06.416 --> 00:02:09.196 align:middle
+Entra en el método getMessage()
+para ver qué devuelve.
+
+00:02:09.756 --> 00:02:11.086 align:middle
+RawMessage...
+
+00:02:11.456 --> 00:02:13.786 align:middle
+salta a esto y mira qué clases lo extienden.
+
+00:02:15.416 --> 00:02:16.396 align:middle
+TemplatedEmail¡!
+
+00:02:16.616 --> 00:02:24.266 align:middle
+¡Perfecto! De vuelta a nuestro oyente, escribe
+if (!$message instanceof TemplatedEmail),
+
+00:02:24.716 --> 00:02:28.486 align:middle
+y dentro, return;: Es probable
+que esto no ocurra nunca,
+
+00:02:28.586 --> 00:02:30.296 align:middle
+pero es una buena práctica
+volver a comprobarlo.
+
+00:02:30.676 --> 00:02:34.806 align:middle
+Además, ayuda a nuestro IDE a saber
+que $message es ahora un TemplatedEmail.
+
+00:02:35.426 --> 00:02:39.046 align:middle
+Es posible que un correo electrónico
+aún establezca su propia dirección from.
+
+00:02:39.416 --> 00:02:41.306 align:middle
+En este caso, no queremos anularla.
+
+00:02:41.306 --> 00:02:47.956 align:middle
+Por tanto, añade una cláusula de protección
+if ($message->getFrom()), return;: Ahora,
+
+00:02:47.956 --> 00:02:54.706 align:middle
+podemos establecer la dirección global from:
+$message->from($this->fromEmail): ¡Perfecto!
+
+00:02:55.476 --> 00:02:59.136 align:middle
+De vuelta en TripController::show(), elimina
+el ->from() para el correo electrónico.
+
+00:02:59.926 --> 00:03:00.996 align:middle
+¡Es hora de probarlo!
+
+00:03:01.256 --> 00:03:04.346 align:middle
+En nuestra aplicación, reserva un viaje y
+busca el correo electrónico en Mailtrap.
+
+00:03:09.766 --> 00:03:10.596 align:middle
+Redoble de tambores...
+
+00:03:11.286 --> 00:03:12.666 align:middle
+¡el from está configurado correctamente!
+
+00:03:12.856 --> 00:03:14.016 align:middle
+¡Nuestro oyente funciona!
+
+00:03:14.276 --> 00:03:15.956 align:middle
+Nunca dudé de nosotros.
+
+00:03:15.956 --> 00:03:19.686 align:middle
+Un detalle más para que esto sea completamente
+hermético (como la mayoría de nuestros barcos).
+
+00:03:20.226 --> 00:03:24.726 align:middle
+Imagina un formulario de contacto en el que el usuario
+rellena su nombre, correo electrónico y un mensaje.
+
+00:03:25.076 --> 00:03:28.096 align:middle
+Esto lanza un correo electrónico con
+estos datos a tu equipo de soporte.
+
+00:03:28.646 --> 00:03:33.006 align:middle
+En sus clientes de correo electrónico, estaría
+bien que, cuando pulsen responder, vaya al correo
+
+00:03:33.006 --> 00:03:35.236 align:middle
+del formulario, no a tu "global de".
+
+00:03:35.926 --> 00:03:39.206 align:middle
+Podrías pensar que deberías establecer la
+dirección from en el correo electrónico del usuario.
+
+00:03:39.516 --> 00:03:44.186 align:middle
+Pero eso no funcionará, ya que no estamos autorizados
+a enviar correos electrónicos en nombre de ese usuario.
+
+00:03:44.696 --> 00:03:46.246 align:middle
+Pronto hablaremos más sobre la
+seguridad del correo electrónico.
+
+00:03:46.246 --> 00:03:51.766 align:middle
+Afortunadamente, existe una cabecera de correo electrónico
+especial llamada Reply-To precisamente para este escenario.
+
+00:03:52.186 --> 00:03:57.566 align:middle
+Cuando construyas tu correo electrónico, configúralo con
+->replyTo() y pasa la dirección de correo electrónico del usuario.
+
+00:03:57.566 --> 00:04:01.506 align:middle
+¡Abróchate el cinturón porque los tanques de
+refuerzo están llenos y listos para el lanzamiento!
+
+00:04:01.836 --> 00:04:04.266 align:middle
+¡Es hora de enviar correos
+electrónicos reales en producción!
+
+00:04:04.616 --> 00:04:05.256 align:middle
+Eso a continuación.
