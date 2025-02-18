@@ -387,8 +387,8 @@
     - This is a string that can be anything you want, let's use `booking`
     - While we're here, we can also add some metadata to help with tracking
     - Again, this can be anything, let's add the booking and customer uid
-    - `$email->getHeaders()->add(new MetadataHeader('booking_id', $booking->getUid()));`
-    - `$email->getHeaders()->add(new MetadataHeader('customer_id', $customer->getUid()));`
+    - `$email->getHeaders()->add(new MetadataHeader('booking_uid', $booking->getUid()));`
+    - `$email->getHeaders()->add(new MetadataHeader('customer_uid', $customer->getUid()));`
 - In our app, book a trip and check our email and open
 - In Mailtrap, find it in our "Email Logs"
 - Check it out, we now have a Category: "booking"
@@ -450,7 +450,9 @@
   - In development, we need this set to our local server: `https://127.0.0.1:8000/`
   - But... there's no guarantee this will always be the same
   - The Symfony CLI can use a different port
-  - So, add `when@dev.framework.router.default_url`: `%env(SYMFONY_PROJECT_DEFAULT_ROUTE_URL)%`
+  - Under `when@dev`
+    - Add a parameter: `env(SYMFONY_PROJECT_DEFAULT_ROUTE_URL): 'http://localhost`
+    - Add `framework.router.default_url`: `%env(SYMFONY_PROJECT_DEFAULT_ROUTE_URL)%`
   - This environment variable is only available when the server is running
 - Book a trip:
   - In your terminal, run the worker `symfony console messenger:consume async`
@@ -466,6 +468,8 @@
   - Let's add our messenger worker!
   - Under workers, add `messenger:`
     - Then: `cmd: ['symfony', 'console', 'messenger:consume', 'async']`
+    - And: `watch: ['config', 'src', 'templates', 'vendor']`
+    - The `watch` option will restart the worker if files in these directories change
   - We need to restart the webserver to pick up this change
   - At your terminal:
     - Run `symfony server:stop`
