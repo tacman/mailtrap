@@ -12,15 +12,15 @@ Symfony Mailer llama a esto una "etiqueta" que puedes añadir a los correos elec
 
 En `TripController::show()`, tras la creación del correo electrónico, escribe:`$email->getHeaders()->add(new TagHeader());` - utiliza `booking` como nombre.
 
-Mailer también tiene una cabecera especial de metadatos que puedes añadir a los correos electrónicos. Se trata de un almacén clave-valor de forma libre para añadir adicionales. El puente Mailtrap los convierte en lo que ellos llaman "variables personalizadas".
+Mailer también tiene una cabecera especial de metadatos que puedes añadir a los correos electrónicos. Se trata de un almacén clave-valor de forma libre para añadir datos adicionales. El puente Mailtrap los convierte en lo que ellos llaman "variables personalizadas".
 
 Vamos a añadir un par:
 
-`$email->getHeaders()->add(new MetadataHeader('booking_uid', $booking->getUuid()));`
+`$email->getHeaders()->add(new MetadataHeader('booking_uid', $booking->getUid()));`
 
 Y:
 
-`$email->getHeaders()->add(new MetadataHeader('customer_uid', $customer->getUuid()));`
+`$email->getHeaders()->add(new MetadataHeader('customer_uid', $customer->getUid()));`
 
 A cada correo electrónico de reserva se adjunta ahora una referencia al cliente y a la reserva. ¡Fantástico!
 
