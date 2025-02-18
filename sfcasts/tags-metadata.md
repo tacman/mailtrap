@@ -1,16 +1,16 @@
 # Email Tracking with Tags and Metadata
 
-We're now successfully sending emails to a *real* email address. Let's just double-check
+We're now sending emails for *real*. Let's just double-check
 our links are working... All good!
 
-Mailtrap gives us the ability to track emails and email *events*. Jump over to Mailtrap
-and click "Email API/SMTP". We're on a dashboard that shows us an overview of all the
-emails we've sent. Click "Email Logs" to see the full list. Here's our email! Click
-it to see the details.
+Mailtrap can do more than just deliver & debug emails: we can also track emails and
+email *events*. Jump over to Mailtrap and click "Email API/SMTP". This dashboard
+shows us an overview of each email we've sent. Click "Email Logs" to see the full
+list. Here's our email! Click it to see the details.
 
-Hey! This looks a bit familiar... it's similar to the Mailtrap testing interface. We
+Hey! This look familiar... it's similar to the Mailtrap testing interface. We
 can see general details, a spam analysis and more. But this is really cool: click
-"Event History". This shows all the events that happened during the *flow* of this
+"Event History". This shows all the *events* that happened during the *flow* of this
 email. We can see when it was sent, delivered, even opened by the recipient! Each
 event has extra details, like the IP address that opened the email. Super useful
 for diagnosing email issues. Mailtrap also has a link tracking feature that, if
@@ -49,7 +49,7 @@ further, here's our metadata or "custom variables".
 
 To filter on the "category", go to the email logs. In this search box, choose
 "Categories". This filter lists all the categories we've used. Select "booking" and
-click "Search". This filters all emails with the "booking" category. Super useful!
+"Search". This is already more organized than the Jeffries tubes down in engineering!
 
 So that's production email sending with Mailtrap! To make things easier for the next chapters,
 let's switch back to using Mailtrap testing. In `.env.local`, uncomment the Mailtrap
