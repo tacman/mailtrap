@@ -10,3 +10,5 @@ chapters:
   - global-from-email-events
   - production-sending-mailtrap
   - tags-metadata
+  - async-email-sending
+  - console-urls
