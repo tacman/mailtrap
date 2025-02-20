@@ -1,10 +1,10 @@
-# URLs en la Consola
+# Generar URLs en el entorno CLI
 
-Cuando cambiamos al envío de correo electrónico asíncrono, rompimos nuestros enlaces de correo electrónico. Está utilizando`localhost` como nuestro dominio, pero esto no es correcto. 
+Cuando cambiamos al envío asíncrono de correo electrónico, ¡rompimos nuestros enlaces de correo electrónico! Está utilizando`localhost` como nuestro dominio, ¡pero eso no es correcto!
 
-De vuelta a nuestra aplicación en funcionamiento, podemos obtener una pista de lo que está pasando mirando el perfil de la petición que envió el correo electrónico. Recuerda que ahora nuestro correo electrónico está marcado como "en cola". Ve a la pestaña "Mensajes" y busca el mensaje: `SendEmailMessage`. Dentro está nuestro objeto `TemplatedEmail`. Ábrelo. Observa que `htmlTemplate` es nuestra plantilla Twig, pero `html` es `null`. El correo electrónico no se está procesando antes de ser enviado a la cola. Esto significa que el correo electrónico se está renderizando cuando es procesado por el comando `messenger:consume`. Este es el problema.
+De vuelta a nuestra aplicación, podemos hacernos una idea de lo que está pasando mirando el perfil de la petición que envió el correo electrónico. Recuerda que ahora nuestro correo electrónico está marcado como "en cola". Ve a la pestaña "Mensajes" y busca el mensaje: `SendEmailMessage`. Dentro está nuestro objeto `TemplatedEmail`. Ábrelo. Observa que `htmlTemplate` es nuestra plantilla Twig, pero `html` es `null`. Este pequeño detalle es importante: la plantilla de correo electrónico no se muestra cuando nuestro controlador envía el mensaje a la cola. No! la plantilla no se renderiza hasta que ejecutamos el comando`messenger:consume`.
 
-Este es el problema. `messenger:consume` es un comando CLI, y al generar URLs absolutas en estos, Symfony no sabe cuál debe ser el dominio (o si debe ser http o https). Entonces, ¿por qué lo hace cuando está en un controlador? En un controlador, Symfony puede acceder a la petición actual para obtener esta información. Un comando CLI no tiene ninguna petición disponible, así que por defecto es `http://localhost`.
+Este es el problema. `messenger:consume` es un comando CLI, y al generar URLs absolutas en estos, Symfony no sabe cuál debe ser el dominio (o si debe ser http o https). Entonces, ¿por qué lo hace cuando está en un controlador? En un controlador, Symfony puede acceder a la petición actual para obtener esta información. Un comando CLI no tiene ninguna petición disponible, por lo que por defecto es `http://localhost`.
 
 ¡Cambiar este valor por defecto es la solución!
 
