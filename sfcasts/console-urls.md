@@ -1,15 +1,15 @@
-# URLs in the Console
+# Generating URLs in the CLI Environment 
 
-When we switched to asynchronous email sending, we broke our email links. It's using
-`localhost` as our domain but this isn't right. 
+When we switched to asynchronous email sending, we broke our email links! It's using
+`localhost` as our domain, but that's not right!
 
-Back in our working app, we can get a hint as to what's going on by looking at the
+Back in our app, we can get a hint as to what's going on by looking at the
 profiler for the request that sent the email. Remember, our email is now marked as
 "queued". Go to the "Messages" tab and find the message: `SendEmailMessage`. Inside
 is our `TemplatedEmail` object. Open this up. Notice the `htmlTemplate` is our Twig
-template but `html` is `null`. The email isn't being rendered prior to being
-sent to the queue. This means the email is being rendered when it's processed
-by the `messenger:consume` command.
+template but `html` is `null`. The little detail is important: the email template is *not*
+when our controller sends the message to the queue. Nope! the template isn't rendered until we run
+`messenger:consume` command.
 
 This is the problem. `messenger:consume` is a CLI command, and when generating absolute
 URLs in these, Symfony doesn't know what the domain should be (or if it should
