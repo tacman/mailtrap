@@ -9,8 +9,8 @@ that's going to strap you to a rocket.
 Instead, let's send our emails *asynchronously*. This means that, during the
 request, the email will be sent to a queue to be processed later. Symfony Messenger
 is perfect for this! And we get the following benefits: faster responses for the user,
-automatic retries if the email fails, and the ability to flag emails that fail too
-many times for manual review.
+automatic retries if the email fails, and the ability to flag emails for manual review
+if they fail too many times.
 
 Let's install messenger! At your terminal, run:
 
@@ -42,7 +42,7 @@ between each attempt. If a message still fails after 3 attempts, it's sent to th
 
 The `routing` section is where we tell Symfony which messages should be sent to which
 transport. Mailer uses a specific message class for sending emails. So send
-`Symfony\Component\Mailer\Messenger\SendEmailMessage` messages to the `async` transport.
+`Symfony\Component\Mailer\Messenger\SendEmailMessage` to the `async` transport.
 
 That's it! Symfony Messenger and Mailer dock together beautifully so there's nothing
 we need to change in our code.
@@ -73,5 +73,5 @@ handled successfully. Meaning: this should have *actually* sent the email.
 Go check Mailtrap... it's already here! Looks correct... but... click one of our links.
 
 What the heck? Check out the URL: that's the wrong domain! Boo.
-Let's find out which part of our email rocket ship is caused this
+Let's find out which part of our email rocket ship has caused this
 and fix it next!
