@@ -48,6 +48,8 @@ on these if you want to dig deeper on how exactly these work.
 But basically, we're telling the world that Mailtrap is allowed to send emails on our
 behalf.
 
+## Production `MAILER_DSN`
+
 Once you have the green checkmark, click "Integrations" then "Integrate" under
 the "Transaction Stream" section.
 
