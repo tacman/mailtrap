@@ -1,0 +1,223 @@
+WEBVTT
+
+00:00:01.076 --> 00:00:04.836 align:middle
+Muy bien, ¡por fin ha llegado el momento de
+enviar correos electrónicos reales en producción!
+
+00:00:05.576 --> 00:00:09.396 align:middle
+Mailer viene con varias formas de enviar
+correos electrónicos, llamadas "transportes".
+
+00:00:09.756 --> 00:00:13.266 align:middle
+Este de smtp es el que estamos utilizando
+para nuestras pruebas con Mailtrap.
+
+00:00:13.766 --> 00:00:16.676 align:middle
+Podríamos configurar nuestro propio servidor
+SMTP para enviar correos electrónicos...
+
+00:00:16.676 --> 00:00:19.666 align:middle
+pero... eso es complejo, y tienes
+que hacer un montón de cosas
+
+00:00:19.666 --> 00:00:21.966 align:middle
+para asegurarte de que tus
+correos no se marcan como spam.
+
+00:00:22.476 --> 00:00:27.426 align:middle
+Boo. Te recomiendo encarecidamente que utilices
+un servicio de correo electrónico de terceros.
+
+00:00:27.866 --> 00:00:31.766 align:middle
+Éstos manejan todas estas complejidades
+por ti y Mailer proporciona puentes
+
+00:00:31.766 --> 00:00:33.926 align:middle
+a muchos de ellos para que la
+configuración sea pan comido.
+
+00:00:34.556 --> 00:00:39.526 align:middle
+Usamos Mailtrap para las pruebas, pero Mailtrap
+también tiene capacidad de envío a producción
+
+00:00:39.856 --> 00:00:41.096 align:middle
+¡Fantástico!
+
+00:00:41.486 --> 00:00:43.096 align:middle
+Incluso tiene un puente oficial
+
+00:00:43.656 --> 00:00:48.946 align:middle
+En tu terminal, instálalo con:
+composer require symfony/mailtrap-mailer
+
+00:00:51.136 --> 00:00:53.536 align:middle
+Una vez instalado, comprueba tu IDE.
+
+00:00:54.186 --> 00:00:58.066 align:middle
+En .env, la receta añade
+algunos stubs de MAILER_DSN.
+
+00:00:58.436 --> 00:01:02.836 align:middle
+Podemos obtener los valores DSN reales de Mailtrap,
+pero primero tenemos que hacer algunos ajustes.
+
+00:01:03.346 --> 00:01:06.366 align:middle
+En Mailtrap, tenemos que
+configurar un "dominio de envío".
+
+00:01:06.796 --> 00:01:12.126 align:middle
+Esto configura un dominio de tu propiedad para permitir que
+Mailtrap envíe correos electrónicos correctamente en su nombre.
+
+00:01:12.556 --> 00:01:17.266 align:middle
+Nuestros abogados aún están negociando la compra
+de universal-travel.com, así que, por ahora,
+
+00:01:17.396 --> 00:01:20.836 align:middle
+estoy utilizando un dominio
+personal que poseo: zenstruck.com.
+
+00:01:21.306 --> 00:01:22.536 align:middle
+Añade tu dominio aquí.
+
+00:01:23.036 --> 00:01:26.256 align:middle
+Una vez añadido, estarás en esta
+página de "Verificación del dominio".
+
+00:01:26.616 --> 00:01:29.366 align:middle
+Esto es súper importante,
+pero Mailtrap lo hace fácil.
+
+00:01:29.716 --> 00:01:32.866 align:middle
+Sólo tienes que seguir las instrucciones hasta
+que aparezca esta marca de verificación verde.
+
+00:01:33.456 --> 00:01:37.496 align:middle
+Básicamente, tendrás que añadir un montón
+de registros DNS específicos a tu dominio.
+
+00:01:38.036 --> 00:01:43.966 align:middle
+DKIM, que verifica los correos electrónicos enviados
+desde tu dominio, y SPF, que autoriza a Mailtrap
+
+00:01:43.966 --> 00:01:47.606 align:middle
+a enviar correos electrónicos en nombre
+de tu dominio, son los más importantes.
+
+00:01:48.266 --> 00:01:51.066 align:middle
+Mailtrap proporciona una gran
+documentación sobre ellos si quieres
+
+00:01:51.066 --> 00:01:53.236 align:middle
+profundizar en cómo funcionan exactamente.
+
+00:01:53.616 --> 00:01:55.176 align:middle
+Pero básicamente, estamos diciendo al mundo
+
+00:01:55.176 --> 00:01:58.046 align:middle
+que Mailtrap está autorizado a enviar
+correos electrónicos en nuestro nombre.
+
+00:01:58.766 --> 00:02:02.906 align:middle
+Una vez que tengas la marca de verificación verde,
+haz clic en "Integraciones" y luego en "Integrar"
+
+00:02:03.006 --> 00:02:05.206 align:middle
+en la sección "Flujo de transacciones".
+
+00:02:05.736 --> 00:02:08.896 align:middle
+Ahora podemos decidir
+entre utilizar SMTP o API.
+
+00:02:09.666 --> 00:02:11.896 align:middle
+Yo utilizaré la API, pero
+cualquiera de las dos funciona.
+
+00:02:12.346 --> 00:02:18.306 align:middle
+Y ¡hey! Esto me resulta familiar: como con las
+pruebas de Mailtrap, elige PHP y luego Symfony.
+
+00:02:18.966 --> 00:02:20.686 align:middle
+¡Este es el MAILER_DSN que necesitamos!
+
+00:02:21.146 --> 00:02:22.906 align:middle
+Cópialo y salta a tu editor.
+
+00:02:23.546 --> 00:02:28.876 align:middle
+Se trata de una variable de entorno sensible, así que
+añádela a .env.local para evitar confirmarla en git.
+
+00:02:29.636 --> 00:02:33.096 align:middle
+Comenta el DSN de prueba de
+Mailtrap y pégalo a continuación.
+
+00:02:33.656 --> 00:02:36.296 align:middle
+Eliminaré este comentario porque
+nos gusta mantener la vida ordenada.
+
+00:02:37.006 --> 00:02:37.766 align:middle
+¡Casi listo!
+
+00:02:38.206 --> 00:02:42.806 align:middle
+Recuerda que sólo podemos enviar correos en
+producción desde el dominio que hemos configurado.
+
+00:02:43.196 --> 00:02:45.266 align:middle
+En mi caso, zenstruck.com.
+
+00:02:45.836 --> 00:02:51.416 align:middle
+Abre config/services.yaml y actualiza
+el global_from_email a tu dominio.
+
+00:02:54.186 --> 00:02:55.336 align:middle
+¡Veamos si funciona!
+
+00:02:55.746 --> 00:02:57.256 align:middle
+En tu aplicación, reserva un viaje.
+
+00:02:57.786 --> 00:03:00.126 align:middle
+Esta vez utiliza una dirección
+de correo electrónico real.
+
+00:03:00.606 --> 00:03:05.926 align:middle
+Pondré el nombre Kevin y utilizaré mi correo
+electrónico personal: kevin@symfonycasts.com.
+
+00:03:06.486 --> 00:03:11.336 align:middle
+Por mucho que te quiera a ti y a los viajes espaciales, pon
+aquí tu propio correo electrónico para evitar enviarme spam.
+
+00:03:12.036 --> 00:03:13.356 align:middle
+¡Elige una fecha y reserva!
+
+00:03:15.846 --> 00:03:18.766 align:middle
+Estamos en la página de confirmación
+de la reserva, ¡eso es buena señal!
+
+00:03:19.296 --> 00:03:21.036 align:middle
+Ahora, comprueba tu correo
+electrónico personal.
+
+00:03:21.506 --> 00:03:22.836 align:middle
+Yo iré al mío y esperaré...
+
+00:03:23.426 --> 00:03:24.116 align:middle
+refrescar...
+
+00:03:24.786 --> 00:03:25.466 align:middle
+¡aquí está!
+
+00:03:25.966 --> 00:03:28.736 align:middle
+Si hago clic, ¡esto es
+exactamente lo que esperamos!
+
+00:03:29.196 --> 00:03:31.766 align:middle
+La imagen, el archivo
+adjunto, ¡todo está aquí!
+
+00:03:32.456 --> 00:03:36.626 align:middle
+A continuación, vamos a ver cómo podemos rastrear los correos
+electrónicos enviados con Mailtrap, ¡además de añadir etiquetas
+
+00:03:36.626 --> 00:03:39.136 align:middle
+y metadatos para mejorar ese rastreo!
