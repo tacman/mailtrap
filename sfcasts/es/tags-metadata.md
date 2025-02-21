@@ -14,7 +14,7 @@ De vuelta a la pestaña "Información del correo electrónico", desplázate un p
 
 Symfony Mailer llama a esto una "etiqueta" que puedes añadir a los correos electrónicos. El puente Mailtrap toma esta etiqueta y la convierte en su "categoría". ¡Vamos a añadir una!
 
-En `TripController::show()`, después de la creación del correo electrónico, escribe:`$email->getHeaders()->add(new TagHeader());` - utiliza `booking` como nombre:
+En `TripController::show()`, tras la creación del correo electrónico, escribe:`$email->getHeaders()->add(new TagHeader());` - utiliza `booking` como nombre:
 
 [[[ code('76cae257e1') ]]]
 
