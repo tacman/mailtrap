@@ -3,6 +3,8 @@
 We're now sending emails for *realsies*. Let's just double-check
 our links are working... All good!
 
+## Mailtrap Email Logs
+
 Mailtrap can do more than just deliver & debug emails: we can also track emails and
 email *events*. Jump over to Mailtrap and click "Email API/SMTP". This dashboard
 shows us an overview of each email we've sent. Click "Email Logs" to see the full
@@ -21,11 +23,17 @@ This isn't actually a problem, but a "category" is a string that helps organize
 the different emails your app sends. This makes searching easier and can give us interesting
 stats like "how many user signup emails did we send last month?".
 
+## Email Tag (Mailtrap Category)
+
 Symfony Mailer calls this a "tag" that you can add to emails. The Mailtrap bridge
 takes this tag and converts it to their "category". Let's add one!
 
 In `TripController::show()`, after the email creation, write:
-`$email->getHeaders()->add(new TagHeader());` - use `booking` as the name.
+`$email->getHeaders()->add(new TagHeader());` - use `booking` as the name:
+
+[[[ code('76cae257e1') ]]]
+
+## Email Metadata (Mailtrap Custom Variables)
 
 Mailer also has a special *metadata* header that you can add to emails. This is a
 free-form key-value store for adding additional data. The Mailtrap bridge
@@ -33,11 +41,11 @@ converts these to what they call "custom variables".
 
 Let's add a couple:
 
-`$email->getHeaders()->add(new MetadataHeader('booking_uid', $booking->getUid()));`
+[[[ code('abf948255f') ]]]
 
 And:
 
-`$email->getHeaders()->add(new MetadataHeader('customer_uid', $customer->getUid()));`
+[[[ code('f9b6e16883') ]]]
 
 Attached to every *booking* email is now a customer and booking reference. Awesome!
 
@@ -46,6 +54,8 @@ we're still using *production sending* so use your personal email). Check our in
 here it is. Back in Mailtrap, go back to the email logs... and refresh... there it is!
 Click it. Now, on this "Email Info" tab, we see our "booking" category! Down a bit
 further, here's our metadata or "custom variables".
+
+## Filtering by Category
 
 To filter on the "category", go to the email logs. In this search box, choose
 "Categories". This filter lists all the categories we've used. Select "booking" and
