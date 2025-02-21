@@ -20,7 +20,7 @@ En tu terminal, instálalo con:
 composer require symfony/mailtrap-mailer
 ```
 
-Una vez instalado, comprueba tu IDE. En `.env`, la receta añade algunos stubs de `MAILER_DSN`. Podemos obtener los valores DSN reales de Mailtrap, pero antes tenemos que hacer algunos ajustes.
+Una vez instalado, comprueba tu IDE. En `.env`, la receta añade algunos stubs de `MAILER_DSN`. Podemos obtener los valores DSN reales de Mailtrap, pero primero tenemos que hacer algunos ajustes.
 
 ## Dominio de envío
 
