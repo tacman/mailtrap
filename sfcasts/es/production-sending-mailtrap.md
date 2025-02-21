@@ -20,7 +20,7 @@ En tu terminal, instálalo con:
 composer require symfony/mailtrap-mailer
 ```
 
-Una vez instalado, comprueba tu IDE. En `.env`, la receta añade algunos stubs de `MAILER_DSN`. Podemos obtener los valores DSN reales de Mailtrap, pero primero tenemos que hacer algunos ajustes.
+Una vez instalado, comprueba tu IDE. En `.env`, la receta añade algunos stubs de `MAILER_DSN`. Podemos obtener los valores DSN reales de Mailtrap, pero antes tenemos que hacer algunos ajustes.
 
 ## Dominio de envío
 
@@ -29,6 +29,8 @@ En Mailtrap, tenemos que configurar un "dominio de envío". Esto configura un do
 Nuestros abogados aún están negociando la compra de `universal-travel.com`, así que, por ahora, estoy utilizando un dominio personal que poseo: `zenstruck.com`. Añade tu dominio aquí.
 
 Una vez añadido, estarás en esta página de "Verificación del dominio". Esto es súper importante, pero Mailtrap lo hace fácil. Sólo tienes que seguir las instrucciones hasta que aparezca esta marca de verificación verde. Básicamente, tendrás que añadir un montón de registros DNS específicos a tu dominio. DKIM, que verifica los correos electrónicos enviados desde tu dominio, y SPF, que autoriza a Mailtrap a enviar correos electrónicos en nombre de tu dominio, son los más importantes. Mailtrap proporciona una gran documentación sobre ellos si quieres profundizar en cómo funcionan exactamente. Pero básicamente, le estamos diciendo al mundo que Mailtrap está autorizado a enviar correos electrónicos en nuestro nombre.
+
+## Producción `MAILER_DSN`
 
 Una vez que tengas la marca de verificación verde, haz clic en "Integraciones" y luego en "Integrar" en la sección "Flujo de transacciones".
 
