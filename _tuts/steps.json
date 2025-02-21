@@ -149,7 +149,37 @@
             "id": "events-remove-from",
             "name": "Events: remove ->from()",
             "description": null
+        },
+        {
+            "id": "prod-add-mailtrap-bridge",
+            "name": "Prod: add mailtrap bridge",
+            "description": null
+        },
+        {
+            "id": "tracking-add-tag",
+            "name": "Tracking: add tag",
+            "description": null
+        },
+        {
+            "id": "tracking-add-metadata",
+            "name": "Tracking: add metadata",
+            "description": null
+        },
+        {
+            "id": "async-add-messenger-and-doctrine-bridge",
+            "name": "Async: add messenger & doctrine bridge",
+            "description": null
+        },
+        {
+            "id": "async-cli-urls",
+            "name": "Async: cli urls",
+            "description": null
+        },
+        {
+            "id": "async-background-messenger-consume",
+            "name": "Async: background messenger:consume",
+            "description": null
         }
     ],
-    "sha": "ffad19cf9fb220d80df5152cc7e3c106bb674d9e"
+    "sha": "62045f672699af07b5ee5e479d4689861f0b06b5"
 }

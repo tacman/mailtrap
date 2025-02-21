@@ -1,0 +1,21 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index b94eaee..82d36f9 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+ use Symfony\Component\DependencyInjection\Attribute\Autowire;
+ use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\HttpFoundation\Response;
++use Symfony\Component\Mailer\Header\MetadataHeader;
+ use Symfony\Component\Mailer\Header\TagHeader;
+ use Symfony\Component\Mailer\MailerInterface;
+ use Symfony\Component\Mime\Address;
+@@ -65,6 +66,8 @@ final class TripController extends AbstractController
+             ;
+ 
+             $email->getHeaders()->add(new TagHeader('booking'));
++            $email->getHeaders()->add(new MetadataHeader('booking_uid', $booking->getUid()));
++            $email->getHeaders()->add(new MetadataHeader('customer_uid', $customer->getUid()));
+ 
+             $mailer->send($email);
+ 
