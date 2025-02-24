@@ -6,12 +6,12 @@ When we switched to asynchronous email sending, we broke our email links! It's u
 Back in our app, we can get a hint as to what's going on by looking at the
 profiler for the request that sent the email. Remember, our email is now marked as
 "queued". Go to the "Messages" tab and find the message: `SendEmailMessage`. Inside
-is the `TemplatedEmail` object. Open this up. Interesting!m`htmlTemplate` is our Twig
+is the `TemplatedEmail` object. Open this up. Interesting! `htmlTemplate` is our Twig
 template but `html` is `null`! Shouldn't that be set to the rendered HTML from that
 template?
 This little detail is important: the email template is *not* rendered when our
 controller sends the message to the queue. Nope! the template isn't rendered until
-later when we run `messenger:consume`.
+later, when we run `messenger:consume`.
 
 Why does this matter? Well `messenger:consume` is a CLI command, and when generating absolute
 URLs in the CLI, Symfony doesn't know what the domain should be (or if it should
@@ -64,17 +64,15 @@ to our functions with another Symfony CLI trick!
 In your IDE, open this `.symfony.local.yaml` file.
 This is the Symfony CLI server config for our app. See this `workers` key? It lets
 us define processes to run in the background when we start the server.
-allows you to define additional processes to run in the background when you start the server.
 We already have the tailwind command set.
 
 Add another worker. Call it `messenger` - though that could be anything - and set
 `cmd` to `['symfony', 'console', 'messenger:consume', 'async']`. This solves the issue
 of needing to keep this running in a separate terminal window.
-But what about restarting the command when we make changes? No problemo! The
+But what about restarting the command when we make changes? No problemo!
 Add a `watch` key and set it to `config`, `src`, `templates` and `vendor`.
 If any files in these directories change, the worker will restart itself.
 Smart!
-
 
 Back in your terminal, restart the server with `symfony server:stop` and `symfony serve -d`
 `messenger:consume` *should* be running in the background! To prove it, run:
@@ -84,7 +82,7 @@ symfony server:status
 ```
 
 3 workers running! The actual PHP webserver, the existing
-`tailwind:build` worker, and our new `messenger:consume`. I think this
+`tailwind:build` worker, and our new `messenger:consume`.
 So cool!
 
 Next, let's explore how to make assertions about emails in our functional tests!
