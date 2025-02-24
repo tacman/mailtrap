@@ -1,4 +1,4 @@
-# Generating URLs in the CLI Environment 
+# Generating URLs in the CLI Environment
 
 When we switched to asynchronous email sending, we broke our email links! It's using
 `localhost` as our domain, weird and wrong.
