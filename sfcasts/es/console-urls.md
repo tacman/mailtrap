@@ -1,6 +1,6 @@
 # Generar URLs en el entorno CLI
 
-Cuando cambiamos al envío asíncrono de correo electrónico, ¡rompimos nuestros enlaces de correo electrónico! Está utilizando`localhost` como nuestro dominio, raro e incorrecto.
+Cuando cambiamos al envío de correo electrónico asíncrono, ¡rompimos nuestros enlaces de correo electrónico! Está utilizando`localhost` como nuestro dominio, raro e incorrecto.
 
 De vuelta en nuestra aplicación, podemos obtener una pista de lo que está pasando mirando el perfil de la petición que envió el correo electrónico. Recuerda que ahora nuestro correo electrónico está marcado como "en cola". Ve a la pestaña "Mensajes" y busca el mensaje: `SendEmailMessage`. Dentro está el objeto `TemplatedEmail`. Ábrelo. Interesante! `htmlTemplate` es nuestra plantilla Twig pero `html` es `null`! ¿No debería ser el HTML renderizado de esa plantilla? Este pequeño detalle es importante: la plantilla de correo electrónico no se renderiza cuando nuestro controlador envía el mensaje a la cola. No! la plantilla no se renderiza hasta más tarde, cuando ejecutamos `messenger:consume`.
 
