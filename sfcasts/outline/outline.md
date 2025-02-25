@@ -477,3 +477,38 @@
     - Ensure our messenger worker is running with: `symfony server:status`
 - Book a trip and check Mailtrap: email is handled immediately!
 - Next, let's functional test our emails!
+
+## Bonus: Signing Emails
+
+- Verify the email hasn't been tampered with
+- Requires a S/MIME Certificate (similar to an SSL Cert)
+- Obtained from a Trusted CA (Certificate Authority) - provides the following:
+  - `certificate.pem`
+  - `private-key.pem`
+- In Mailtrap, we need to disable open & click tracking
+  - These features modify the email and will cause the signature to fail
+- Associated with an email - mine is associated with `info@zenstruck.com` (our from address)
+- We need to use SMTP to send signed emails (update .env.local)
+- Create a new Listener
+  - `symfony console make:listener`
+  - `EmailSigningListener`
+  - `Symfony\Component\Mailer\Event\MessageEvent`
+- Needs to run after the template is rendered
+- `symfony console debug:event MessageEvent`
+- `MessageListener::onMessage()` is what renders the template
+- So we need to run after this
+- In `EmailSigningListener`
+  - remove `#[AsEventListener]` `event` argument (not needed)
+  - add `priority: -1000`
+- Back in terminal, `symfony console debug:event MessageEvent`
+- Runs after now
+- Back in Email `EmailSigningListener`
+  - add constructor with `private string $certificatePath` and `private string $privateKeyPath`
+  - autowire each with `#[Autowire('%kernel.project_dir%/...')]`
+  - In `onMessageEvent`
+    - `$email = $event->getMessage()`
+    - `if (!$email instanceof TemplatedEmail) { return; }`
+    - `$signer = new SMimeSigner($this->certificatePath, $this->privateKeyPath)`
+    - `$signedEmail = $signer->sign($email)`
+    - `$event->setMessage($signedEmail)`
+- Test - check Gmail
