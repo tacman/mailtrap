@@ -1,0 +1,231 @@
+WEBVTT
+
+00:00:01.096 --> 00:00:04.626 align:middle
+Cuando enviamos este correo electrónico, se
+envía inmediatamente, de forma sincrónica.
+
+00:00:05.166 --> 00:00:07.746 align:middle
+Esto significa que nuestro usuario
+ve un retraso mientras nos conectamos
+
+00:00:07.746 --> 00:00:09.906 align:middle
+al transporte de correo para
+enviar el correo electrónico.
+
+00:00:10.426 --> 00:00:14.806 align:middle
+Y si hay un problema de red por el que el
+correo falla, el usuario verá un error 500:
+
+00:00:15.086 --> 00:00:19.076 align:middle
+que no inspira precisamente confianza en
+una empresa que te va a atar a un cohete.
+
+00:00:19.656 --> 00:00:22.666 align:middle
+En lugar de eso, enviemos nuestros
+correos electrónicos de forma asíncrona.
+
+00:00:23.076 --> 00:00:28.236 align:middle
+Esto significa que, durante la petición, el correo electrónico
+se enviará a una cola para ser procesado más tarde.
+
+00:00:28.706 --> 00:00:30.896 align:middle
+¡Symfony Messenger es perfecto para esto!
+
+00:00:31.136 --> 00:00:34.926 align:middle
+Y obtenemos las siguientes ventajas:
+respuestas más rápidas para el usuario,
+
+00:00:35.266 --> 00:00:39.576 align:middle
+reintentos automáticos si el correo electrónico falla,
+y la posibilidad de marcar los correos electrónicos
+
+00:00:39.576 --> 00:00:42.166 align:middle
+para su revisión manual
+si fallan demasiadas veces.
+
+00:00:42.796 --> 00:00:43.876 align:middle
+¡Vamos a instalar Messenger!
+
+00:00:44.176 --> 00:00:50.386 align:middle
+En tu terminal, ejecuta: composer require messenger
+Al igual que Mailer, Messenger tiene el concepto
+
+00:00:50.386 --> 00:00:53.836 align:middle
+de transporte: aquí es donde se envían
+los mensajes para ponerlos en cola.
+
+00:00:54.376 --> 00:00:57.206 align:middle
+Utilizaremos el transporte Doctrine,
+ya que es el más fácil de configurar.
+
+00:00:57.786 --> 00:01:04.836 align:middle
+composer require
+symfony/doctrine-messenger En nuestro IDE,
+
+00:01:05.216 --> 00:01:12.136 align:middle
+la receta añadía este MESSENGER_TRANSPORT_DSN a
+nuestro .env y por defecto era Doctrine: ¡perfecto!
+
+00:01:12.636 --> 00:01:14.986 align:middle
+Este transporte añade una
+tabla a nuestra base de datos
+
+00:01:14.986 --> 00:01:17.586 align:middle
+, así que técnicamente deberíamos
+crear una migración para ello.
+
+00:01:18.016 --> 00:01:21.466 align:middle
+Pero... vamos a hacer un poco de trampa y
+hacer que cree automáticamente la tabla
+
+00:01:21.466 --> 00:01:22.456 align:middle
+si no existe.
+
+00:01:22.866 --> 00:01:25.566 align:middle
+Para permitirlo, establece auto_setup en 1:
+
+00:01:26.166 --> 00:01:30.466 align:middle
+La receta también ha creado este
+archivo config/packages/messenger.yaml.
+
+00:01:31.126 --> 00:01:32.996 align:middle
+Descomenta la línea failure_transport:
+
+00:01:33.556 --> 00:01:36.336 align:middle
+Esto activa el sistema de revisión
+manual de fallos que he mencionado antes.
+
+00:01:36.956 --> 00:01:42.066 align:middle
+A continuación, descomenta la línea async bajo
+transports: Esto habilita el transporte configurado
+
+00:01:42.066 --> 00:01:45.936 align:middle
+con MESSENGER_TRANSPORT_DSN y lo nombra async.
+
+00:01:46.526 --> 00:01:50.366 align:middle
+No es obvio aquí, pero los mensajes
+fallidos se vuelven a intentar 3 veces,
+
+00:01:50.416 --> 00:01:52.556 align:middle
+con un retraso creciente entre cada intento.
+
+00:01:53.196 --> 00:01:58.496 align:middle
+Si un mensaje sigue fallando después de 3 intentos,
+se envía a failure_transport, llamado failed,
+
+00:01:58.806 --> 00:02:03.056 align:middle
+así que descomenta también este transporte: La
+sección routing es donde le decimos a Symfony
+
+00:02:03.056 --> 00:02:05.476 align:middle
+qué mensajes deben enviarse a qué transporte.
+
+00:02:05.986 --> 00:02:09.186 align:middle
+Mailer utiliza una clase de mensaje
+específica para enviar correos electrónicos.
+
+00:02:09.396 --> 00:02:15.186 align:middle
+Así que envía
+Symfony\Component\Mailer\Messenger\SendEmailMessage
+
+00:02:15.476 --> 00:02:18.106 align:middle
+al transporte async: ¡Ya está! Symfony
+
+00:02:18.326 --> 00:02:21.076 align:middle
+Messenger y Mailer se acoplan
+perfectamente, así que
+
+00:02:21.076 --> 00:02:23.156 align:middle
+no tenemos que cambiar nada
+en nuestro código. ¡ Vamos
+
+00:02:23.156 --> 00:02:24.796 align:middle
+a probarlo!
+
+00:02:25.156 --> 00:02:25.906 align:middle
+De vuelta en nuestra aplicación... reserva
+
+00:02:26.016 --> 00:02:26.636 align:middle
+un viaje.
+
+00:02:27.136 --> 00:02:31.036 align:middle
+Volvemos a utilizar el transporte de pruebas de Mailtrap,
+así que podemos utilizar cualquier correo electrónico. Ahora
+
+00:02:31.736 --> 00:02:34.016 align:middle
+observa cuánto más rápido se procesa. ¡Pum!
+
+00:02:34.436 --> 00:02:39.056 align:middle
+Abre el perfil de la última petición y
+comprueba la sección "Correos electrónicos".
+
+00:02:39.936 --> 00:02:43.036 align:middle
+Parece normal, pero fíjate
+en que el Estado es "En cola".
+
+00:02:43.526 --> 00:02:47.046 align:middle
+Se envió a nuestro transporte Messenger,
+no a nuestro transporte Mailer.
+
+00:02:47.736 --> 00:02:49.466 align:middle
+Tenemos esta nueva sección "Mensajes". Aquí
+
+00:02:49.926 --> 00:02:55.006 align:middle
+podemos ver el SendEmailMessage que
+contiene nuestro objeto TemplatedEmail.
+
+00:02:55.566 --> 00:02:57.286 align:middle
+Salta a Mailtrap y actualiza.. . todavía nada.
+
+00:02:58.426 --> 00:02:59.056 align:middle
+¡
+
+00:02:59.516 --> 00:03:00.166 align:middle
+Por supuesto!
+
+00:03:00.226 --> 00:03:01.526 align:middle
+Tenemos que procesar nuestra cola.
+
+00:03:01.956 --> 00:03:03.596 align:middle
+Vuelve a tu terminal y ejecuta: symfony
+
+00:03:03.756 --> 00:03:13.576 align:middle
+console messenger:consume async -vv Esto procesa
+nuestro transporte async (el -vv sólo añade más
+
+00:03:13.576 --> 00:03:15.536 align:middle
+salida para que podamos ver
+lo que ocurre). ¡Muy bien!
+
+00:03:16.096 --> 00:03:16.816 align:middle
+El
+
+00:03:17.026 --> 00:03:19.266 align:middle
+mensaje se ha recibido y
+gestionado correctamente. Es decir:
+
+00:03:19.666 --> 00:03:22.136 align:middle
+esto debería haber enviado
+realmente el correo electrónico.
+
+00:03:22.676 --> 00:03:23.636 align:middle
+Comprueba Mailtrap
+
+00:03:24.246 --> 00:03:25.036 align:middle
+... ¡ya está aquí! Parece
+
+00:03:26.096 --> 00:03:26.796 align:middle
+correcto... pero...
+
+00:03:26.796 --> 00:03:28.536 align:middle
+haz clic en uno de nuestros enlaces.
+
+00:03:29.396 --> 00:03:29.946 align:middle
+¿Pero qué...? Comprueba
+
+00:03:30.406 --> 00:03:33.036 align:middle
+la URL: ¡es el dominio equivocado! Buf.
+
+00:03:33.446 --> 00:03:38.936 align:middle
+¡Averigüemos qué parte de nuestro cohete de correo
+electrónico ha causado esto y arreglémoslo a continuación!
