@@ -15,20 +15,20 @@ class TripTest extends KernelTestCase
     public function testViewTrips(): void
     {
         TripFactory::createOne([
-            'name' => 'Visit Mars',
-            'slug' => 'mars',
-            'tagLine' => 'The red planet',
+            'name' => 'Visit the ISS',
+            'slug' => 'iss',
+            'tagLine' => 'The International Space Station',
         ]);
 
         $this->browser()
             ->visit('/')
             ->assertSuccessful()
-            ->assertSee('Visit Mars')
-            ->assertSee('The red planet')
-            ->click('Visit Mars')
-            ->assertOn('/trip/mars')
-            ->assertSeeIn('h1', 'Visit Mars')
-            ->assertSee('The red planet')
+            ->assertSee('Visit the ISS')
+            ->assertSee('The International Space Station')
+            ->click('Visit the ISS')
+            ->assertOn('/trip/iss')
+            ->assertSeeIn('h1', 'Visit the ISS')
+            ->assertSee('The International Space Station')
         ;
     }
 }
