@@ -481,7 +481,6 @@
 ## Emails Assertions in Functional Tests
 
 - We already have some functional tests:
-  - `bin/phpunit` to run them
 - Open `BookingTest` - tour:
   - `zenstruck/foundry`
     - `ResetDatabase`: resets the db before each test
@@ -496,6 +495,10 @@
     - "Assert":
       - Check response after booking
       - Assert booking/customer exists in the db
+- `bin/phpunit` to run them
+  - Fail!
+  - add `->throwsExceptions()` to see the actual exception
+  - because of images, change slug to existing image slug: `iss`
 - We need to check that the email was sent
 - Symfony has email testing helpers but I prefer a "wrapper" library
 - `composer require --dev zenstruck/mailer-test`
@@ -507,17 +510,17 @@
 - At the end of the test add:
   - `$this->mailer()->assertSentEmailCount(1)`
   - `bin/phpunit`
-  - `->assertEmailSentTo('bruce@wayne-enterprises.com', 'Booking Confirmation for Visit the ISS')`
+  - `->assertEmailSentTo('bruce@wayne-enterprises.com', 'Booking Confirmation for Visit Mars')`
   - `bin/phpunit`
 - More email detail assertions
   - `->assertEmailSentTo('bruce@wayne-enterprises.com', function(TestEmail $email) {})`
-  - `$email->assertSubject('Booking Confirmation for Visit the ISS')`
+  - `$email->assertSubject('Booking Confirmation for Visit Mars')`
   - `assertHtmlContains()`/`assertTextContains()` but...
-  - `->assertContains('Visit the ISS')` checks that both contain this text
+  - `->assertContains('Visit Mars')` checks that both contain this text
   - Check the link:
   - `->assertContains('/booking/'.BookingFactory::first()->getUid())`
   - Attachment:
-  - `->assertHasFile('terms-of-service.pdf')` - can also check exact file contents
+  - `->assertHasFile('Terms of Service.pdf')` - can also check exact file contents
   - Some additional features:
   - `->assert` see IDE autocompletion
   - `->dd()` dump the email to diagnose
