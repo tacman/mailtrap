@@ -1,0 +1,28 @@
+diff --git a/tests/Functional/BookingTest.php b/tests/Functional/BookingTest.php
+index 5c71f0d..2d5bbdd 100644
+--- a/tests/Functional/BookingTest.php
++++ b/tests/Functional/BookingTest.php
+@@ -10,6 +10,7 @@ use Zenstruck\Browser\Test\HasBrowser;
+ use Zenstruck\Foundry\Test\Factories;
+ use Zenstruck\Foundry\Test\ResetDatabase;
+ use Zenstruck\Mailer\Test\InteractsWithMailer;
++use Zenstruck\Mailer\Test\TestEmail;
+ 
+ class BookingTest extends KernelTestCase
+ {
+@@ -54,7 +55,14 @@ class BookingTest extends KernelTestCase
+ 
+         $this->mailer()
+             ->assertSentEmailCount(1)
+-            ->assertEmailSentTo('bruce@wayne-enterprises.com', 'Booking Confirmation for Visit Mars')
++            ->assertEmailSentTo('bruce@wayne-enterprises.com', function(TestEmail $email) {
++                $email
++                    ->assertSubject('Booking Confirmation for Visit Mars')
++                    ->assertContains('Visit Mars')
++                    ->assertContains('/booking/'.BookingFactory::first()->getUid())
++                    ->assertHasFile('Terms of Service.pdf')
++                ;
++            })
+         ;
+     }
+ }

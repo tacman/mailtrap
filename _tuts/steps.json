@@ -179,7 +179,42 @@
             "id": "async-background-messenger-consume",
             "name": "Async: background messenger:consume",
             "description": null
+        },
+        {
+            "id": "tests-fix",
+            "name": "Tests: fix",
+            "description": null
+        },
+        {
+            "id": "tests-add-mailer-test",
+            "name": "Tests: add mailer-test",
+            "description": null
+        },
+        {
+            "id": "tests-add-trait",
+            "name": "Tests: add trait",
+            "description": null
+        },
+        {
+            "id": "tests-first-assertion",
+            "name": "Tests: first assertion",
+            "description": null
+        },
+        {
+            "id": "tests-second-assertion",
+            "name": "Tests: second assertion",
+            "description": null
+        },
+        {
+            "id": "tests-full-assertion",
+            "name": "Tests: full assertion",
+            "description": null
+        },
+        {
+            "id": "fix-messenger-worker-config",
+            "name": "Fix messenger worker config",
+            "description": null
         }
     ],
-    "sha": "62045f672699af07b5ee5e479d4689861f0b06b5"
+    "sha": "15720dc9cd3f82a5a350c187a47a9f7c624bb121"
 }

@@ -1,0 +1,14 @@
+diff --git a/tests/Functional/BookingTest.php b/tests/Functional/BookingTest.php
+index 8d166b3..46366cd 100644
+--- a/tests/Functional/BookingTest.php
++++ b/tests/Functional/BookingTest.php
+@@ -51,5 +51,9 @@ class BookingTest extends KernelTestCase
+             ->count(1)
+             ->exists(['trip'=>$trip, 'customer' => CustomerFactory::first()])
+         ;
++
++        $this->mailer()
++            ->assertSentEmailCount(1)
++        ;
+     }
+ }

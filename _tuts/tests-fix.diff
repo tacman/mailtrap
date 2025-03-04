@@ -1,0 +1,23 @@
+diff --git a/tests/Functional/BookingTest.php b/tests/Functional/BookingTest.php
+index 8973a9f..59f7364 100644
+--- a/tests/Functional/BookingTest.php
++++ b/tests/Functional/BookingTest.php
+@@ -21,7 +21,7 @@ class BookingTest extends KernelTestCase
+     {
+         $trip = TripFactory::createOne([
+             'name' => 'Visit Mars',
+-            'slug' => 'mars',
++            'slug' => 'iss',
+             'tagLine' => 'The red planet',
+         ]);
+ 
+@@ -29,7 +29,8 @@ class BookingTest extends KernelTestCase
+         CustomerFactory::assert()->empty();
+ 
+         $this->browser()
+-            ->visit('/trip/mars')
++            ->throwExceptions()
++            ->visit('/trip/iss')
+             ->assertSuccessful()
+             ->fillField('Name', 'Bruce Wayne')
+             ->fillField('Email', 'bruce@wayne-enterprises.com')

@@ -1,0 +1,12 @@
+diff --git a/tests/Functional/BookingTest.php b/tests/Functional/BookingTest.php
+index 46366cd..5c71f0d 100644
+--- a/tests/Functional/BookingTest.php
++++ b/tests/Functional/BookingTest.php
+@@ -54,6 +54,7 @@ class BookingTest extends KernelTestCase
+ 
+         $this->mailer()
+             ->assertSentEmailCount(1)
++            ->assertEmailSentTo('bruce@wayne-enterprises.com', 'Booking Confirmation for Visit Mars')
+         ;
+     }
+ }

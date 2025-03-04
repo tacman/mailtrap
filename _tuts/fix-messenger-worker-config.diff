@@ -1,0 +1,10 @@
+diff --git a/.symfony.local.yaml b/.symfony.local.yaml
+index 21019b1..b168256 100644
+--- a/.symfony.local.yaml
++++ b/.symfony.local.yaml
+@@ -5,4 +5,4 @@ workers:
+ 
+     messenger:
+         cmd: ['symfony', 'console', 'messenger:consume', 'async']
+-        watch: ['config', 'src', 'templates', 'vendor']
++        watch: ['config', 'src', 'templates']

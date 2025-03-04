@@ -1,0 +1,17 @@
+diff --git a/tests/Functional/BookingTest.php b/tests/Functional/BookingTest.php
+index 59f7364..8d166b3 100644
+--- a/tests/Functional/BookingTest.php
++++ b/tests/Functional/BookingTest.php
+@@ -9,10 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+ use Zenstruck\Browser\Test\HasBrowser;
+ use Zenstruck\Foundry\Test\Factories;
+ use Zenstruck\Foundry\Test\ResetDatabase;
++use Zenstruck\Mailer\Test\InteractsWithMailer;
+ 
+ class BookingTest extends KernelTestCase
+ {
+-    use ResetDatabase, Factories, HasBrowser;
++    use ResetDatabase, Factories, HasBrowser, InteractsWithMailer;
+ 
+     /**
+      * @test
