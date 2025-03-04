@@ -76,4 +76,4 @@ Genial, ¡ya tenemos 25 aserciones!
 
 Una última cosa: si alguna vez tienes problemas para averiguar por qué no pasa una de estas aserciones de correo electrónico, encadena un `->dd()` y ejecuta tus pruebas. Cuando llegue a ese `dd()`, vuelca el correo electrónico para ayudarte a depurar. ¡No olvides eliminarlo cuando hayas terminado!
 
-A continuación, quiero añadir un segundo correo electrónico a nuestra aplicación. Para evitar la duplicación, crearemos un diseño de correo Twig que ambos compartan.
+A continuación, quiero añadir un segundo correo electrónico a nuestra aplicación. Para evitar la duplicación, crearemos un diseño de correo electrónico Twig que ambos compartan.
