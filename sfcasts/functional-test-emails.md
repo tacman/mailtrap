@@ -11,8 +11,8 @@ bin/phpunit
 Uh-oh, 1 failure. I know these were passing at the beginning of the course! We can
 see the failure is in `BookingTest`, specifically, `testCreateBooking`.
 The failure is "Expected redirect status code but got 500" and it originated on
-line 38 of `BookingTest`. Creating a booking is where we are now sending an email
-- that must have something to do with this failure!
+line 38 of `BookingTest`. Creating a booking is where we are now sending an email -
+that must have something to do with this failure!
 
 Open `BookingTest.php`. If you've written functional tests with Symfony before, this
 may look a tad different. I'm using some helper libraries. `zenstruck/foundry` gives
