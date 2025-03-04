@@ -12,3 +12,9 @@ chapters:
   - tags-metadata
   - async-email-sending
   - console-urls
+  - functional-test-emails
+  - twig-email-layout
+  - cli-command-email
+  - cli-command-functional-test
+  - email-event-webhook
+  - webhook-demo

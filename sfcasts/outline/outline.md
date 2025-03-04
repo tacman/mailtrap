@@ -478,7 +478,132 @@
 - Book a trip and check Mailtrap: email is handled immediately!
 - Next, let's functional test our emails!
 
-## Bonus: Signing Emails
+## Emails Assertions in Functional Tests
+
+- We already have some functional tests:
+  - `bin/phpunit` to run them
+- Open `BookingTest` - tour:
+  - `zenstruck/foundry`
+    - `ResetDatabase`: resets the db before each test
+    - `Factories`: enables using factories in tests
+  - `zenstruck/browser`
+    - `HasBrowser`: enables this ->browser() helper
+    - wrapper for Symfony's test client
+  - `testCreateBooking`
+    - "Arrange": Creating a trip to book
+    - "Pre-assertion": Ensure no trips/customers
+    - "Act": Use browser to book a trip
+    - "Assert":
+      - Check response after booking
+      - Assert booking/customer exists in the db
+- We need to check that the email was sent
+- Symfony has email testing helpers but I prefer a "wrapper" library
+- `composer require --dev zenstruck/mailer-test`
+  - Enables a bundle
+- FYI, `.env.local` isn't used in tests
+  - Instead, `.env` (which has our MAILER_DSN as null://null)
+  - So no emails will be really sent when running tests
+- In `BookingTest`, add the `InteractsWithMailer` trait
+- At the end of the test add:
+  - `$this->mailer()->assertSentEmailCount(1)`
+  - `bin/phpunit`
+  - `->assertEmailSentTo('bruce@wayne-enterprises.com', 'Booking Confirmation for Visit the ISS')`
+  - `bin/phpunit`
+- More email detail assertions
+  - `->assertEmailSentTo('bruce@wayne-enterprises.com', function(TestEmail $email) {})`
+  - `$email->assertSubject('Booking Confirmation for Visit the ISS')`
+  - `assertHtmlContains()`/`assertTextContains()` but...
+  - `->assertContains('Visit the ISS')` checks that both contain this text
+  - Check the link:
+  - `->assertContains('/booking/'.BookingFactory::first()->getUid())`
+  - Attachment:
+  - `->assertHasFile('terms-of-service.pdf')` - can also check exact file contents
+  - Some additional features:
+  - `->assert` see IDE autocompletion
+  - `->dd()` dump the email to diagnose
+- We'll soon add a second email, so let's create a base template.
+
+## Email Twig Layout
+
+- Want to create a second "booking reminder" email
+- First, let's create a base layout for our emails
+- Create `templates/email/layout.html.twig`
+  - Copy/paste contents of `booking_confirmation.html.twig`
+  - Add content block - leave signature
+- In `booking_confirmation.html.twig`, remove everything but the content block
+  - Add `{% extends 'email/layout.html.twig' %}`
+  - Add `{% block content %}` and `{% endblock %}`
+  - Copy/paste email specific content into block
+  - Remove rest of file
+- Our reminder email will send booking reminder 7 days before the trip
+- We need to update our booking track if a reminder has been sent (to avoid sending multiple)
+- `symfony console make:entity Booking`
+  - `reminderSentAt`, `datetime_immutable`, `nullable`
+- Update our db (we aren't using migrations)
+  - `symfony console doctrine:schema:update --force`
+- `BookingRepository::findBookingsToRemind()`
+  - `->andWhere('b.reminderSentAt IS NULL')` (reminder not yet sent)
+  - `->andWhere('b.date <= :future')`
+  - `->andWhere('b.date > :now')`
+  - `->setParameter('future', new \DateTimeImmutable('+7 days'))`
+  - `->setParameter('now', new \DateTimeImmutable('now'))`
+- Add some fixtures we know will be reminded
+- In `AppFixtures`, add one we know will trigger a reminder
+  ```php
+  BookingFactory::createOne([
+      'trip' => $arrakis,
+      'customer' => $clark,
+      'date' => new \DateTimeImmutable('+6 days'),
+  ]);
+  ```
+- Reload fixtures: `symfony console doctrine:fixtures:load`
+- Next, we'll create the command and reminder email
+
+## Email from CLI Command
+
+- Copy `booking_confirmation.html.twig` to `booking_reminder.html.twig`
+  - Will be super similar
+  - Change the accent to `Coming soon!`
+- Create a new command
+  - `symfony console make:command`
+  - `app:send-booking-reminder`
+- Open `SendBookingReminderCommand`
+  - Adjust description: `Send booking reminder emails`
+  - Add `BookingRepository`, `EntityManagerInterface` and `MailerInterface` as arguments
+  - Delete `configure()`
+  - In `execute()`:
+    - Delete guts
+    - `$io->title('Sending booking reminders');`
+    - `$bookings = $this->bookingRepo->findBookingsToRemind();`
+    - `foreach ($io->progressIterate($bookings) as $booking)`
+    - Super easy way to create a progress bar
+    - Copy email creation from `TripController::show()` and adjust
+      - Subject: `Reminder for...`
+      - Template: `email/booking_reminder.html.twig`
+      - Remove `->attach...`
+      - Tag: `booking_reminder`
+    - `$this->mailer->send($email)`
+    - `$booking->setReminderSentAt(new \DateTimeImmutable());`
+    - Outside if:
+      - `$this->em->flush();`
+      - `$io->success(sprintf('Sent %d booking reminders', count($bookings)));`
+- Reload fixtures: `symfony console doctrine:fixtures:load`
+- Run Command: `symfony console app:send-booking-reminder`
+- Check mailtrap, link works!
+- Run command again - 0 emails sent
+- Next, we'll add a functional test for this command!
+
+## Test for CLI Command
+
+## Webhook for Email Events
+
+## Demo our Webhook
+
+## Bonus: Scheduling our Email Command
+
+## Bonus: Monitoring Messenger
+
+## Bonus: Signing Emails (SMIME)
 
 - Verify the email hasn't been tampered with
 - Requires a S/MIME Certificate (similar to an SSL Cert)

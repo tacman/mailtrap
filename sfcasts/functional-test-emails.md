@@ -1,0 +1,3 @@
+# Emails Assertions in Functional Tests
+
+Coming soon...
