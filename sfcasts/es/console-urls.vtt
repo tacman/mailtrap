@@ -1,0 +1,283 @@
+WEBVTT
+
+00:00:01.066 --> 00:00:04.936 align:middle
+Cuando cambiamos al envío de correo electrónico asíncrono,
+¡rompimos nuestros enlaces de correo electrónico!
+
+00:00:05.206 --> 00:00:08.296 align:middle
+Está utilizando localhost como
+nuestro dominio, raro e incorrecto.
+
+00:00:08.876 --> 00:00:12.596 align:middle
+De vuelta a nuestra aplicación, podemos obtener
+una pista de lo que está pasando mirando el perfil
+
+00:00:12.596 --> 00:00:14.696 align:middle
+de la petición que envió
+el correo electrónico.
+
+00:00:15.246 --> 00:00:17.496 align:middle
+Recuerda que ahora nuestro correo
+electrónico está marcado como "en cola".
+
+00:00:18.036 --> 00:00:21.996 align:middle
+Ve a la pestaña "Mensajes" y
+busca el mensaje: SendEmailMessage.
+
+00:00:22.346 --> 00:00:24.596 align:middle
+Dentro está el objeto TemplatedEmail.
+
+00:00:24.936 --> 00:00:25.636 align:middle
+Ábrelo.
+
+00:00:26.186 --> 00:00:26.836 align:middle
+¡Es interesante!
+
+00:00:27.236 --> 00:00:31.066 align:middle
+htmlTemplate ¡es nuestra
+plantilla Twig pero html es null!
+
+00:00:31.426 --> 00:00:34.176 align:middle
+¿No debería ser el HTML
+renderizado de esa plantilla?
+
+00:00:34.796 --> 00:00:38.666 align:middle
+Este pequeño detalle es importante: la
+plantilla de correo electrónico no se renderiza
+
+00:00:38.666 --> 00:00:40.966 align:middle
+cuando nuestro controlador
+envía el mensaje a la cola.
+
+00:00:41.406 --> 00:00:45.496 align:middle
+No! la plantilla no se renderiza hasta más
+tarde, cuando ejecutamos messenger:consume.
+
+00:00:46.036 --> 00:00:46.936 align:middle
+¿Qué importancia tiene esto?
+
+00:00:47.336 --> 00:00:53.596 align:middle
+Bueno messenger:consume es un comando CLI, y
+cuando se generan URLs absolutas en la CLI,
+
+00:00:53.786 --> 00:00:58.796 align:middle
+Symfony no sabe cuál debe ser el
+dominio (o si debe ser http o https).
+
+00:00:59.366 --> 00:01:00.906 align:middle
+Entonces, ¿por qué lo hace
+cuando está en un controlador?
+
+00:01:01.396 --> 00:01:04.766 align:middle
+En un controlador, Symfony utiliza
+la petición actual para averiguarlo.
+
+00:01:05.396 --> 00:01:10.296 align:middle
+En un comando CLI, no hay petición, así
+que se rinde y utiliza http://localhost.
+
+00:01:10.296 --> 00:01:12.026 align:middle
+Vamos a decirle cuál debe ser el dominio.
+
+00:01:12.496 --> 00:01:16.736 align:middle
+De vuelta a nuestro IDE, abre
+config/packages/routing.yaml.
+
+00:01:17.566 --> 00:01:21.526 align:middle
+En framework, routing, estos comentarios
+explican exactamente esta cuestión.
+
+00:01:22.046 --> 00:01:24.626 align:middle
+Descomenta default_uri y establécelo
+
+00:01:24.626 --> 00:01:29.936 align:middle
+en https://universal-travel.com - ¡nuestros
+abogados están a punto de llegar a un acuerdo!
+
+00:01:30.706 --> 00:01:34.236 align:middle
+En desarrollo, sin embargo, tenemos que utilizar
+la URL de nuestro servidor local de desarrollo.
+
+00:01:34.696 --> 00:01:41.616 align:middle
+Para mí, es 127.0.0.1:8000, pero puede ser
+diferente para otros miembros del equipo.
+
+00:01:41.906 --> 00:01:45.676 align:middle
+Sé que Bob utiliza bob.is.awesome:8000
+y más o menos es así.
+
+00:01:46.346 --> 00:01:48.296 align:middle
+Para que esto sea configurable, hay un truco:
+
+00:01:48.756 --> 00:01:52.016 align:middle
+el servidor Symfony CLI establece
+una variable de entorno especial
+
+00:01:52.246 --> 00:01:56.866 align:middle
+con el dominio llamado
+SYMFONY_PROJECT_DEFAULT_ROUTE_URL.
+
+00:01:57.526 --> 00:02:05.996 align:middle
+De vuelta en nuestra configuración de enrutamiento, añade una
+nueva sección: when@dev:, framework:, router:, default_uri:
+
+00:02:06.266 --> 00:02:14.106 align:middle
+y establécela en
+%env(SYMFONY_PROJECT_DEFAULT_ROUTE_URL)%:
+
+00:02:14.656 --> 00:02:19.366 align:middle
+Esta variable de entorno sólo estará disponible
+si el servidor CLI de Symfony se está ejecutando
+
+00:02:19.636 --> 00:02:23.636 align:middle
+y estás ejecutando comandos a través
+de symfony console (no bin/console ).
+
+00:02:24.146 --> 00:02:27.476 align:middle
+Para evitar un error si falta la
+variable, establece una por defecto.
+
+00:02:27.896 --> 00:02:30.916 align:middle
+Todavía bajo when@dev, añade parameters:
+
+00:02:31.166 --> 00:02:38.536 align:middle
+con env(SYMFONY_PROJECT_DEFAULT_ROUTE_URL):
+ajustado a http://localhost.
+
+00:02:39.296 --> 00:02:43.096 align:middle
+Esta es la forma estándar de Symfony de establecer
+un valor por defecto para una variable de entorno.
+
+00:02:43.856 --> 00:02:44.636 align:middle
+¡Hora de probar!
+
+00:02:44.856 --> 00:02:46.566 align:middle
+Pero primero, vuelve a tu terminal.
+
+00:02:47.126 --> 00:02:49.186 align:middle
+Como hemos hecho algunos cambios
+en nuestra configuración,
+
+00:02:49.456 --> 00:02:54.456 align:middle
+tenemos que reiniciar el comando messenger:consume para,
+más o menos, recargar nuestra aplicación: ¡Genial!
+
+00:02:54.616 --> 00:02:58.076 align:middle
+El comando se ejecuta de nuevo y utiliza
+nuestra nueva configuración de Symfony.
+
+00:02:58.596 --> 00:02:59.536 align:middle
+Volvamos a nuestra aplicación...
+
+00:02:59.746 --> 00:03:00.516 align:middle
+¡y reserva un viaje!
+
+00:03:05.476 --> 00:03:06.796 align:middle
+Vuelve rápidamente al terminal...
+
+00:03:07.226 --> 00:03:09.146 align:middle
+y podemos ver que el mensaje se ha procesado.
+
+00:03:09.626 --> 00:03:11.036 align:middle
+Ve a Mailtrap y...
+
+00:03:12.026 --> 00:03:12.746 align:middle
+¡aquí está!
+
+00:03:13.226 --> 00:03:15.206 align:middle
+Momento de la verdad: haz clic en un enlace...
+
+00:03:15.856 --> 00:03:17.666 align:middle
+Genial, ¡vuelve a funcionar!
+
+00:03:17.976 --> 00:03:19.196 align:middle
+¡Bob estará tan contento!
+
+00:03:19.776 --> 00:03:23.946 align:middle
+Si eres como yo, probablemente te parezca un rollo tener
+que mantener este comando messenger:consume ejecutándose
+
+00:03:23.946 --> 00:03:26.066 align:middle
+en un terminal durante el desarrollo.
+
+00:03:26.546 --> 00:03:30.866 align:middle
+Además, tener que reiniciarlo cada vez que haces
+un cambio de código o de configuración es molesto.
+
+00:03:31.116 --> 00:03:31.756 align:middle
+¡Estoy harto!
+
+00:03:32.316 --> 00:03:36.026 align:middle
+¡Es hora de devolver la diversión a nuestras
+funciones con otro truco de la CLI de Symfony!
+
+00:03:36.646 --> 00:03:41.136 align:middle
+En tu IDE, abre este
+archivo .symfony.local.yaml.
+
+00:03:41.656 --> 00:03:44.386 align:middle
+Esta es la configuración del servidor
+Symfony CLI para nuestra aplicación.
+
+00:03:44.786 --> 00:03:45.936 align:middle
+¿Ves esta clave workers?
+
+00:03:46.276 --> 00:03:49.996 align:middle
+Nos permite definir los procesos que se ejecutarán
+en segundo plano cuando iniciemos el servidor.
+
+00:03:50.466 --> 00:03:52.336 align:middle
+Ya tenemos configurado el comando tailwind.
+
+00:03:52.926 --> 00:03:53.796 align:middle
+Añade otro trabajador.
+
+00:03:54.316 --> 00:04:01.166 align:middle
+Llámalo messenger -aunque podría ser cualquier
+cosa- y establece cmd en ['symfony', 'console',
+
+00:04:01.886 --> 00:04:06.726 align:middle
+'messenger:consume', 'async']: Esto
+resuelve el problema de tener que
+
+00:04:06.726 --> 00:04:08.766 align:middle
+mantenerlo en ejecución en una
+ventana de terminal independiente.
+
+00:04:09.166 --> 00:04:11.876 align:middle
+Pero, ¿y si reiniciamos el
+comando cuando hagamos cambios?
+
+00:04:12.306 --> 00:04:13.166 align:middle
+¡No hay problema!
+
+00:04:13.496 --> 00:04:19.106 align:middle
+Añade una clave watch y establécela
+en config, src, templates y vendor:
+
+00:04:19.696 --> 00:04:23.336 align:middle
+Si cambia algún archivo de estos directorios,
+el trabajador se reiniciará solo.
+
+00:04:23.596 --> 00:04:28.956 align:middle
+¡Qué listo! De vuelta a tu terminal,
+reinicia el servidor con symfony server:stop
+
+00:04:30.416 --> 00:04:36.376 align:middle
+y symfony serve -d messenger:consume ¡debería
+estar ejecutándose en segundo plano!
+
+00:04:36.896 --> 00:04:42.036 align:middle
+Para comprobarlo, ejecuta symfony
+server:status ¡3 trabajadores funcionando!
+
+00:04:42.476 --> 00:04:46.596 align:middle
+El servidor web PHP real, el
+trabajador tailwind:build existente
+
+00:04:46.926 --> 00:04:48.696 align:middle
+y nuestro nuevo messenger:consume.
+
+00:04:49.006 --> 00:04:54.766 align:middle
+¡Qué guay! A continuación, ¡exploremos cómo hacer afirmaciones
+sobre correos electrónicos en nuestras pruebas funcionales!
