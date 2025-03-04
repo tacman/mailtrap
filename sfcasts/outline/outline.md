@@ -525,6 +525,10 @@
 
 ## Email Twig Layout
 
+- Fix worker configuration
+  - In `.symfony.local.yaml`, under `messenger`, remove `vendor` from `watch`
+  - `symfony server:stop`
+  - `symfony server:start -d`
 - Want to create a second "booking reminder" email
 - First, let's create a base layout for our emails
 - Create `templates/email/layout.html.twig`
@@ -535,6 +539,7 @@
   - Add `{% block content %}` and `{% endblock %}`
   - Copy/paste email specific content into block
   - Remove rest of file
+- Test booking a trip and check mailtrap
 - Our reminder email will send booking reminder 7 days before the trip
 - We need to update our booking track if a reminder has been sent (to avoid sending multiple)
 - `symfony console make:entity Booking`
