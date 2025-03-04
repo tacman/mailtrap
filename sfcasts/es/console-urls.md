@@ -46,9 +46,9 @@ Ve a Mailtrap y... ¡aquí está! Momento de la verdad: haz clic en un enlace...
 
 ## Ejecutando `messenger:consume` en segundo plano
 
-Si eres como yo, probablemente te parezca un rollo tener que mantener este comando `messenger:consume` ejecutándose en un terminal durante el desarrollo. Además, tener que reiniciarlo cada vez que haces un cambio de código o de configuración es molesto. ¡Estoy harto! ¡Es hora de devolver la diversión a nuestras funciones con otro truco de la CLI de Symfony!
+Si eres como yo, probablemente te parezca un rollo tener que mantener este comando `messenger:consume` ejecutándose en un terminal durante el desarrollo. Además, tener que reiniciarlo cada vez que haces un cambio en el código o en la configuración es molesto. ¡Estoy harto! ¡Es hora de devolver la diversión a nuestras funciones con otro truco de la CLI de Symfony!
 
-En tu IDE, abre este archivo `.symfony.local.yaml`. Es la configuración del servidor Symfony CLI para nuestra aplicación. ¿Ves esta clave `workers`? Nos permite definir los procesos que se ejecutarán en segundo plano cuando iniciemos el servidor. Ya tenemos configurado el comando tailwind.
+En tu IDE, abre este archivo `.symfony.local.yaml`. Es la configuración del servidor Symfony CLI para nuestra aplicación. ¿Ves esta clave `workers`? Nos permite definir procesos que se ejecutarán en segundo plano cuando iniciemos el servidor. Ya tenemos el comando tailwind configurado.
 
 Añade otro trabajador. Llámalo `messenger` -aunque podría ser cualquier cosa- y establece`cmd` en `['symfony', 'console', 'messenger:consume', 'async']`:
 
