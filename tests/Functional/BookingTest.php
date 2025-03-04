@@ -14,19 +14,22 @@ class BookingTest extends KernelTestCase
 {
     use ResetDatabase, Factories, HasBrowser;
 
+    /**
+     * @test
+     */
     public function testCreateBooking(): void
     {
         $trip = TripFactory::createOne([
-            'name' => 'Visit the ISS',
-            'slug' => 'iss',
-            'tagLine' => 'The International Space Station',
+            'name' => 'Visit Mars',
+            'slug' => 'mars',
+            'tagLine' => 'The red planet',
         ]);
 
         BookingFactory::assert()->empty();
         CustomerFactory::assert()->empty();
 
         $this->browser()
-            ->visit('/trip/iss')
+            ->visit('/trip/mars')
             ->assertSuccessful()
             ->fillField('Name', 'Bruce Wayne')
             ->fillField('Email', 'bruce@wayne-enterprises.com')
@@ -34,8 +37,8 @@ class BookingTest extends KernelTestCase
             ->clickAndIntercept('Book Trip')
             ->assertRedirectedTo('/booking/'.BookingFactory::first()->getUid())
             ->assertSuccessful()
-            ->assertSeeIn('h1', 'Visit the ISS')
-            ->assertSee('The International Space Station')
+            ->assertSeeIn('h1', 'Visit Mars')
+            ->assertSee('The red planet')
         ;
 
         CustomerFactory::assert()
