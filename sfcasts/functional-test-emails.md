@@ -1,7 +1,7 @@
 # Emails Assertions in Functional Tests
 
 Okay, testing time! If you've explored the codebase a bit, you may have noticed that
-there someone (it could've been anyone... but probably a Canadian) snuck some tests
+someone (it could've been anyone... but probably a Canadian) snuck some tests
 into our `tests/Functional/` directory. Do these pass? Idk! Let's find out!
 
 Jump over to your terminal and run:
@@ -11,12 +11,12 @@ bin/phpunit
 ```
 
 Uh-oh, 1 failure. Uh-oh, because, truth time, *I'm* the friendly Canadian that added
-these snd I know they were passing at the beginning of the course! The failure is
+these and I know they were passing at the beginning of the course! The failure is
 in `BookingTest`, specifically, `testCreateBooking`:
 
 > Expected redirect status code but got 500
 
-on line 38 of `BookingTest`. That's where we send the email... so of we're looking
+on line 38 of `BookingTest`. That's where we send the email... so if we're looking
 for someone to blame, I feel like we should start with the Canadian, ahem, me and
 my wild email-sending ways.
 
@@ -73,10 +73,10 @@ composer require --dev zenstruck/mailer-test
 Installed and configured... back in our test, enable it by adding the `InteractsWithMailer`
 trait.
 
-Start simple, at the end of the test, say `$this->mailer()->assertSentEmailCount(1);`.
+Start simple, at the end of the test, write `$this->mailer()->assertSentEmailCount(1);`.
 
 Quick note: `.env.local` - where we put our *real* Mailtrap credentials - is *not*
-looked read or used in the `test` environment: our tests only load `.env` and this
+read or used in the `test` environment: our tests only load `.env` and this
 `.env.test` file. And in `.env`, `MAILER_DSN` is set to `null://null`. That's great!
 We want our tests to be fast, and not actually sending emails.
 
@@ -87,7 +87,7 @@ bin/phpunit
 ```
 
 Passing - 1 email is being sent! Go back and add another assertion: `->assertEmailSentTo()`.
-What email are we expecting? The one we filled in the form: `bruce@wayne-enterprises.com`.
+What email address are we expecting? The one we filled in the form: `bruce@wayne-enterprises.com`.
 Copy and paste that. The second argument is the subject: `Booking Confirmation for Visit Mars`.
 
 Run the tests!
@@ -114,7 +114,7 @@ the first `Booking` entity in the database (which we know from above there is on
 and gets its `uid`.
 
 Heck! We can even check the attachment: `->assertHasFile('Terms of Service.pdf')`.
-You can even check the content-type and file contents via
+You can check the content-type and file contents via
 extra arguments, but I'm fine just checking that the attachment exists for now.
 
 Go tests go!
