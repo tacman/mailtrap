@@ -2,7 +2,7 @@
 
 Bien, ¡hora de hacer pruebas! Si has explorado un poco la base de código, te habrás dado cuenta de que alguien (podría haber sido cualquiera... pero probablemente un canadiense) coló algunas pruebas en nuestro directorio `tests/Functional/`. ¿Pasarán? Ni idea Averigüémoslo
 
-Salta a tu terminal y ejecuta:
+Ve a tu terminal y ejecuta:
 
 ```terminal
 bin/phpunit
@@ -46,9 +46,9 @@ composer require --dev zenstruck/mailer-test
 
 Instalado y configurado... de nuevo en nuestra prueba, habilítalo añadiendo el rasgo `InteractsWithMailer`.
 
-Empieza de forma sencilla, al final de la prueba, di `$this->mailer()->assertSentEmailCount(1);`.
+Empieza de forma sencilla, al final de la prueba, escribe `$this->mailer()->assertSentEmailCount(1);`.
 
-Nota rápida: `.env.local` -donde ponemos nuestras credenciales reales de Mailtrap- no se lee ni se utiliza en el entorno `test`: nuestras pruebas sólo cargan `.env` y este archivo`.env.test`. Y en `.env`, `MAILER_DSN` se establece en `null://null`. ¡Estupendo! Queremos que nuestras pruebas sean rápidas, y que no envíen realmente correos electrónicos.
+Nota rápida: `.env.local` -donde ponemos nuestras credenciales Mailtrap reales- no se lee ni se utiliza en el entorno `test`: nuestras pruebas sólo cargan `.env` y este archivo`.env.test`. Y en `.env`, `MAILER_DSN` se establece en `null://null`. ¡Estupendo! Queremos que nuestras pruebas sean rápidas, y que no envíen realmente correos electrónicos.
 
 ¡Vuelve a ejecutarlas!
 
@@ -56,7 +56,7 @@ Nota rápida: `.env.local` -donde ponemos nuestras credenciales reales de Mailtr
 bin/phpunit
 ```
 
-Pasa: ¡se envía 1 correo electrónico! Vuelve atrás y añade otra aserción: `->assertEmailSentTo()`. ¿Qué correo esperamos? El que rellenamos en el formulario: `bruce@wayne-enterprises.com`. Copia y pega eso. El segundo argumento es el asunto: `Booking Confirmation for Visit Mars`.
+Pasa: ¡se envía 1 correo electrónico! Vuelve atrás y añade otra aserción: `->assertEmailSentTo()`. ¿Qué dirección de correo esperamos? La que rellenamos en el formulario: `bruce@wayne-enterprises.com`. Cópiala y pégala. El segundo argumento es el asunto: `Booking Confirmation for Visit Mars`.
 
 ¡Ejecuta las pruebas!
 
@@ -64,7 +64,7 @@ Pasa: ¡se envía 1 correo electrónico! Vuelve atrás y añade otra aserción: 
 bin/phpunit
 ```
 
-¡Sigue pasando! Y fíjate que ahora tenemos 20 aserciones en lugar de 19.
+¡Siguen pasando! Y fíjate que ahora tenemos 20 afirmaciones en lugar de 19.
 
 ¡Pero podemos ir más allá! En lugar de una cadena para el asunto en esta aserción, utiliza un cierre con `TestEmail $email` como argumento. Dentro, ahora podemos hacer muchas más afirmaciones sobre este correo electrónico. Como ya no estamos comprobando el asunto, añade primero ésta:`$email->assertSubject('Booking Confirmation for Visit Mars')`. ¡Y podemos encadenar más afirmaciones!
 
@@ -72,7 +72,7 @@ Escribe `->assert` para ver qué sugiere nuestro editor. Míralas todas... Fíja
 
 Es importante comprobar los enlaces, así que asegúrate de que está la URL de reserva:`->assertContains('/booking/'.`. Ahora, `BookingFactory::first()->getUid()` - esto busca la primera entidad `Booking` en la base de datos (que sabemos por lo anterior que sólo hay una), y obtiene su `uid`.
 
-Incluso podemos comprobar el archivo adjunto: `->assertHasFile('Terms of Service.pdf')`. Incluso puedes comprobar el tipo de contenido y el contenido del archivo mediante argumentos adicionales, pero por ahora me basta con comprobar que el archivo adjunto existe.
+Incluso podemos comprobar el archivo adjunto: `->assertHasFile('Terms of Service.pdf')`. Puedes comprobar el tipo de contenido y el contenido del archivo mediante argumentos adicionales, pero por ahora me basta con comprobar que el archivo adjunto existe.
 
 ¡Vamos, pruebas, vamos!
 
@@ -80,7 +80,7 @@ Incluso podemos comprobar el archivo adjunto: `->assertHasFile('Terms of Service
 bin/phpunit
 ```
 
-Genial, ¡ya hay 25 aserciones!
+Genial, ¡ya tenemos 25 aserciones!
 
 Una última cosa: si alguna vez tienes problemas para averiguar por qué no pasa una de estas aserciones de correo electrónico, encadena un `->dd()` y ejecuta tus pruebas. Cuando llegue a ese `dd()`, vuelca el correo electrónico para ayudarte a depurar. ¡No olvides eliminarlo cuando hayas terminado!
 
