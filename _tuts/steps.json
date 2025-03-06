@@ -211,10 +211,55 @@
             "description": null
         },
         {
+            "id": "tests-add-dd",
+            "name": "Tests: add dd",
+            "description": null
+        },
+        {
+            "id": "tests-remove-dd",
+            "name": "Tests: remove dd",
+            "description": null
+        },
+        {
             "id": "fix-messenger-worker-config",
             "name": "Fix messenger worker config",
             "description": null
+        },
+        {
+            "id": "layout-add-template",
+            "name": "Layout: add template",
+            "description": null
+        },
+        {
+            "id": "layout-use-layout",
+            "name": "Layout: use layout",
+            "description": null
+        },
+        {
+            "id": "layout-add-booking-remindersentat",
+            "name": "Layout: add Booking::$reminderSentAt",
+            "description": null
+        },
+        {
+            "id": "layout-findbookingstoremind",
+            "name": "Layout: findBookingsToRemind",
+            "description": null
+        },
+        {
+            "id": "layout-update-fixtures",
+            "name": "Layout: update fixtures",
+            "description": null
+        },
+        {
+            "id": "cli-email-new-template",
+            "name": "CLI Email: new template",
+            "description": null
+        },
+        {
+            "id": "cli-email-add-command",
+            "name": "CLI Email: add command",
+            "description": null
         }
     ],
-    "sha": "15720dc9cd3f82a5a350c187a47a9f7c624bb121"
+    "sha": "ad40a649e4bff58a6811d9feff849c15f2dc4a63"
 }

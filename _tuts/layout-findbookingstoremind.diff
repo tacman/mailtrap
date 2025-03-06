@@ -1,0 +1,25 @@
+diff --git a/src/Repository/BookingRepository.php b/src/Repository/BookingRepository.php
+index f5056df..d0392ea 100644
+--- a/src/Repository/BookingRepository.php
++++ b/src/Repository/BookingRepository.php
+@@ -48,4 +48,20 @@ class BookingRepository extends ServiceEntityRepository
+             ->getResult()
+         ;
+     }
++
++    /**
++     * @return Booking[]
++     */
++    public function findBookingsToRemind(): array
++    {
++        return $this->createQueryBuilder('b')
++            ->andWhere('b.reminderSentAt IS NULL')
++            ->andWhere('b.date <= :future')
++            ->andWhere('b.date > :now')
++            ->setParameter('future', new \DateTimeImmutable('+7 days'))
++            ->setParameter('now', new \DateTimeImmutable('now'))
++            ->getQuery()
++            ->getResult()
++        ;
++    }
+ }

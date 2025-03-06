@@ -1,0 +1,31 @@
+diff --git a/src/Entity/Booking.php b/src/Entity/Booking.php
+index a35dd72..bab458c 100644
+--- a/src/Entity/Booking.php
++++ b/src/Entity/Booking.php
+@@ -29,6 +29,9 @@ class Booking
+     #[ORM\JoinColumn(nullable: false)]
+     private Trip $trip;
+ 
++    #[ORM\Column(nullable: true)]
++    private ?\DateTimeImmutable $reminderSentAt = null;
++
+     public function __construct(Customer $customer, Trip $trip, \DateTimeImmutable $date, ?string $uid = null)
+     {
+         $this->uid = $uid ?? ByteString::fromRandom();
+@@ -61,4 +64,16 @@ class Booking
+     {
+         return $this->trip;
+     }
++
++    public function getReminderSentAt(): ?\DateTimeImmutable
++    {
++        return $this->reminderSentAt;
++    }
++
++    public function setReminderSentAt(?\DateTimeImmutable $reminderSentAt): static
++    {
++        $this->reminderSentAt = $reminderSentAt;
++
++        return $this;
++    }
+ }

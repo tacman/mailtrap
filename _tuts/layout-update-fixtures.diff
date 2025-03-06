@@ -1,0 +1,16 @@
+diff --git a/src/DataFixtures/AppFixtures.php b/src/DataFixtures/AppFixtures.php
+index 4c574f6..d309b18 100644
+--- a/src/DataFixtures/AppFixtures.php
++++ b/src/DataFixtures/AppFixtures.php
+@@ -84,5 +84,11 @@ class AppFixtures extends Fixture
+             'trip' => $cybertron,
+             'date' => new \DateTimeImmutable('-2 weeks'),
+         ]);
++
++        BookingFactory::createOne([
++            'trip' => $arrakis,
++            'customer' => $clark,
++            'date' => new \DateTimeImmutable('+6 days'),
++        ]);
+     }
+ }

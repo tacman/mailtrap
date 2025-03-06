@@ -1,0 +1,12 @@
+diff --git a/tests/Functional/BookingTest.php b/tests/Functional/BookingTest.php
+index 338f9df..2d5bbdd 100644
+--- a/tests/Functional/BookingTest.php
++++ b/tests/Functional/BookingTest.php
+@@ -61,7 +61,6 @@ class BookingTest extends KernelTestCase
+                     ->assertContains('Visit Mars')
+                     ->assertContains('/booking/'.BookingFactory::first()->getUid())
+                     ->assertHasFile('Terms of Service.pdf')
+-                    ->dd()
+                 ;
+             })
+         ;
