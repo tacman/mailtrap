@@ -574,8 +574,8 @@
   - Change the accent to `Coming soon!`
 - Create a new command
   - `symfony console make:command`
-  - `app:send-booking-reminder`
-- Open `SendBookingReminderCommand`
+  - `app:send-booking-reminders`
+- Open `SendBookingRemindersCommand`
   - Adjust description: `Send booking reminder emails`
   - Add `BookingRepository`, `EntityManagerInterface` and `MailerInterface` as arguments
   - Delete `configure()`
@@ -597,7 +597,8 @@
       - `$io->success(sprintf('Sent %d booking reminders', count($bookings)));`
 - Reload fixtures: `symfony console doctrine:fixtures:load`
 - Run Command: `symfony console app:send-booking-reminder`
-- Check mailtrap, link works!
+- Check mailtrap
+  - In Mailtrap test - tags and metadata can be checked under "Tech Info"
 - Run command again - 0 emails sent
 - Next, we'll add a functional test for this command!
 
