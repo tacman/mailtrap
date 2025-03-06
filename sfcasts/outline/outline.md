@@ -604,6 +604,77 @@
 
 ## Test for CLI Command
 
+- `symfony console make:test`
+  - `SendBookingRemindersCommandTest`
+  - open test
+  - move class to namespace: `App\Tests\Functional\Command`
+  - delete contents
+  - add `ResetDatabase`, `Factories`, `InteractsWithMailer` traits
+  - add two tests:
+    - `testNoRemindersToSend` - `$this->markTestIncomplete()`
+    - `testSendsReminders` - `$this->markTestIncomplete()`
+- Run tests: `bin/phpunit`
+- Nice, here's our todo list!
+- Symfony has tooling for testing commands but...
+- We're going to use another testing helper library
+- `composer require --dev zenstruck/console-test`
+- Back in `SendBookingRemindersCommandTest`
+  - Add `InteractsWithConsole` trait
+  - In `testNoRemindersToSend()`
+    - `$this->executeConsoleCommand('app:send-booking-reminder')`
+    - `->assertSuccessful()`
+    - `->assertOutputContains('Sent 0 booking reminders')`
+    - `$this->mailer()->assertNoEmailSent()`
+  - In `testSendsReminders()`
+    - `BookingFactory::createOne()`
+      - `'trip' => TripFactory::new()`
+        - `'name' => 'Visit Mars'`
+        - `'slug' => 'iss'`
+      - `'customer' => CustomerFactory::new(['email' => 'steve@minecraft.com']),`
+      - `'date' => new \DateTimeImmutable('+4 days'),`
+    - `$this->executeConsoleCommand('app:send-booking-reminder')`
+    - `->assertSuccessful()`
+    - `->assertOutputContains('Sent 1 booking reminders')`
+    - Copy/paste and adjust email assertions from `BookingTest`
+- In terminal: `bin/phpunit`
+- Tests done!
+- This style of outside-in tests make it easy to go the opposite way:
+  - Write the test first, then write the code to make it pass
+  - "TDD"
+- Now that we have tests covering sending both our emails
+  Let's refactor away the duplication into a booking email factory
+  That's next!
+
+## Email Factory Service
+
+- Reduce email creation duplication between `TripController` and `SendBookingRemindersCommand`
+- New class: `BookingEmailFactory` in `App\Email` namespace
+  - Constructor - copy `$termsPath` arg from `TripController`
+  - `public function createBookingConfirmation(Booking $booking): TemplatedEmail`
+  - `public function createBookingReminder(Booking $booking): TemplatedEmail`
+  - `private function createEmail(Booking $booking, string $tag): TemplatedEmail`
+    - Copy/paste/adjust email creation code from `TripController`
+  - `createBookingConfirmation`
+    - set `subject` & `htmlTemplate`
+  - `createBookingReminder`
+    - copy from above and adjust
+- Use the service!
+- In `TripController::showAction`
+  - Inject `BookingEmailFactory $emailFactory` into controller
+  - Replace email creation with `$mailer->send($emailFactory->createBookingConfirmation($booking));`
+- In `SendBookingRemindersCommand`
+  - Inject `private BookingEmailFactory $emailFactory` into constructor
+  - Replace email creation with `$this->mailer->send($this->emailFactory->createBookingReminder($booking));`
+- Let's just use our tests to ensure this works!
+  - `bin/phpunit`
+  - Failure! "Message does not include file with filename..."
+- Perfect, we forgot something but our tests caught it!
+- In `BookingEmailFactory::createBookingEmail`
+  - Add `->attachFromPath($this->termsPath)`
+- Run tests again: `bin/phpunit`
+- Green!
+- Next, use the Webhook component to track those Mailtrap email events!
+
 ## Webhook for Email Events
 
 ## Demo our Webhook

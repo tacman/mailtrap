@@ -16,5 +16,6 @@ chapters:
   - twig-email-layout
   - cli-command-email
   - cli-command-functional-test
+  - email-factory-service
   - email-event-webhook
   - webhook-demo

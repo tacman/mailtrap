@@ -1,0 +1,3 @@
+# Email Factory Service
+
+Coming soon...
