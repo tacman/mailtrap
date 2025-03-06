@@ -14,7 +14,7 @@ Y:
 symfony serve -d
 ```
 
-Nuestro nuevo correo electrónico de recordatorio de reserva tendrá una plantilla muy similar a la de confirmación de reserva. Para reducir la duplicación y asegurarnos de que nuestros correos electrónicos tienen un aspecto coherente, en `templates/email/`, crea una nueva plantilla `layout.html.twig` para que todos nuestros correos electrónicos se extiendan.
+Nuestro nuevo correo electrónico de recordatorio de reserva tendrá una plantilla muy similar a la de confirmación de reserva. Para reducir la duplicación y garantizar que nuestros correos electrónicos tengan un aspecto coherente, en `templates/email/`, crea una nueva plantilla `layout.html.twig` para que todos nuestros correos electrónicos se extiendan.
 
 Copia el contenido de `booking_confirmation.html.twig` y pégalo aquí. Ahora, elimina el contenido específico de confirmación de reserva y crea un bloque `content` vacío. Creo que está bien mantener nuestra firma aquí.
 
@@ -33,6 +33,12 @@ Hemos facilitado la creación de nuevas plantillas de correo electrónico. Ahora
 La entidad `Booking` representa una única reserva, así que es el lugar perfecto. Añadiremos una nueva columna para controlar si se ha enviado o no un recordatorio.
 
 En tu terminal, ejecuta:
+
+```terminal
+symfony make:entity Booking
+```
+
+¡Uy!
 
 ```terminal
 symfony console make:entity Booking
