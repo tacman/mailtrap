@@ -52,6 +52,12 @@ add a new column to track whether a reminder has been sent or not.
 
 In your terminal, run:
 
+```
+symfony make:entity Booking
+```
+
+Oops!
+
 ```terminal
 symfony console make:entity Booking
 ```
