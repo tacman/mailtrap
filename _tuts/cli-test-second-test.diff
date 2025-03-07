@@ -1,0 +1,51 @@
+diff --git a/tests/Functional/Command/SendBookingRemindersCommandTest.php b/tests/Functional/Command/SendBookingRemindersCommandTest.php
+index 2553f39..f7105f5 100644
+--- a/tests/Functional/Command/SendBookingRemindersCommandTest.php
++++ b/tests/Functional/Command/SendBookingRemindersCommandTest.php
+@@ -2,11 +2,15 @@
+ 
+ namespace App\Tests\Functional\Command;
+ 
++use App\Factory\BookingFactory;
++use App\Factory\CustomerFactory;
++use App\Factory\TripFactory;
+ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+ use Zenstruck\Console\Test\InteractsWithConsole;
+ use Zenstruck\Foundry\Test\Factories;
+ use Zenstruck\Foundry\Test\ResetDatabase;
+ use Zenstruck\Mailer\Test\InteractsWithMailer;
++use Zenstruck\Mailer\Test\TestEmail;
+ 
+ class SendBookingRemindersCommandTest extends KernelTestCase
+ {
+@@ -22,6 +26,29 @@ class SendBookingRemindersCommandTest extends KernelTestCase
+ 
+     public function testSendsReminders()
+     {
+-        $this->markTestIncomplete();
++        BookingFactory::createOne([
++            'trip' => TripFactory::new([
++                'name' => 'Visit Mars',
++                'slug' => 'iss',
++            ]),
++            'customer' => CustomerFactory::new(['email' => 'steve@minecraft.com']),
++            'date' => new \DateTimeImmutable('+4 days'),
++        ]);
++
++        $this->executeConsoleCommand('app:send-booking-reminders')
++            ->assertSuccessful()
++            ->assertOutputContains('Sent 1 booking reminders')
++        ;
++
++        $this->mailer()
++            ->assertSentEmailCount(1)
++            ->assertEmailSentTo('steve@minecraft.com', function(TestEmail $email) {
++                $email
++                    ->assertSubject('Booking Reminder for Visit Mars')
++                    ->assertContains('Visit Mars')
++                    ->assertContains('/booking/'.BookingFactory::first()->getUid())
++                ;
++            })
++        ;
+     }
+ }

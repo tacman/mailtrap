@@ -1,0 +1,29 @@
+diff --git a/tests/Functional/Command/SendBookingRemindersCommandTest.php b/tests/Functional/Command/SendBookingRemindersCommandTest.php
+new file mode 100644
+index 0000000..a46623c
+--- /dev/null
++++ b/tests/Functional/Command/SendBookingRemindersCommandTest.php
+@@ -0,0 +1,23 @@
++<?php
++
++namespace App\Tests\Functional\Command;
++
++use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
++use Zenstruck\Foundry\Test\Factories;
++use Zenstruck\Foundry\Test\ResetDatabase;
++use Zenstruck\Mailer\Test\InteractsWithMailer;
++
++class SendBookingRemindersCommandTest extends KernelTestCase
++{
++    use ResetDatabase, Factories, InteractsWithMailer;
++
++    public function testNoRemindersToSend()
++    {
++        $this->markTestIncomplete();
++    }
++
++    public function testSendsReminders()
++    {
++        $this->markTestIncomplete();
++    }
++}

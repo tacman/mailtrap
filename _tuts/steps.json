@@ -259,7 +259,47 @@
             "id": "cli-email-add-command",
             "name": "CLI Email: add command",
             "description": null
+        },
+        {
+            "id": "cli-test-make-test",
+            "name": "CLI Test: make:test",
+            "description": null
+        },
+        {
+            "id": "cli-test-add-zenstruck-console-test",
+            "name": "CLI Test: add zenstruck\/console-test",
+            "description": null
+        },
+        {
+            "id": "cli-test-first-test",
+            "name": "CLI Test: first test",
+            "description": null
+        },
+        {
+            "id": "cli-test-second-test",
+            "name": "CLI Test: second test",
+            "description": null
+        },
+        {
+            "id": "factory-create",
+            "name": "Factory: create",
+            "description": null
+        },
+        {
+            "id": "factory-use-in-tripcontroller",
+            "name": "Factory: use in TripController",
+            "description": null
+        },
+        {
+            "id": "factory-use-in-sendbookingreminderscommand",
+            "name": "Factory: use in SendBookingRemindersCommand",
+            "description": null
+        },
+        {
+            "id": "factory-add-missing-attachment",
+            "name": "Factory: add missing attachment",
+            "description": null
         }
     ],
-    "sha": "ad40a649e4bff58a6811d9feff849c15f2dc4a63"
+    "sha": "03fa7f246af429ac251d7d63f8ca0534581489d5"
 }

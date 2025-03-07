@@ -1,0 +1,12 @@
+diff --git a/src/Email/BookingEmailFactory.php b/src/Email/BookingEmailFactory.php
+index 4cf7f19..cc75515 100644
+--- a/src/Email/BookingEmailFactory.php
++++ b/src/Email/BookingEmailFactory.php
+@@ -22,6 +22,7 @@ class BookingEmailFactory
+         return $this->createEmail($booking, 'booking')
+             ->subject('Booking Confirmation for '.$booking->getTrip()->getName())
+             ->htmlTemplate('email/booking_confirmation.html.twig')
++            ->attachFromPath($this->termsPath, 'Terms of Service.pdf')
+         ;
+     }
+ 

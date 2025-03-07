@@ -1,0 +1,63 @@
+diff --git a/src/Controller/TripController.php b/src/Controller/TripController.php
+index 82d36f9..28df3e2 100644
+--- a/src/Controller/TripController.php
++++ b/src/Controller/TripController.php
+@@ -3,21 +3,17 @@
+ namespace App\Controller;
+ 
+ use App\Dto\BookingDto;
++use App\Email\BookingEmailFactory;
+ use App\Entity\Booking;
+ use App\Entity\Trip;
+ use App\Form\BookingType;
+ use App\Repository\CustomerRepository;
+ use App\Repository\TripRepository;
+ use Doctrine\ORM\EntityManagerInterface;
+-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+ use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\HttpFoundation\Response;
+-use Symfony\Component\Mailer\Header\MetadataHeader;
+-use Symfony\Component\Mailer\Header\TagHeader;
+ use Symfony\Component\Mailer\MailerInterface;
+-use Symfony\Component\Mime\Address;
+ use Symfony\Component\Routing\Attribute\Route;
+ 
+ final class TripController extends AbstractController
+@@ -37,9 +33,7 @@ final class TripController extends AbstractController
+         CustomerRepository $customers,
+         EntityManagerInterface $em,
+         MailerInterface $mailer,
+-
+-        #[Autowire('%kernel.project_dir%/assets/terms-of-service.pdf')]
+-        string $termsPath,
++        BookingEmailFactory $emailFactory,
+     ): Response {
+         $form = $this->createForm(BookingType::class)->handleRequest($request);
+ 
+@@ -53,23 +47,7 @@ final class TripController extends AbstractController
+             $em->persist($booking);
+             $em->flush();
+ 
+-            $email = (new TemplatedEmail())
+-                ->to(new Address($customer->getEmail()))
+-                ->subject('Booking Confirmation for '.$trip->getName())
+-                ->attachFromPath($termsPath, 'Terms of Service.pdf')
+-                ->htmlTemplate('email/booking_confirmation.html.twig')
+-                ->context([
+-                    'customer' => $customer,
+-                    'trip' => $trip,
+-                    'booking' => $booking,
+-                ])
+-            ;
+-
+-            $email->getHeaders()->add(new TagHeader('booking'));
+-            $email->getHeaders()->add(new MetadataHeader('booking_uid', $booking->getUid()));
+-            $email->getHeaders()->add(new MetadataHeader('customer_uid', $customer->getUid()));
+-
+-            $mailer->send($email);
++            $mailer->send($emailFactory->createBookingConfirmation($booking));
+ 
+             return $this->redirectToRoute('booking_show', ['uid' => $booking->getUid()]);
+         }

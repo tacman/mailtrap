@@ -1,0 +1,59 @@
+diff --git a/src/Command/SendBookingRemindersCommand.php b/src/Command/SendBookingRemindersCommand.php
+index a8c6e5c..d200dd6 100644
+--- a/src/Command/SendBookingRemindersCommand.php
++++ b/src/Command/SendBookingRemindersCommand.php
+@@ -2,18 +2,15 @@
+ 
+ namespace App\Command;
+ 
++use App\Email\BookingEmailFactory;
+ use App\Repository\BookingRepository;
+ use Doctrine\ORM\EntityManagerInterface;
+-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+ use Symfony\Component\Console\Attribute\AsCommand;
+ use Symfony\Component\Console\Command\Command;
+ use Symfony\Component\Console\Input\InputInterface;
+ use Symfony\Component\Console\Output\OutputInterface;
+ use Symfony\Component\Console\Style\SymfonyStyle;
+-use Symfony\Component\Mailer\Header\MetadataHeader;
+-use Symfony\Component\Mailer\Header\TagHeader;
+ use Symfony\Component\Mailer\MailerInterface;
+-use Symfony\Component\Mime\Address;
+ 
+ #[AsCommand(
+     name: 'app:send-booking-reminders',
+@@ -25,6 +22,7 @@ class SendBookingRemindersCommand extends Command
+         private BookingRepository $bookingRepo,
+         private EntityManagerInterface $em,
+         private MailerInterface $mailer,
++        private BookingEmailFactory $emailFactory,
+     ) {
+         parent::__construct();
+     }
+@@ -38,25 +36,7 @@ class SendBookingRemindersCommand extends Command
+         $bookings = $this->bookingRepo->findBookingsToRemind();
+ 
+         foreach ($io->progressIterate($bookings) as $booking) {
+-            $trip = $booking->getTrip();
+-            $customer = $booking->getCustomer();
+-
+-            $email = (new TemplatedEmail())
+-                ->to(new Address($customer->getEmail()))
+-                ->subject('Booking Reminder for '.$trip->getName())
+-                ->htmlTemplate('email/booking_reminder.html.twig')
+-                ->context([
+-                    'customer' => $customer,
+-                    'trip' => $trip,
+-                    'booking' => $booking,
+-                ])
+-            ;
+-
+-            $email->getHeaders()->add(new TagHeader('booking_reminder'));
+-            $email->getHeaders()->add(new MetadataHeader('booking_uid', $booking->getUid()));
+-            $email->getHeaders()->add(new MetadataHeader('customer_uid', $customer->getUid()));
+-
+-            $this->mailer->send($email);
++            $this->mailer->send($this->emailFactory->createBookingReminder($booking));
+             $booking->setReminderSentAt(new \DateTimeImmutable('now'));
+         }
+ 

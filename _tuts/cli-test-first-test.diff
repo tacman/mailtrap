@@ -1,0 +1,28 @@
+diff --git a/tests/Functional/Command/SendBookingRemindersCommandTest.php b/tests/Functional/Command/SendBookingRemindersCommandTest.php
+index a46623c..2553f39 100644
+--- a/tests/Functional/Command/SendBookingRemindersCommandTest.php
++++ b/tests/Functional/Command/SendBookingRemindersCommandTest.php
+@@ -3,17 +3,21 @@
+ namespace App\Tests\Functional\Command;
+ 
+ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
++use Zenstruck\Console\Test\InteractsWithConsole;
+ use Zenstruck\Foundry\Test\Factories;
+ use Zenstruck\Foundry\Test\ResetDatabase;
+ use Zenstruck\Mailer\Test\InteractsWithMailer;
+ 
+ class SendBookingRemindersCommandTest extends KernelTestCase
+ {
+-    use ResetDatabase, Factories, InteractsWithMailer;
++    use ResetDatabase, Factories, InteractsWithMailer, InteractsWithConsole;
+ 
+     public function testNoRemindersToSend()
+     {
+-        $this->markTestIncomplete();
++        $this->executeConsoleCommand('app:send-booking-reminders')
++            ->assertSuccessful()
++            ->assertOutputContains('Sent 0 booking reminders')
++        ;
+     }
+ 
+     public function testSendsReminders()
