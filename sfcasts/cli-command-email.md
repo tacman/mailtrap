@@ -3,10 +3,10 @@
 We've done the prep work for our reminder email feature. Now, let's actually
 create and send the emails!
 
-First, in `templates/email`, the new email template will be super similar to
-`booking_confirmation.html.twig`. So, copy that file and name it `booking_reminder.html.twig`.
+In `templates/email`, the new email template will be super similar to
+`booking_confirmation.html.twig`. Copy that file and name it `booking_reminder.html.twig`.
 Inside, I don't want to spend too much time on this, so just change the
-accent title to say "Coming soon!". Good enough.
+accent title to say "Coming soon!". Ship it! Accidental space pun!
 
 The logic to send the emails needs to be something we can schedule to run every hour or
 every day. Perfect job for a CLI command! At your terminal, run:
@@ -23,43 +23,43 @@ symfony console make:command
 
 Call it: `app:send-booking-reminders`.
 
-Let's check it out! Open `src/Command/SendBookingRemindersCommand.php`. First,
-change the command description to "Send booking reminder emails". Then, inject the
-following services into the constructor: we need to find the bookings reminders
-need to be sent for, so `private BookingRepository $bookingRepo`. We'll need to
-update the reminder flag on bookings, so `private EntityManagerInterface $em`. And, of
-course, we need to send the email, so `private MailerInterface $mailer`.
+Go check it out! `src/Command/SendBookingRemindersCommand.php`. Change the description to
+"Send booking reminder emails". 
 
-We don't need any arguments or options for this command, so remove the `configure()`
+In the constructor, autowire & set properties for `BookingRepository`, `EntityManagerInterface`
+and `MailerInterface`.
+
+This command doesn't need any arguments or options, so remove the `configure()`
 method entirely.
 
-Clear out the guts of `execute()`. Start by adding a nice title to the output:
+Clear out the guts of `execute()`. Start by adding a nice:
 `$io->title('Sending booking reminders')`. Then, grab the bookings that need
 reminders sent, with `$bookings = $this->bookingRepo->findBookingsToRemind()`.
 
-I want to show a progress bar for iterating over these bookings. `$io` has a trick up
+To be the absolute best, let's show a progress bar as we loop over the bookings.
+The `$io` object has a  trick for this.
 its sleeve. Write `foreach ($io->progressIterate($bookings) as $booking)`. This handles
-all the boring progress bar output logic for us! Inside, we need to create a new
-email. This will be super similar to the one we created in `TripController`, so copy
-that, including these headers, and paste it here.
+all the boring progress bar logic for us! Inside, we need to create a new
+email. In `TripController`, copy that email - including these headers, and
+paste it here.
 
-We need to adjust this a bit. Remove the attachment. The subject: replace
-"Confirmation" with "Reminder". Above, add these variables for convenience:
+But we need to adjust this a bit: remove the attachment. And for the subject: replace
+"Confirmation" with "Reminder". Above, add some variables for convenience:
 `$customer = $booking->getCustomer()` and `$trip = $booking->getTrip()`. Down here,
-we can keep the same metadata, but change the tag to `booking_reminder`. This will
+keep the same metadata, but change the tag to `booking_reminder`. This will
 help us better distinguish these emails in Mailtrap.
 
-Oh, and of course, we need to change the template to `booking_reminder.html.twig`.
+Oh, and of course, change the template to `booking_reminder.html.twig`.
 
 Still in the loop, send the email with `$this->mailer->send($email)` and mark
 the booking as having the reminder sent with
 `$booking->setReminderSentAt(new \DateTimeImmutable('now'))`.
 
 Perfect! Outside the loop, call `$this->em->flush()` to save the changes to the database.
-Finally, add a success message:
+Finally, celebrate with
 `$io->success(sprintf('Sent %d booking reminders', count($bookings)))`.
 
-Let's see if it works, pop over to your terminal. To be sure we have a booking that
+Testing time! Pop over to your terminal. To be sure we have a booking that
 needs a reminder sent, reload the fixtures with:
 
 ```terminal
@@ -72,7 +72,7 @@ Now, run our new command!
 symfony console app:send-booking-reminders
 ```
 
-Nice, 1 reminder sent! Here's our title, a cool progress bar and the success message.
+Nice, 1 reminder sent! And the output will impress our colleagues!
 Before we check Mailtrap, run the command again:
 
 ```terminal-silent
@@ -82,16 +82,16 @@ symfony console app:send-booking-reminders
 "Sent 0 booking reminders". Perfect! Our logic to mark bookings as having reminders
 sent works!
 
-Now check Mailtrap... here's our reminder email! As expected, it looks super similar
-to our confirmation email but, it says "Coming soon!" here - it's using the new
+Now check Mailtrap... here it is! As expected, it looks super similar
+to our confirmation email but, it says "Coming soon!" here: it's using the new
 template.
 
 When using "Mailtrap Testing", Mailer tags and metadata are not converted to Mailtrap
-categories and custom variables like they are when sent in production. You can still
-confirm they are being sent though! Click this "Tech Info" tab and scroll down a bit.
+categories and custom variables like they are when sent in production. But you can still
+make sure they're being sent! Click this "Tech Info" tab and scroll down a bit.
 When Mailer doesn't know how to convert tags and metadata, it adds them as these generic
 custom headers: `X-Tag` and `X-Metadata`.
 
 Sure enough, `X-Tag` is `booking_reminder`. Awesome, that's what we expect too!
 
-Ok, new feature? Check! Test for the new feature? Let's do that next!
+Ok, new feature? Check! Test for the new feature? That's next!
