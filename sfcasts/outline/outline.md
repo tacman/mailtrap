@@ -605,6 +605,7 @@
 ## Test for CLI Command
 
 - `symfony console make:test`
+  - `KernelTestCase`
   - `SendBookingRemindersCommandTest`
   - open test
   - move class to namespace: `App\Tests\Functional\Command`
@@ -621,7 +622,7 @@
 - Back in `SendBookingRemindersCommandTest`
   - Add `InteractsWithConsole` trait
   - In `testNoRemindersToSend()`
-    - `$this->executeConsoleCommand('app:send-booking-reminder')`
+    - `$this->executeConsoleCommand('app:send-booking-reminders')`
     - `->assertSuccessful()`
     - `->assertOutputContains('Sent 0 booking reminders')`
     - `$this->mailer()->assertNoEmailSent()`
@@ -670,7 +671,7 @@
   - Failure! "Message does not include file with filename..."
 - Perfect, we forgot something but our tests caught it!
 - In `BookingEmailFactory::createBookingEmail`
-  - Add `->attachFromPath($this->termsPath)`
+  - Add `->attachFromPath($this->termsPath, 'Terms of Service.pdf')`
 - Run tests again: `bin/phpunit`
 - Green!
 - Next, use the Webhook component to track those Mailtrap email events!
