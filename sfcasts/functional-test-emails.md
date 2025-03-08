@@ -20,6 +20,8 @@ on line 38 of `BookingTest`. That's where we send the email... so if we're looki
 for someone to blame, I feel like we should start with the Canadian, ahem, me and
 my wild email-sending ways.
 
+## Foundry and Browser
+
 Open `BookingTest.php`. If you've written functional tests with Symfony before, this
 may look a tad different because I'm using some rocking helper libraries. `zenstruck/foundry` gives
 us this `ResetDatabase` trait which wipes the database before each test. It also
@@ -34,10 +36,14 @@ fill in the booking form, and submit. We then assert that we're redirected to a
 specific booking URL and check that the page contains some expected HTML. Finally, we
 use Foundry to make some assertions about the data in our database.
 
+## `->throwExceptions()`
+
 Line 38 caused the failure... we're getting a 500 response code when redirecting
 to this booking page. 500 status codes in tests can be frustrating because it can
 be hard to track down the actual exception. Luckily, Browser allows us to *throw*
-the actual exception. At the beginning of this chain, add `->throwExceptions()`.
+the actual exception. At the beginning of this chain, add `->throwExceptions()`:
+
+[[[ code('af097ae44a') ]]]
 
 Back in the terminal, run the tests again:
 
@@ -49,7 +55,9 @@ Now we see an exception: *Unable to find template "@images/mars.png"*. If you re
 this looks like how we're embedding the trip images into our email. It's failing because
 `mars.png` doesn't exist in `public/imgs`. For simplicity, let's adjust our test to use
 an existing image. For our fixture here, change `mars` to `iss`, and down below, for
-`->visit()`: `/trip/iss`.
+`->visit()`: `/trip/iss`:
+
+[[[ code('477b2e817b') ]]]
 
 Run the tests again!
 
@@ -62,7 +70,9 @@ Passing!
 It *looks* like our email is being sent... but let's confirm! At the end of this test,
 I want to make some email assertions. Symfony *does* allow this
 out of the box, but I like to use a library that puts the fun
-back in email functional testing
+back in email functional testing.
+
+## `zenstruck/mailer-test`
 
 At your terminal, run:
 
@@ -71,9 +81,15 @@ composer require --dev zenstruck/mailer-test
 ```
 
 Installed and configured... back in our test, enable it by adding the `InteractsWithMailer`
-trait.
+trait:
 
-Start simple, at the end of the test, write `$this->mailer()->assertSentEmailCount(1);`.
+[[[ code('f0c9ca029a') ]]]
+
+Start simple, at the end of the test, write `$this->mailer()->assertSentEmailCount(1);`:
+
+[[[ code('2635967f3a') ]]]
+
+## Test-specific Environment Variables
 
 Quick note: `.env.local` - where we put our *real* Mailtrap credentials - is *not*
 read or used in the `test` environment: our tests only load `.env` and this
@@ -86,9 +102,13 @@ Re-run them!
 bin/phpunit
 ```
 
+### `assertEmailSentTo()`
+
 Passing - 1 email is being sent! Go back and add another assertion: `->assertEmailSentTo()`.
 What email address are we expecting? The one we filled in the form: `bruce@wayne-enterprises.com`.
-Copy and paste that. The second argument is the subject: `Booking Confirmation for Visit Mars`.
+Copy and paste that. The second argument is the subject: `Booking Confirmation for Visit Mars`:
+
+[[[ code('c404b47d45') ]]]
 
 Run the tests!
 
@@ -98,22 +118,41 @@ bin/phpunit
 
 Still passing! And notice we have 20 assertions now instead of 19.
 
+### `TestEmail`
+
 But we can go further! Instead of a string for the subject in this assertion, use a closure
-with `TestEmail $email` as the argument. Inside, we can now make *loads* more assertions
+with `TestEmail $email` as the argument:
+
+[[[ code('1a0df12e68') ]]]
+
+Inside, we can now make *loads* more assertions
 on this email. Since we aren't checking the subject above anymore, add this one first:
-`$email->assertSubject('Booking Confirmation for Visit Mars')`. And we can chain more assertions!
+`$email->assertSubject('Booking Confirmation for Visit Mars')`:
+
+[[[ code('51bed1a083') ]]]
+
+And we can chain more assertions!
 
 Write `->assert` to see what our editor suggests. Look at them all... Note the `assertTextContains`
 and `assertHtmlContains`. You can assert on each of these separately, but, because it's
 a best practice for both to contain the important details, use `assertContains()` to check
-both at once. Check for `Visit Mars`.
+both at once. Check for `Visit Mars`:
+
+[[[ code('365bc31cb9') ]]]
 
 Links are important to check, so make sure the booking URL is there:
-`->assertContains('/booking/'.`. Now, `BookingFactory::first()->getUid()` - this fetches
+`->assertContains('/booking/'.`. Now, `BookingFactory::first()->getUid()`:
+
+[[[ code('923f543ca7') ]]]
+
+this fetches
 the first `Booking` entity in the database (which we know from above there is only the one),
 and gets its `uid`.
 
-Heck! We can even check the attachment: `->assertHasFile('Terms of Service.pdf')`.
+Heck! We can even check the attachment: `->assertHasFile('Terms of Service.pdf')`:
+
+[[[ code('db553d20bc') ]]]
+
 You can check the content-type and file contents via
 extra arguments, but I'm fine just checking that the attachment exists for now.
 
@@ -125,8 +164,14 @@ bin/phpunit
 
 Awesome, 25 assertions now!
 
+### `->dd()`
+
 One last thing: if you're ever having trouble figuring out why one of these email
-assertions isn't passing, chain a `->dd()` and run your tests. When it hits that `dd()`,
+assertions isn't passing, chain a `->dd()`:
+
+[[[ code('1511c955bb') ]]]
+
+and run your tests. When it hits that `dd()`,
 it dumps the email to help you debug. Don't forget to remove it when you're done!
 
 Next, I want to add a second email to our app. To avoid duplication and keep things

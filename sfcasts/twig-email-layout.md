@@ -3,11 +3,17 @@
 New feature time! I want to send a reminder email to customers 1 week before their booked
 trip. T minus 1 week to lift off people!
 
+## Symfony CLI Worker Issue
+
 First though, we have a little problem with our Symfony CLI worker. Open
 `.symfony.local.yaml`. Our `messenger` worker is watching the `vendor`
 directory for changes. At least on some systems, there's just too many
 files in here to monitor and some weird things happen. No big deal:
-remove `vendor/`. And since we changed the config, jump to your terminal and
+remove `vendor/`:
+
+[[[ code('5ab7c8fcc1') ]]]
+
+And since we changed the config, jump to your terminal and
 restart the webserver:
 
 ```terminal
@@ -20,6 +26,8 @@ And:
 symfony serve -d
 ```
 
+## Email Layout
+
 Our new booking reminder email will have a template very similar to the booking
 confirmation one. To reduce duplication, and keep our snazzy emails consistent,
 in `templates/email/`, create a new `layout.html.twig` template that all
@@ -29,9 +37,13 @@ Copy the contents of `booking_confirmation.html.twig` and paste here. Now, remov
 the booking-confirmation-specific content and create an empty `content` block. I think
 it's fine to keep our signature here.
 
+[[[ code('cae55a7ca7') ]]]
+
 In `booking_confirmation.html.twig`, up top here, extend this new layout and add the
 `content` block. Down below, copy the email-specific content and paste it inside that
 block. Remove everything else.
+
+[[[ code('2852239e09') ]]]
 
 Let's make sure the booking confirmation email still works - and we have tests for that!
 Back in the terminal, run them with:
@@ -44,6 +56,9 @@ Green! That's a good sign. Let's be doubly sure by checking it in Mailtrap. In t
 book a trip... and check Mailtrap. I still looks fantastic!
 
 Time to bang out the reminder email!
+
+## Booking Reminder Flag
+
 After an email reminder is sent, we need to mark the booking so
 that we don't annoy the customer with multiple reminders. Let's add a new flag for
 this to the `Booking` entity.
@@ -69,21 +84,34 @@ Hit enter to exit the command.
 
 In the `Booking` entity... here's our new property, and down here, the getter and setter.
 
+### Finding Bookings to Remind
+
 Next, we need a way to find all bookings that need a reminder sent. Perfect job for
 `BookingRepository`! Add a new method called `findBookingsToRemind()`, return type: `array`.
-Add a docblock to show it returns an array of Booking objects.
+Add a docblock to show it returns an array of Booking objects:
+
+[[[ code('5751cf1481') ]]]
 
 Inside, `return $this->createQueryBuilder()`, alias `b`. Chain
 `->andWhere('b.reminderSentAt IS NULL')`, `->andWhere('b.date <= :future')`,
 `->andWhere('b.date > :now')` filling in the placeholders with
 `->setParameter('future', new \DateTimeImmutable('+7 days'))` and
-`->setParameter('now', new \DateTimeImmutable('now'))`. Finish with `->getQuery()->getResult()`.
+`->setParameter('now', new \DateTimeImmutable('now'))`. Finish with `->getQuery()->getResult()`:
+
+[[[ code('dd1fc88965') ]]]
+
+### Pending Reminder Booking Fixture
 
 In `AppFixtures`, down here, we create some
 fake bookings. Add one that will for sure trigger a reminder email to be sent:
 `BookingFactory::createOne()`, inside, `'trip' => $arrakis, 'customer' => $clark` and,
-this is the important part, `'date' => new \DateTimeImmutable('+6 days')`. Clearly between
-now and 7 days from now.
+this is the important part, `'date' => new \DateTimeImmutable('+6 days')`:
+
+[[[ code('0a9f028bb3') ]]]
+
+Clearly between now and 7 days from now.
+
+### "Migration"
 
 We made changes to the structure of our database. Normally, we should be creating
 a migration... but, we aren't using migrations. So, we'll just force update the schema.
