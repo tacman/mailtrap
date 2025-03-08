@@ -627,16 +627,19 @@
     - `->assertOutputContains('Sent 0 booking reminders')`
     - `$this->mailer()->assertNoEmailSent()`
   - In `testSendsReminders()`
-    - `BookingFactory::createOne()`
+    - `$booking = BookingFactory::createOne()`
       - `'trip' => TripFactory::new()`
         - `'name' => 'Visit Mars'`
         - `'slug' => 'iss'`
       - `'customer' => CustomerFactory::new(['email' => 'steve@minecraft.com']),`
       - `'date' => new \DateTimeImmutable('+4 days'),`
+    - Pre-assertion: `$this->assertNull($booking->getReminderSentAt())`
     - `$this->executeConsoleCommand('app:send-booking-reminder')`
     - `->assertSuccessful()`
     - `->assertOutputContains('Sent 1 booking reminders')`
     - Copy/paste and adjust email assertions from `BookingTest`
+    - Assert reminder sent at is set:
+      - `$this->assertNotNull($booking->getReminderSentAt())`
 - In terminal: `bin/phpunit`
 - Tests done!
 - This style of outside-in tests make it easy to go the opposite way:
