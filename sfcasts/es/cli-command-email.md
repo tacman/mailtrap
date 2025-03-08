@@ -26,7 +26,7 @@ Este comando no necesita argumentos ni opciones, así que elimina por completo e
 
 Limpia las tripas de `execute()`. Empieza añadiendo un bonito:`$io->title('Sending booking reminders')`. Luego, coge las reservas que necesitan que se envíen recordatorios, con `$bookings = $this->bookingRepo->findBookingsToRemind()`.
 
-Para ser los mejores, mostremos una barra de progreso mientras hacemos un bucle sobre las reservas. El objeto `$io` tiene un truco para esto en la manga. Escribe `foreach ($io->progressIterate($bookings) as $booking)`. Esto se encarga de toda la aburrida lógica de la barra de progreso Dentro, tenemos que crear un nuevo correo electrónico. En `TripController`, copia ese correo electrónico -incluyendo estas cabeceras- y pégalo aquí.
+Para ser los mejores, mostremos una barra de progreso mientras hacemos un bucle sobre las reservas. El objeto `$io` tiene un truco para esto. Escribe `foreach ($io->progressIterate($bookings) as $booking)`. Esto se encarga de toda la aburrida lógica de la barra de progreso Dentro, tenemos que crear un nuevo correo electrónico. En `TripController`, copia ese correo electrónico -incluyendo estas cabeceras- y pégalo aquí.
 
 Pero tenemos que ajustarlo un poco: elimina el archivo adjunto. Y para el asunto: sustituye "Confirmación" por "Recordatorio". Arriba, añade algunas variables por comodidad:`$customer = $booking->getCustomer()` y `$trip = $booking->getTrip()`. Aquí abajo, mantén los mismos metadatos, pero cambia la etiqueta a `booking_reminder`. Esto nos ayudará a distinguir mejor estos correos en Mailtrap.
 
@@ -56,10 +56,10 @@ symfony console app:send-booking-reminders
 
 "Enviados 0 recordatorios de reserva". ¡Perfecto! Nuestra lógica para marcar las reservas como recordatorios enviados ¡funciona!
 
-Ahora comprueba Mailtrap... ¡aquí está! Como era de esperar, tiene un aspecto muy similar a nuestro correo de confirmación, pero aquí dice "¡Próximamente!": está utilizando la nueva plantilla.
+Ahora comprueba Mailtrap... ¡aquí está! Como era de esperar, tiene un aspecto super similar a nuestro correo de confirmación, pero aquí dice "Próximamente": está utilizando la nueva plantilla.
 
 Cuando se utiliza "Prueba de Mailtrap", las etiquetas y metadatos de Mailer no se convierten en categorías y variables personalizadas de Mailtrap, como ocurre cuando se envían en producción. Pero puedes asegurarte de que se envían Haz clic en esta pestaña "Información técnica" y desplázate un poco hacia abajo. Cuando Mailer no sabe cómo convertir las etiquetas y los metadatos, los añade como estas cabeceras genéricas personalizadas: `X-Tag` y `X-Metadata`.
 
-Efectivamente, `X-Tag` es `booking_reminder`. Genial, ¡eso es lo que esperamos también!
+Efectivamente, `X-Tag` es `booking_reminder`. Genial, ¡también es lo que esperamos!
 
 Vale, ¿nueva función? ¡Comprobado! ¿Pruebas para la nueva función? ¡Eso a continuación!
