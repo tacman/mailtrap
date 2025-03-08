@@ -1,5 +1,5 @@
 diff --git a/tests/Functional/Command/SendBookingRemindersCommandTest.php b/tests/Functional/Command/SendBookingRemindersCommandTest.php
-index 2553f39..f7105f5 100644
+index 2553f39..62da02c 100644
 --- a/tests/Functional/Command/SendBookingRemindersCommandTest.php
 +++ b/tests/Functional/Command/SendBookingRemindersCommandTest.php
 @@ -2,11 +2,15 @@
@@ -18,12 +18,12 @@ index 2553f39..f7105f5 100644
  
  class SendBookingRemindersCommandTest extends KernelTestCase
  {
-@@ -22,6 +26,29 @@ class SendBookingRemindersCommandTest extends KernelTestCase
+@@ -22,6 +26,33 @@ class SendBookingRemindersCommandTest extends KernelTestCase
  
      public function testSendsReminders()
      {
 -        $this->markTestIncomplete();
-+        BookingFactory::createOne([
++        $booking = BookingFactory::createOne([
 +            'trip' => TripFactory::new([
 +                'name' => 'Visit Mars',
 +                'slug' => 'iss',
@@ -31,6 +31,8 @@ index 2553f39..f7105f5 100644
 +            'customer' => CustomerFactory::new(['email' => 'steve@minecraft.com']),
 +            'date' => new \DateTimeImmutable('+4 days'),
 +        ]);
++
++        $this->assertNull($booking->getReminderSentAt());
 +
 +        $this->executeConsoleCommand('app:send-booking-reminders')
 +            ->assertSuccessful()
@@ -47,5 +49,7 @@ index 2553f39..f7105f5 100644
 +                ;
 +            })
 +        ;
++
++        $this->assertNotNull($booking->getReminderSentAt());
      }
  }
