@@ -44,7 +44,7 @@ Green! That's a good sign. Let's be doubly sure by checking it in Mailtrap. In t
 book a trip... and check Mailtrap. I still looks fantastic!
 
 Time to bang out the reminder email!
-feature a bit. After an email reminder is sent, we need to mark the booking so
+After an email reminder is sent, we need to mark the booking so
 that we don't annoy the customer with multiple reminders. Let's add a new flag for
 this to the `Booking` entity.
 
@@ -80,7 +80,7 @@ Inside, `return $this->createQueryBuilder()`, alias `b`. Chain
 `->setParameter('now', new \DateTimeImmutable('now'))`. Finish with `->getQuery()->getResult()`.
 
 In `AppFixtures`, down here, we create some
-fake bookings, including one that we will trigger a reminder email to be sent:
+fake bookings. Add one that will for sure trigger a reminder email to be sent:
 `BookingFactory::createOne()`, inside, `'trip' => $arrakis, 'customer' => $clark` and,
 this is the important part, `'date' => new \DateTimeImmutable('+6 days')`. Clearly between
 now and 7 days from now.

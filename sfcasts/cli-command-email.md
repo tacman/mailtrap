@@ -37,8 +37,8 @@ Clear out the guts of `execute()`. Start by adding a nice:
 reminders sent, with `$bookings = $this->bookingRepo->findBookingsToRemind()`.
 
 To be the absolute best, let's show a progress bar as we loop over the bookings.
-The `$io` object has a  trick for this.
-its sleeve. Write `foreach ($io->progressIterate($bookings) as $booking)`. This handles
+The `$io` object has a trick for this.
+Write `foreach ($io->progressIterate($bookings) as $booking)`. This handles
 all the boring progress bar logic for us! Inside, we need to create a new
 email. In `TripController`, copy that email - including these headers, and
 paste it here.
