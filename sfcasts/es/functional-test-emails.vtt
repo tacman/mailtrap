@@ -1,0 +1,332 @@
+WEBVTT
+
+00:00:01.106 --> 00:00:02.466 align:middle
+Bien, ¡hora de hacer pruebas!
+
+00:00:02.966 --> 00:00:05.396 align:middle
+Si has explorado un poco la base de
+código, te habrás dado cuenta de
+
+00:00:05.396 --> 00:00:07.366 align:middle
+que alguien (podría haber sido cualquiera...
+
+00:00:07.446 --> 00:00:11.706 align:middle
+pero probablemente un canadiense) coló algunas
+pruebas en nuestro directorio tests/Functional/.
+
+00:00:12.116 --> 00:00:12.966 align:middle
+¿Se han superado?
+
+00:00:13.246 --> 00:00:14.616 align:middle
+Ni idea Averigüémoslo
+
+00:00:15.086 --> 00:00:21.246 align:middle
+Ve a tu terminal y ejecuta:
+bin/phpunit Uh-oh, 1 fallo.
+
+00:00:21.506 --> 00:00:25.076 align:middle
+Uh-oh, porque, la verdad, ¡soy el
+simpático canadiense que las añadió
+
+00:00:25.076 --> 00:00:27.556 align:middle
+y sé que pasaban al principio del curso!
+
+00:00:27.896 --> 00:00:34.046 align:middle
+El fallo está en BookingTest, concretamente, en
+testCreateBooking: Esperaba un código de estado de redirección
+
+00:00:34.046 --> 00:00:37.416 align:middle
+pero obtuvo 500 en la línea 38 de BookingTest.
+
+00:00:37.916 --> 00:00:39.206 align:middle
+Ahí es donde enviamos
+el correo electrónico...
+
+00:00:39.206 --> 00:00:43.636 align:middle
+así que si buscamos a alguien a quien culpar, creo
+que deberíamos empezar por el canadiense, ejem,
+
+00:00:43.786 --> 00:00:46.546 align:middle
+yo y mis alocadas maneras de
+enviar correos electrónicos.
+
+00:00:47.216 --> 00:00:49.406 align:middle
+Abre BookingTest.php.
+
+00:00:49.406 --> 00:00:53.096 align:middle
+Si has escrito pruebas funcionales con Symfony
+antes, esto puede parecer un poco diferente
+
+00:00:53.096 --> 00:00:55.336 align:middle
+porque estoy utilizando
+algunas bibliotecas de ayuda.
+
+00:00:55.756 --> 00:01:01.016 align:middle
+zenstruck/foundry nos da este rasgo ResetDatabase
+que limpia la base de datos antes de cada prueba.
+
+00:01:01.626 --> 00:01:07.096 align:middle
+También nos proporciona este rasgo Factories que nos permite
+crear fijaciones de base de datos en nuestras pruebas.
+
+00:01:07.096 --> 00:01:10.446 align:middle
+Y HasBrowser es de otro
+paquete - zenstruck/browser -
+
+00:01:10.706 --> 00:01:14.586 align:middle
+y es esencialmente una envoltura fácil de usar
+alrededor del cliente de pruebas de Symfony.
+
+00:01:15.156 --> 00:01:17.366 align:middle
+testCreateBooking es la prueba real.
+
+00:01:17.366 --> 00:01:21.206 align:middle
+En primer lugar, creamos un Trip en la
+base de datos con estos valores conocidos.
+
+00:01:21.896 --> 00:01:26.496 align:middle
+A continuación, algunas preaserciones para asegurarnos
+de que no hay reservas ni clientes en la base de datos.
+
+00:01:27.026 --> 00:01:32.446 align:middle
+Ahora, utilizamos ->browser() para navegar a la página
+de un viaje, rellenar el formulario de reserva y enviarlo.
+
+00:01:33.026 --> 00:01:37.046 align:middle
+A continuación, afirmamos que se nos redirige
+a una URL de reserva específica y comprobamos
+
+00:01:37.046 --> 00:01:39.536 align:middle
+que la página contiene algún HTML esperado.
+
+00:01:39.536 --> 00:01:44.096 align:middle
+Por último, utilizamos Foundry para hacer algunas
+afirmaciones sobre los datos de nuestra base de datos.
+
+00:01:44.836 --> 00:01:46.536 align:middle
+La línea 38 causó el fallo...
+
+00:01:46.786 --> 00:01:50.506 align:middle
+estamos obteniendo un código de respuesta
+500 al redirigir a esta página de reserva.
+
+00:01:50.506 --> 00:01:54.576 align:middle
+los códigos de estado 500 en las pruebas
+pueden ser frustrantes porque puede ser difícil
+
+00:01:54.576 --> 00:01:56.306 align:middle
+localizar la excepción real.
+
+00:01:56.896 --> 00:02:00.136 align:middle
+Por suerte, Browser nos permite
+lanzar la excepción real.
+
+00:02:00.646 --> 00:02:05.766 align:middle
+Al principio de esta cadena, añade
+->throwExceptions(): De nuevo en el terminal,
+
+00:02:05.796 --> 00:02:13.786 align:middle
+vuelve a ejecutar las pruebas: Ahora vemos una excepción
+No se puede encontrar la plantilla "@images/mars.png".
+
+00:02:13.786 --> 00:02:18.566 align:middle
+Si recuerdas, esto se parece a cómo estamos incrustando
+las imágenes del viaje en nuestro correo electrónico.
+
+00:02:19.146 --> 00:02:23.086 align:middle
+Está fallando porque mars.png
+no existe en public/imgs.
+
+00:02:23.086 --> 00:02:26.956 align:middle
+Para simplificar, vamos a ajustar nuestra
+prueba para utilizar una imagen existente.
+
+00:02:27.286 --> 00:02:31.746 align:middle
+Para nuestra fijación aquí,
+cambia mars por iss, y abajo,
+
+00:02:31.746 --> 00:02:36.676 align:middle
+para ->visit(): /trip/iss:
+¡Ejecuta de nuevo las pruebas!
+
+00:02:38.226 --> 00:02:41.386 align:middle
+¡Pasa! Parece que nuestro
+correo electrónico se envía...
+
+00:02:41.526 --> 00:02:42.366 align:middle
+¡pero confirmémoslo!
+
+00:02:42.886 --> 00:02:46.006 align:middle
+Al final de esta prueba, quiero hacer algunas
+afirmaciones sobre el correo electrónico.
+
+00:02:46.336 --> 00:02:49.866 align:middle
+Symfony lo permite, pero a mí
+me gusta utilizar una biblioteca
+
+00:02:49.866 --> 00:02:52.526 align:middle
+que devuelve la diversión a las pruebas
+funcionales de correo electrónico.
+
+00:02:53.126 --> 00:02:56.176 align:middle
+En tu terminal, ejecuta: composer require
+
+00:02:56.276 --> 00:03:02.706 align:middle
+--dev zenstruck/mailer-test
+Instalado y configurado...
+
+00:03:03.086 --> 00:03:08.536 align:middle
+de nuevo en nuestra prueba, habilítala añadiendo el
+rasgo InteractsWithMailer: Empieza de forma sencilla,
+
+00:03:08.796 --> 00:03:16.706 align:middle
+al final de la prueba, escribe
+$this->mailer()->assertSentEmailCount(1);:
+
+00:03:17.566 --> 00:03:23.056 align:middle
+Nota rápida: .env.local -donde ponemos
+nuestras credenciales Mailtrap reales- no se lee
+
+00:03:23.056 --> 00:03:29.476 align:middle
+ni se utiliza en el entorno test: nuestras pruebas
+sólo cargan .env y este archivo .env.test.
+
+00:03:30.116 --> 00:03:33.806 align:middle
+Y en .env, MAILER_DSN se
+establece en null://null.
+
+00:03:33.906 --> 00:03:34.506 align:middle
+¡Estupendo!
+
+00:03:34.796 --> 00:03:37.976 align:middle
+Queremos que nuestras pruebas sean rápidas, y
+que no envíen realmente correos electrónicos.
+
+00:03:38.726 --> 00:03:39.376 align:middle
+¡Vuelve a ejecutarlas!
+
+00:03:41.656 --> 00:03:44.056 align:middle
+Pasa: ¡se envía 1 correo electrónico!
+
+00:03:44.736 --> 00:03:49.286 align:middle
+Vuelve atrás y añade otra
+aserción: ->assertEmailSentTo().
+
+00:03:49.926 --> 00:03:51.666 align:middle
+¿Qué dirección de correo esperamos?
+
+00:03:52.076 --> 00:03:55.936 align:middle
+La que rellenamos en el formulario:
+bruce@wayne-enterprises.com.
+
+00:03:56.506 --> 00:03:57.466 align:middle
+Cópiala y pégala.
+
+00:03:58.226 --> 00:04:04.876 align:middle
+El segundo argumento es el asunto: Booking
+Confirmation for Visit Mars: ¡Ejecuta las pruebas!
+
+00:04:06.366 --> 00:04:07.206 align:middle
+¡Sigue pasando!
+
+00:04:07.476 --> 00:04:10.376 align:middle
+Y fíjate que ahora tenemos 20
+afirmaciones en lugar de 19.
+
+00:04:10.966 --> 00:04:11.976 align:middle
+¡Pero podemos ir más allá!
+
+00:04:12.266 --> 00:04:18.236 align:middle
+En lugar de una cadena para el asunto en esta
+aserción, utiliza un cierre con TestEmail $email
+
+00:04:18.286 --> 00:04:22.866 align:middle
+como argumento: Dentro, ahora podemos hacer muchas
+más afirmaciones sobre este correo electrónico.
+
+00:04:22.866 --> 00:04:27.046 align:middle
+Como ya no vamos a comprobar el
+asunto, añade primero ésta:
+
+00:04:27.296 --> 00:04:36.176 align:middle
+$email->assertSubject('Booking Confirmation for
+Visit Mars'): ¡Y podemos encadenar más afirmaciones!
+
+00:04:36.596 --> 00:04:40.056 align:middle
+Escribe ->assert para ver
+qué sugiere nuestro editor.
+
+00:04:40.056 --> 00:04:40.706 align:middle
+Míralas todas...
+
+00:04:41.156 --> 00:04:45.056 align:middle
+Fíjate en assertTextContains
+y assertHtmlContains.
+
+00:04:45.536 --> 00:04:50.016 align:middle
+Puedes hacer una aserción sobre cada uno de ellos por
+separado, pero, como es una buena práctica que ambos
+
+00:04:50.016 --> 00:04:54.466 align:middle
+contengan los detalles importantes, utiliza
+assertContains() para comprobar los dos a la vez.
+
+00:04:55.116 --> 00:04:58.626 align:middle
+Comprueba Visit Mars: Es
+importante comprobar los enlaces,
+
+00:04:58.856 --> 00:05:04.136 align:middle
+así que asegúrate de que está la URL de
+reserva: ->assertContains('/booking/'..
+
+00:05:05.086 --> 00:05:12.296 align:middle
+Ahora, BookingFactory::first()->getUid():
+esto busca la primera entidad Booking
+
+00:05:12.296 --> 00:05:17.236 align:middle
+en la base de datos (que sabemos por lo
+anterior que sólo hay una), y obtiene su uid.
+
+00:05:17.816 --> 00:05:24.686 align:middle
+Incluso podemos comprobar el archivo adjunto:
+->assertHasFile('Terms of Service.pdf'):
+
+00:05:24.686 --> 00:05:29.646 align:middle
+Puedes comprobar el tipo de contenido y el contenido del archivo
+mediante argumentos adicionales, pero por ahora me basta con comprobar
+
+00:05:29.646 --> 00:05:31.276 align:middle
+que el archivo adjunto existe.
+
+00:05:32.026 --> 00:05:33.036 align:middle
+¡Vamos, pruebas, vamos!
+
+00:05:33.946 --> 00:05:35.906 align:middle
+Genial, ¡ya tenemos 25 aserciones!
+
+00:05:36.566 --> 00:05:39.806 align:middle
+Una última cosa: si alguna vez tienes
+problemas para averiguar por qué no pasa una
+
+00:05:39.806 --> 00:05:45.446 align:middle
+de estas aserciones de correo electrónico,
+encadena un ->dd(): y ejecuta tus pruebas.
+
+00:05:45.446 --> 00:05:48.696 align:middle
+Cuando llegue a ese dd(), vuelca el correo
+electrónico para ayudarte a depurar.
+
+00:05:49.676 --> 00:05:51.266 align:middle
+¡No olvides eliminarlo cuando hayas terminado!
+
+00:05:52.266 --> 00:05:54.776 align:middle
+A continuación, quiero añadir un segundo
+correo electrónico a nuestra aplicación.
+
+00:05:55.156 --> 00:05:57.786 align:middle
+Para evitar la duplicación
+y mantener la coherencia,
+
+00:05:58.026 --> 00:06:00.696 align:middle
+crearemos un diseño de correo
+electrónico Twig que ambos compartan.
