@@ -98,7 +98,7 @@ Dentro, ahora podemos hacer muchas más afirmaciones sobre este correo electrón
 
 ¡Y podemos encadenar más afirmaciones!
 
-Escribe `->assert` para ver qué sugiere nuestro editor. Míralas todas... Fíjate en `assertTextContains`y `assertHtmlContains`. Puedes hacer una aserción sobre cada una de ellas por separado, pero, como es una buena práctica que ambas contengan los detalles importantes, utiliza `assertContains()` para comprobar las dos a la vez. Comprueba `Visit Mars`:
+Escribe `->assert` para ver qué sugiere nuestro editor. Míralas todas... Fíjate en `assertTextContains`y `assertHtmlContains`. Puedes aseverar sobre cada una de ellas por separado, pero, como es una buena práctica que ambas contengan los detalles importantes, utiliza `assertContains()` para comprobar las dos a la vez. Comprueba `Visit Mars`:
 
 [[[ code('365bc31cb9') ]]]
 
