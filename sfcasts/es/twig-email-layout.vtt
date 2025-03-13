@@ -1,0 +1,229 @@
+WEBVTT
+
+00:00:01.096 --> 00:00:02.036 align:middle
+¡Hora de una nueva función!
+
+00:00:02.386 --> 00:00:06.306 align:middle
+Quiero enviar un correo electrónico recordatorio a
+los clientes 1 semana antes de su viaje reservado.
+
+00:00:06.656 --> 00:00:08.746 align:middle
+¡T menos 1 semana para despegar gente!
+
+00:00:08.746 --> 00:00:12.676 align:middle
+Pero antes, tenemos un pequeño problema
+con nuestro trabajador CLI Symfony.
+
+00:00:13.186 --> 00:00:15.506 align:middle
+Abre .symfony.local.yaml.
+
+00:00:16.026 --> 00:00:19.436 align:middle
+Nuestro trabajador messenger está vigilando
+el directorio vendor en busca de cambios.
+
+00:00:19.886 --> 00:00:22.956 align:middle
+Al menos en algunos sistemas,
+hay demasiados archivos aquí
+
+00:00:22.956 --> 00:00:24.876 align:middle
+para monitorizar y pasan cosas raras.
+
+00:00:25.256 --> 00:00:30.286 align:middle
+No pasa nada: elimina vendor/: Y como hemos
+cambiado la configuración, salta a tu terminal
+
+00:00:30.286 --> 00:00:34.466 align:middle
+y reinicia el servidor
+web: symfony server:stop Y
+
+00:00:34.466 --> 00:00:40.146 align:middle
+symfony serve -d Nuestro nuevo correo electrónico de
+recordatorio de reserva tendrá una plantilla muy similar a la
+
+00:00:40.146 --> 00:00:41.666 align:middle
+de confirmación de reserva.
+
+00:00:42.056 --> 00:00:47.666 align:middle
+Para reducir la duplicación, y mantener la coherencia de
+nuestros elegantes correos electrónicos, en templates/email/,
+
+00:00:47.926 --> 00:00:53.186 align:middle
+crea una nueva plantilla layout.html.twig a la que
+se extenderán todos nuestros correos electrónicos.
+
+00:00:53.836 --> 00:00:58.376 align:middle
+Copia el contenido de
+booking_confirmation.html.twig y pégalo aquí.
+
+00:00:59.196 --> 00:01:04.806 align:middle
+Ahora, elimina el contenido específico de confirmación
+de reserva y crea un bloque content vacío.
+
+00:01:05.946 --> 00:01:07.766 align:middle
+Creo que está bien mantener
+nuestra firma aquí.
+
+00:01:08.656 --> 00:01:12.266 align:middle
+En booking_confirmation.html.twig,
+aquí arriba,
+
+00:01:12.266 --> 00:01:17.186 align:middle
+amplía este nuevo diseño
+y añade el bloque content.
+
+00:01:20.856 --> 00:01:25.376 align:middle
+Abajo, copia el contenido específico del correo
+electrónico y pégalo dentro de ese bloque.
+
+00:01:26.656 --> 00:01:27.816 align:middle
+Elimina todo lo demás.
+
+00:01:29.786 --> 00:01:34.256 align:middle
+Asegurémonos de que el correo electrónico de confirmación
+de la reserva sigue funcionando, ¡y tenemos pruebas para ello!
+
+00:01:34.716 --> 00:01:39.196 align:middle
+De vuelta al terminal, ejecútalas
+con: bin/phpunit ¡Verde!
+
+00:01:39.326 --> 00:01:40.206 align:middle
+Eso es buena señal.
+
+00:01:40.566 --> 00:01:42.846 align:middle
+Asegurémonos doblemente
+comprobándolo en Mailtrap.
+
+00:01:43.456 --> 00:01:44.826 align:middle
+En la aplicación, reserva un viaje...
+
+00:01:48.596 --> 00:01:49.556 align:middle
+y comprueba Mailtrap.
+
+00:01:51.666 --> 00:01:53.106 align:middle
+¡Sigue estando fantástico!
+
+00:01:53.616 --> 00:01:55.306 align:middle
+¡Es hora de enviar el correo
+electrónico recordatorio!
+
+00:01:55.306 --> 00:01:59.256 align:middle
+Después de enviar un correo electrónico
+recordatorio, tenemos que marcar la reserva para
+
+00:01:59.256 --> 00:02:02.246 align:middle
+no molestar al cliente con
+múltiples recordatorios.
+
+00:02:02.696 --> 00:02:05.146 align:middle
+Vamos a añadir una nueva bandera
+para esto a la entidad Booking.
+
+00:02:05.806 --> 00:02:07.206 align:middle
+En tu terminal, ejecuta: symfony
+
+00:02:07.206 --> 00:02:16.276 align:middle
+make:entity Booking ¡Uy! symfony console
+make:entity Booking Añade un nuevo
+
+00:02:16.776 --> 00:02:19.396 align:middle
+campo llamado reminderSentAt,
+
+00:02:19.586 --> 00:02:24.766 align:middle
+tipo datetime_immutable, ¿anulable? Sí. Este es un patrón
+común que utilizo para este tipo de campos de bandera en lugar de
+
+00:02:25.306 --> 00:02:27.536 align:middle
+un simple boolean. null
+significa false y una fecha
+
+00:02:28.046 --> 00:02:30.396 align:middle
+significa true. Funciona igual, pero nos da un
+
+00:02:31.026 --> 00:02:32.546 align:middle
+poco más de información. Pulsa intro para
+
+00:02:33.126 --> 00:02:34.226 align:middle
+salir del comando. En
+
+00:02:34.506 --> 00:02:37.876 align:middle
+la entidad Booking... aquí está nuestra
+nueva propiedad, y aquí abajo, el
+
+00:02:38.686 --> 00:02:42.176 align:middle
+getter y el setter. A continuación, necesitamos una
+forma de encontrar todas las reservas que necesitan que
+
+00:02:42.576 --> 00:02:44.586 align:middle
+se les envíe un recordatorio. ¡
+
+00:02:46.516 --> 00:02:51.066 align:middle
+Un trabajo perfecto para BookingRepository! Añade
+un nuevo método llamado findBookingsToRemind(),
+
+00:02:52.036 --> 00:02:56.616 align:middle
+tipo de retorno: array. Añade un docblock
+para mostrar que devuelve un array de
+
+00:02:56.976 --> 00:03:06.266 align:middle
+objetos Reserva: Dentro, return
+$this->createQueryBuilder(), alias b. Encadena
+
+00:03:07.236 --> 00:03:18.086 align:middle
+->andWhere('b.reminderSentAt IS NULL'),
+->andWhere('b.date <= :future'), ->andWhere('b.date
+
+00:03:18.086 --> 00:03:21.566 align:middle
+> :now') rellenando los
+
+00:03:22.246 --> 00:03:24.726 align:middle
+marcadores de posición con
+->setParameter('future',
+
+00:03:25.206 --> 00:03:30.346 align:middle
+new \DateTimeImmutable('+7 days')) y
+
+00:03:30.346 --> 00:03:37.006 align:middle
+->setParameter('now', new
+\DateTimeImmutable('now')). Termina con
+
+00:03:37.876 --> 00:03:40.246 align:middle
+->getQuery()->getResult(): En
+AppFixtures, aquí abajo, creamos
+
+00:03:40.786 --> 00:03:47.106 align:middle
+algunas reservas falsas. Añade una que, con toda seguridad,
+activará el envío de un correo electrónico recordatorio:
+
+00:03:47.586 --> 00:03:55.416 align:middle
+BookingFactory::createOne(), dentro, 'trip' =>
+$arrakis, 'customer' => $clark y, ésta es
+
+00:03:55.816 --> 00:04:02.336 align:middle
+la parte importante, 'date' => new \DateTimeImmutable('+6
+days'): Claramente entre ahora y dentro de 7
+
+00:04:02.996 --> 00:04:05.206 align:middle
+días. Hemos hecho cambios en la estructura
+
+00:04:05.556 --> 00:04:07.466 align:middle
+de nuestra base de datos.
+Normalmente, deberíamos
+
+00:04:07.686 --> 00:04:09.376 align:middle
+crear una migración... pero,
+
+00:04:09.376 --> 00:04:11.706 align:middle
+no estamos utilizando migraciones.
+Así que nos limitaremos a forzar la
+
+00:04:12.266 --> 00:04:17.266 align:middle
+actualización del esquema.
+En tu terminal, ejecuta:
+
+00:04:17.376 --> 00:04:26.246 align:middle
+symfony console doctrine:schema:update --force Luego, vuelve
+a cargar los accesorios: symfony console doctrine:fixture:load
+
+00:04:26.246 --> 00:04:31.166 align:middle
+Todo ha funcionado, ¡genial! A continuación, crearemos
+un nuevo correo electrónico recordatorio y un comando CLI
