@@ -78,6 +78,6 @@ Ahora comprueba Mailtrap... ¡aquí está! Como era de esperar, se parece mucho 
 
 Cuando se utiliza "Prueba de Mailtrap", las etiquetas y metadatos de Mailer no se convierten en categorías y variables personalizadas de Mailtrap, como ocurre cuando se envían en producción. ¡Pero aún puedes asegurarte de que se envían! Haz clic en esta pestaña "Información técnica" y desplázate un poco hacia abajo. Cuando Mailer no sabe cómo convertir las etiquetas y los metadatos, los añade como estas cabeceras genéricas personalizadas: `X-Tag` y `X-Metadata`.
 
-Efectivamente, `X-Tag` es `booking_reminder`. Genial, ¡también es lo que esperamos!
+Efectivamente, `X-Tag` es `booking_reminder`. Genial, ¡eso es lo que esperamos también!
 
 Vale, ¿nueva función? ¡Comprobado! ¿Pruebas para la nueva función? ¡Eso a continuación!
