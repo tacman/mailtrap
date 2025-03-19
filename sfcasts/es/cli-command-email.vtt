@@ -1,0 +1,239 @@
+WEBVTT
+
+00:00:01.076 --> 00:00:03.636 align:middle
+Ya hemos hecho el trabajo previo para nuestra
+función de correo electrónico recordatorio.
+
+00:00:03.986 --> 00:00:06.766 align:middle
+Ahora, ¡vamos a crear y enviar los correos!
+
+00:00:07.316 --> 00:00:11.296 align:middle
+En templates/email, la nueva plantilla
+de correo electrónico será muy similar
+
+00:00:11.296 --> 00:00:13.726 align:middle
+a booking_confirmation.html.twig.
+
+00:00:14.246 --> 00:00:19.186 align:middle
+Copia ese archivo y llámalo
+booking_reminder.html.twig.
+
+00:00:19.746 --> 00:00:22.326 align:middle
+Dentro, no quiero perder
+demasiado tiempo en esto,
+
+00:00:22.326 --> 00:00:26.486 align:middle
+así que simplemente cambia el título del acento
+para que diga "¡Próximamente!": ¡Envíalo!
+
+00:00:26.576 --> 00:00:27.966 align:middle
+¡Juego de palabras espacial accidental!
+
+00:00:28.536 --> 00:00:30.256 align:middle
+La lógica para enviar los
+correos electrónicos tiene
+
+00:00:30.256 --> 00:00:33.496 align:middle
+que ser algo que podamos programar para
+que se ejecute cada hora o cada día.
+
+00:00:33.866 --> 00:00:35.846 align:middle
+¡El trabajo perfecto para un comando CLI!
+
+00:00:36.256 --> 00:00:37.916 align:middle
+En tu terminal, ejecuta: symfony
+
+00:00:37.916 --> 00:00:46.346 align:middle
+make:command ¡Bah! symfony
+console make:command Llámalo
+
+00:00:47.276 --> 00:00:48.016 align:middle
+: app:send-booking-reminders . ¡ Ve a
+
+00:00:48.256 --> 00:00:52.726 align:middle
+comprobarlo
+
+00:00:52.726 --> 00:00:58.136 align:middle
+! src/Command/SendBookingRemindersCommand.php. Cambia la descripción
+a "Enviar correos electrónicos de recordatorio de reserva": En
+
+00:00:59.486 --> 00:01:12.416 align:middle
+el constructor, autocablea y establece propiedades
+para BookingRepository, EntityManagerInterface
+
+00:01:14.326 --> 00:01:16.746 align:middle
+y MailerInterface: Este
+comando no necesita argumentos
+
+00:01:16.746 --> 00:01:18.866 align:middle
+ni opciones, así que elimina por
+completo el método configure()
+
+00:01:19.526 --> 00:01:20.986 align:middle
+. Limpia las tripas
+
+00:01:20.986 --> 00:01:26.166 align:middle
+de execute(). Empieza añadiendo un
+bonito: $io->title ('Envío de
+
+00:01:26.756 --> 00:01:29.086 align:middle
+recordatorios de reserva'). A continuación,
+coge las reservas que necesitan
+
+00:01:29.126 --> 00:01:35.646 align:middle
+el envío de recordatorios, con $bookings
+
+00:01:36.586 --> 00:01:41.006 align:middle
+= $this->bookingRepo->findBookingsToRemind(). Para ser los mejores,
+vamos a mostrar una barra de progreso mientras hacemos un bucle sobre
+
+00:01:41.476 --> 00:01:44.046 align:middle
+las reservas. El objeto $io tiene un truco
+
+00:01:44.476 --> 00:01:50.466 align:middle
+para esto. Escribe foreach
+($io->progressIterate($reservas)
+
+00:01:51.116 --> 00:01:54.066 align:middle
+as $reservas) . ¡ Esto se encarga de toda
+la aburrida lógica de la barra de progreso
+
+00:01:54.656 --> 00:01:56.976 align:middle
+por nosotros! Dentro, necesitamos crear un
+
+00:01:57.636 --> 00:02:04.406 align:middle
+nuevo correo electrónico. En TripController, copia ese
+correo electrónico -incluyendo estas cabeceras- y pégalo
+
+00:02:05.366 --> 00:02:08.086 align:middle
+aquí. Pero tenemos que
+ajustarlo un poco: elimina
+
+00:02:09.666 --> 00:02:13.346 align:middle
+el archivo adjunto. Y para el
+asunto: sustituye "Confirmación"
+
+00:02:14.126 --> 00:02:16.486 align:middle
+por "Recordatorio". Arriba,
+añade algunas variables
+
+00:02:16.486 --> 00:02:24.676 align:middle
+por comodidad: $customer =
+$booking->getCustomer() y $trip
+
+00:02:25.416 --> 00:02:30.446 align:middle
+= $booking->getTrip(). Aquí abajo, mantén
+los mismos metadatos, pero cambia la etiqueta
+
+00:02:31.046 --> 00:02:33.716 align:middle
+a booking_reminder. Esto nos ayudará
+a distinguir mejor estos correos
+
+00:02:34.286 --> 00:02:39.036 align:middle
+en Mailtrap. Y, por
+supuesto, cambia la plantilla
+
+00:02:39.136 --> 00:02:47.386 align:middle
+a booking_reminder.html.twig. Todavía en el bucle, envía el
+correo electrónico con $this->mailer->send($email) y marca
+
+00:02:47.386 --> 00:02:48.626 align:middle
+la reserva como que el
+
+00:02:48.626 --> 00:02:54.276 align:middle
+recordatorio se ha enviado con
+
+00:02:55.426 --> 00:03:00.496 align:middle
+$booking->setReminderSentAt(new
+\DateTimeImmutable('now')). ¡Perfecto! Fuera del bucle
+
+00:03:00.646 --> 00:03:02.346 align:middle
+, llama a $this->em->flush()
+para guardar los cambios en
+
+00:03:02.346 --> 00:03:04.156 align:middle
+la base de datos.
+
+00:03:04.156 --> 00:03:12.306 align:middle
+Por último, celébralo con
+$io->success (sprintf('Enviados %d
+
+00:03:13.286 --> 00:03:14.106 align:middle
+recordatorios de reserva', count($reservas))).
+
+00:03:14.376 --> 00:03:15.436 align:middle
+¡Hora de probar! Ve a
+
+00:03:15.986 --> 00:03:20.116 align:middle
+tu terminal. Para asegurarte de que tenemos una reserva
+que necesita que se le envíe un recordatorio, recarga
+
+00:03:20.466 --> 00:03:26.986 align:middle
+las instalaciones con: symfony console
+doctrine:fixture:load Ahora, ¡ejecuta nuestro
+
+00:03:26.986 --> 00:03:33.976 align:middle
+nuevo comando! symfony console
+app:send-booking-reminders Bien, ¡se ha enviado 1
+
+00:03:34.256 --> 00:03:36.236 align:middle
+recordatorio! ¡ Y el resultado impresionará a
+
+00:03:36.896 --> 00:03:42.106 align:middle
+nuestros colegas! Antes de comprobar Mailtrap,
+vuelve a ejecutar el comando: "Enviados 0
+
+00:03:42.346 --> 00:03:46.406 align:middle
+recordatorios de reserva". ¡Perfecto! Nuestra
+lógica para marcar las reservas como recordatorios
+
+00:03:47.036 --> 00:03:48.246 align:middle
+enviados ¡funciona! Ahora
+
+00:03:49.006 --> 00:03:49.506 align:middle
+comprueba Mailtrap... ¡aquí
+
+00:03:49.506 --> 00:03:55.846 align:middle
+está! Como era de esperar, tiene un aspecto super
+similar a nuestro correo de confirmación, pero aquí dice
+
+00:03:55.846 --> 00:03:57.846 align:middle
+"Próximamente": está utilizando la
+
+00:03:58.466 --> 00:04:02.606 align:middle
+nueva plantilla. Cuando se utiliza "Prueba de
+Mailtrap", las etiquetas y metadatos de Mailer
+
+00:04:02.606 --> 00:04:06.766 align:middle
+no se convierten en categorías y variables
+personalizadas de Mailtrap, como ocurre cuando se envían
+
+00:04:07.426 --> 00:04:09.206 align:middle
+en producción. Pero puedes asegurarte de que
+
+00:04:09.656 --> 00:04:12.216 align:middle
+se envían Haz clic en la pestaña "Información
+técnica" y desplázate un poco hacia abajo.
+
+00:04:12.756 --> 00:04:15.466 align:middle
+Cuando Mailer no sabe cómo convertir etiquetas
+
+00:04:15.766 --> 00:04:20.376 align:middle
+y metadatos, los añade como estas
+cabeceras genéricas personalizadas: X-Tag
+
+00:04:20.936 --> 00:04:24.176 align:middle
+y X-Metadata. Efectivamente, X-Tag
+
+00:04:24.646 --> 00:04:26.386 align:middle
+es booking_reminder. Genial, ¡eso es lo que
+
+00:04:27.106 --> 00:04:28.506 align:middle
+esperamos también! Vale,
+
+00:04:28.606 --> 00:04:30.606 align:middle
+¿nueva función? ¡Comprobado!
+¿Prueba para la nueva función
+
+00:04:30.856 --> 00:04:31.516 align:middle
+?
