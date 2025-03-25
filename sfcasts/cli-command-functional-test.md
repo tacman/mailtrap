@@ -2,7 +2,7 @@
 
 The captain is tired of people running after the rocket because they show up late!
 That's why we created a command to send reminder emails! Problem solved!
-Now let's write a test to ensuring it *keeps* working. "New feature,
+Now let's write a test to ensure it *keeps* working. "New feature,
 new test", that's my motto!
 
 Jump over to your terminal and run:
@@ -32,7 +32,7 @@ bin/phpunit
 Check it out, our original two tests are passing, the two *dots*, and these
 *I's* are the new incomplete tests. I love this pattern: write test stubs
 for a new feature, then make a game of removing the incompletes one-by-one
-until they're all gone. *Then* the feature is done!
+until they're all gone. *Then*, the feature is done!
 
 Symfony has some out-of-the-box tooling for testing commands, but I like to
 use a package that wraps these up into a nicer experience. Install it with:
@@ -46,7 +46,7 @@ To enable this package's helpers, add a new *behavior* trait to our test:
 
 We're ready to knock down those I's!
 
-The first test is easy: we want to ensure when there's no bookings to
+The first test is easy: we want to ensure that, when there's no bookings to
 remind, the command doesn't send any emails. Write
 `$this->executeConsoleCommand()` and just the command name: `app:send-booking-reminders`.
 Ensure the command ran successfully with `->assertSuccessful()` and
@@ -77,6 +77,7 @@ the email is `steve@minecraft.com`, subject is `Booking Reminder for Visit Mars`
 and this email doesn't have an attachment, so remove that assertion entirely.
 
 Finally, write an assertion that the command updated the booking in the database.
+`$this->assertNotNull($booking->getReminderSentAt())`.
 
 Moment of truth! Run the tests:
 
