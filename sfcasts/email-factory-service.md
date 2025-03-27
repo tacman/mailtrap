@@ -13,7 +13,7 @@ paste it here, and make it a private property.
 
 Now, stub out two *factory* methods: `public function createBookingConfirmation()`,
 which will accept `Booking $booking`, and return `TemplatedEmail`. Then,
-`public function createBookingReminder(Booking $booking)` also returning a  `TemplatedEmail`.
+`public function createBookingReminder(Booking $booking)` also returning a `TemplatedEmail`.
 
 Create a method to house that darn duplication: `private function createEmail()`,
 with arguments `Booking $booking` and `string $tag` that returns a `TemplatedEmail`.
@@ -56,7 +56,7 @@ The failure comes from `BookingTest`:
 > Message does not include file with filename [Terms of Service.pdf].
 
 Easy fix! During our refactor, I forgot to attach the
-thriling terms PDF service to the booking confirmation email. And our
+thrilling terms of service PDF to the booking confirmation email. And our
 customers depend on that. Find
 `BookingEmailFactory::createBookingConfirmation()`, and add
 `->attachFromPath($this->termsPath, 'Terms of Service.pdf')`.
@@ -70,4 +70,4 @@ bin/phpunit
 Passing! Successful refactor? Check!
 
 Next, let's switch gears a bit and dive into *two* new Symfony components
-to consume the email webhook *events* from Mailtrap
+to consume the email webhook *events* from Mailtrap.
