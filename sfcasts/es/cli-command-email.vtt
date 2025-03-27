@@ -70,21 +70,20 @@ ni opciones, así que elimina por
 completo el método configure()
 
 00:01:19.526 --> 00:01:20.986 align:middle
-. Limpia las tripas
+Limpia las tripas de execute().
 
 00:01:20.986 --> 00:01:26.166 align:middle
-de execute(). Empieza añadiendo un
-bonito: $io->title ('Envío de
+Empieza añadiendo un
+bonito: $io->title ('Sending booking reminders').
 
 00:01:26.756 --> 00:01:29.086 align:middle
-recordatorios de reserva'). A continuación,
-coge las reservas que necesitan
+Luego, coge las reservas que necesitan
 
 00:01:29.126 --> 00:01:35.646 align:middle
-el envío de recordatorios, con $bookings
+que se envíen recordatorios, con
 
 00:01:36.586 --> 00:01:41.006 align:middle
-= $this->bookingRepo->findBookingsToRemind(). Para ser los mejores,
+$bookings = $this->bookingRepo->findBookingsToRemind(). Para ser los mejores,
 vamos a mostrar una barra de progreso mientras hacemos un bucle sobre
 
 00:01:41.476 --> 00:01:44.046 align:middle
