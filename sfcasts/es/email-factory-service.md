@@ -30,7 +30,7 @@ El fallo viene de `BookingTest`:
 
 > El mensaje no incluye un archivo con nombre de archivo [Condiciones del servicio.pdf].
 
-¡Fácil de arreglar! Durante nuestra refactorización, me olvidé de adjuntar el thriling terms PDF service al correo electrónico de confirmación de la reserva. Y nuestros clientes dependen de ello. Busca`BookingEmailFactory::createBookingConfirmation()`, y añade`->attachFromPath($this->termsPath, 'Terms of Service.pdf')`.
+¡Fácil de arreglar! Durante nuestra refactorización, olvidé adjuntar el emocionante PDF de las condiciones del servicio al correo electrónico de confirmación de la reserva. Y nuestros clientes dependen de ello. Busca`BookingEmailFactory::createBookingConfirmation()`, y añade`->attachFromPath($this->termsPath, 'Terms of Service.pdf')`.
 
 Vuelve a ejecutar las pruebas:
 
@@ -40,4 +40,4 @@ bin/phpunit
 
 ¡Pasadas! ¿Refactor exitoso? ¡Comprobado!
 
-A continuación, cambiemos un poco de marcha y sumerjámonos en dos nuevos componentes Symfony para consumir los eventos webhook de correo electrónico de Mailtrap
+A continuación, vamos a cambiar un poco de marcha y sumergirnos en dos nuevos componentes de Symfony para consumir los eventos webhook de correo electrónico de Mailtrap.
