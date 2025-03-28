@@ -700,6 +700,10 @@
   - find "mailtrap" service id
 - create `config/packages/webhook.yaml`
   - `framework.webhook.routing.mailtrap.service: mailer.webhook.request_parser.mailtrap`
+- Enable async remote event processing
+  - In `config/packages/messenger.yaml`
+  - Under `routing`, add:
+    - `'Symfony\Component\RemoteEvent\Messenger\ConsumeRemoteEventMessage': async`
 - Create a new `EmailEventConsumer` in `App\Webhook`
   - implements `ConsumerInterface`
   - implement the `consume()` method
@@ -712,6 +716,7 @@
 ## Demo our Webhook
 
 - First, switch `MAILER_DSN` back to your production DSN
+- Set `global_from_email` to an email on your configured Mailtrap domain
 - Start/stop Symfony CLI server
 - We need to expose our local server to the internet
   - I'm going to use ngrok: https://ngrok.com/
