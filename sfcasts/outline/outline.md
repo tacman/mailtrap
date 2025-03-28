@@ -681,7 +681,58 @@
 
 ## Webhook for Email Events
 
+- Webhook/RemoteEvent components...
+- `composer require webhook remote-event`
+- Webhook: consumes incoming webhooks on a single `/webhook` route in your app
+- RemoteEvent: like an *internal event* but dispatched by an external service to app's webhook
+- `config/routes/webhook.yaml`
+- `symfony console debug:route webhook`
+- You need to create:
+  - remote events for each webhook you want to consume
+  - parsers to validate, parse, and convert raw webhook payloads into remote events
+  - consumers to take the remote event and do something with it
+- RemoteEvent component provides generic email events
+  - `MailerDeliveryEvent`: for successful/failed (bounced) email deliveries
+  - `MailerEngagementEvent`: for email opens/clicks
+- The Mailtrap bridge provides a parser to parse/convert the above remote events
+- It's up to us to create a consumer
+- https://symfony.com/doc/current/webhook.html#usage-in-combination-with-the-mailer-component
+  - find "mailtrap" service id
+- create `config/packages/webhook.yaml`
+  - `framework.webhook.routing.mailtrap.service: mailer.webhook.request_parser.mailtrap`
+- Create a new `EmailEventConsumer` in `App\Webhook`
+  - implements `ConsumerInterface`
+  - implement the `consume()` method
+  - add `#[AsRemoteEventConsumer('mailtrap')]` attribute to class
+  - Above `consume()` add docblock with `@param MailerDeliveryEvent|MailerEngagementEvent $event`
+  - Inside consume - this is where we'd add our application logic
+    - `$event->` show all the methods
+    - `dump($event)` for our purposes
+
 ## Demo our Webhook
+
+- First, switch `MAILER_DSN` back to your production DSN
+- Start/stop Symfony CLI server
+- We need to expose our local server to the internet
+  - I'm going to use ngrok: https://ngrok.com/
+  - Create account, download/setup the client
+  - `symfony server:status` to get the url to expose
+  - `ngrok http <url>`
+  - Visit "Forwarding URL" in your browser - Visit Site
+  - Back in the terminal, we can see the requests
+- On mailtrap.io, go to "Settings" -> "Webhook" -> "Create New Webhook"
+  - Add the "Forwarding URL" + `/webhook/mailtrap`
+  - Stream: Transactional
+  - Domain: <your domain>
+  - Select all events
+  - Save
+- In `EmailEventConsumer`, remember, we added the `dump()`?
+- In your terminal, open a new tab and run:
+  - `symfony console server:dump`
+- In the app, create a booking using a real email address
+- At the terminal, wait for/inspect the delivery event
+- Open the email
+- At the terminal, wait for/inspect the engagement event
 
 ## Bonus: Scheduling our Email Command
 
