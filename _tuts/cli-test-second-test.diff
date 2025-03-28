@@ -1,5 +1,5 @@
 diff --git a/tests/Functional/Command/SendBookingRemindersCommandTest.php b/tests/Functional/Command/SendBookingRemindersCommandTest.php
-index 2553f39..62da02c 100644
+index 1eacc7e..4131fed 100644
 --- a/tests/Functional/Command/SendBookingRemindersCommandTest.php
 +++ b/tests/Functional/Command/SendBookingRemindersCommandTest.php
 @@ -2,11 +2,15 @@
@@ -20,7 +20,7 @@ index 2553f39..62da02c 100644
  {
 @@ -22,6 +26,33 @@ class SendBookingRemindersCommandTest extends KernelTestCase
  
-     public function testSendsReminders()
+     public function testRemindersSent()
      {
 -        $this->markTestIncomplete();
 +        $booking = BookingFactory::createOne([

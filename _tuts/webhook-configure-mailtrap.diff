@@ -1,0 +1,23 @@
+diff --git a/config/packages/messenger.yaml b/config/packages/messenger.yaml
+index f9aff11..dfbb884 100644
+--- a/config/packages/messenger.yaml
++++ b/config/packages/messenger.yaml
+@@ -13,6 +13,7 @@ framework:
+             # Route your messages to the transports
+             # 'App\Message\YourMessage': async
+             'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
++            'Symfony\Component\RemoteEvent\Messenger\ConsumeRemoteEventMessage': async
+ 
+ # when@test:
+ #    framework:
+diff --git a/config/packages/webhook.yaml b/config/packages/webhook.yaml
+new file mode 100644
+index 0000000..67e1750
+--- /dev/null
++++ b/config/packages/webhook.yaml
+@@ -0,0 +1,5 @@
++framework:
++    webhook:
++        routing:
++            mailtrap:
++                service: mailer.webhook.request_parser.mailtrap

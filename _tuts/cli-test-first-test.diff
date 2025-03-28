@@ -1,5 +1,5 @@
 diff --git a/tests/Functional/Command/SendBookingRemindersCommandTest.php b/tests/Functional/Command/SendBookingRemindersCommandTest.php
-index a46623c..2553f39 100644
+index ed7cc6e..1eacc7e 100644
 --- a/tests/Functional/Command/SendBookingRemindersCommandTest.php
 +++ b/tests/Functional/Command/SendBookingRemindersCommandTest.php
 @@ -3,17 +3,21 @@
@@ -16,7 +16,7 @@ index a46623c..2553f39 100644
 -    use ResetDatabase, Factories, InteractsWithMailer;
 +    use ResetDatabase, Factories, InteractsWithMailer, InteractsWithConsole;
  
-     public function testNoRemindersToSend()
+     public function testNoRemindersSent()
      {
 -        $this->markTestIncomplete();
 +        $this->executeConsoleCommand('app:send-booking-reminders')
@@ -25,4 +25,4 @@ index a46623c..2553f39 100644
 +        ;
      }
  
-     public function testSendsReminders()
+     public function testRemindersSent()

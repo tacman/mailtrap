@@ -1,6 +1,6 @@
 diff --git a/tests/Functional/Command/SendBookingRemindersCommandTest.php b/tests/Functional/Command/SendBookingRemindersCommandTest.php
 new file mode 100644
-index 0000000..a46623c
+index 0000000..ed7cc6e
 --- /dev/null
 +++ b/tests/Functional/Command/SendBookingRemindersCommandTest.php
 @@ -0,0 +1,23 @@
@@ -17,12 +17,12 @@ index 0000000..a46623c
 +{
 +    use ResetDatabase, Factories, InteractsWithMailer;
 +
-+    public function testNoRemindersToSend()
++    public function testNoRemindersSent()
 +    {
 +        $this->markTestIncomplete();
 +    }
 +
-+    public function testSendsReminders()
++    public function testRemindersSent()
 +    {
 +        $this->markTestIncomplete();
 +    }

@@ -1,0 +1,232 @@
+diff --git a/composer.json b/composer.json
+index a0176bb..843c2c5 100644
+--- a/composer.json
++++ b/composer.json
+@@ -22,11 +22,13 @@
+         "symfony/mailtrap-mailer": "7.2.*",
+         "symfony/messenger": "7.2.*",
+         "symfony/monolog-bundle": "^3.10",
++        "symfony/remote-event": "7.2.*",
+         "symfony/runtime": "7.2.*",
+         "symfony/security-csrf": "7.2.*",
+         "symfony/stimulus-bundle": "^2.21",
+         "symfony/twig-bundle": "7.2.*",
+         "symfony/validator": "7.2.*",
++        "symfony/webhook": "7.2.*",
+         "symfony/yaml": "7.2.*",
+         "symfonycasts/tailwind-bundle": "^0.7.1",
+         "twig/cssinliner-extra": "^3.18",
+diff --git a/composer.lock b/composer.lock
+index e5c4eee..57f8b89 100644
+--- a/composer.lock
++++ b/composer.lock
+@@ -4,7 +4,7 @@
+         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+         "This file is @generated automatically"
+     ],
+-    "content-hash": "0178417ca8a6c18f062254fdf5a8a8ab",
++    "content-hash": "5b2a5ad23bb0f8b9f4c7b07f3d12d72d",
+     "packages": [
+         {
+             "name": "composer/semver",
+@@ -5237,6 +5237,71 @@
+             ],
+             "time": "2024-12-31T11:04:50+00:00"
+         },
++        {
++            "name": "symfony/remote-event",
++            "version": "v7.2.0",
++            "source": {
++                "type": "git",
++                "url": "https://github.com/symfony/remote-event.git",
++                "reference": "7d11a4d8269f0e2332dc3452b847efd9112a298c"
++            },
++            "dist": {
++                "type": "zip",
++                "url": "https://api.github.com/repos/symfony/remote-event/zipball/7d11a4d8269f0e2332dc3452b847efd9112a298c",
++                "reference": "7d11a4d8269f0e2332dc3452b847efd9112a298c",
++                "shasum": ""
++            },
++            "require": {
++                "php": ">=8.2",
++                "symfony/messenger": "^6.4|^7.0"
++            },
++            "type": "library",
++            "autoload": {
++                "psr-4": {
++                    "Symfony\\Component\\RemoteEvent\\": ""
++                },
++                "exclude-from-classmap": [
++                    "/Tests/"
++                ]
++            },
++            "notification-url": "https://packagist.org/downloads/",
++            "license": [
++                "MIT"
++            ],
++            "authors": [
++                {
++                    "name": "Fabien Potencier",
++                    "email": "fabien@symfony.com"
++                },
++                {
++                    "name": "Symfony Community",
++                    "homepage": "https://symfony.com/contributors"
++                }
++            ],
++            "description": "Eases handling remote events",
++            "homepage": "https://symfony.com",
++            "keywords": [
++                "event"
++            ],
++            "support": {
++                "source": "https://github.com/symfony/remote-event/tree/v7.2.0"
++            },
++            "funding": [
++                {
++                    "url": "https://symfony.com/sponsor",
++                    "type": "custom"
++                },
++                {
++                    "url": "https://github.com/fabpot",
++                    "type": "github"
++                },
++                {
++                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
++                    "type": "tidelift"
++                }
++            ],
++            "time": "2024-09-25T14:21:43+00:00"
++        },
+         {
+             "name": "symfony/routing",
+             "version": "v7.2.0",
+@@ -6396,6 +6461,78 @@
+             ],
+             "time": "2024-10-18T07:58:17+00:00"
+         },
++        {
++            "name": "symfony/webhook",
++            "version": "v7.2.0",
++            "source": {
++                "type": "git",
++                "url": "https://github.com/symfony/webhook.git",
++                "reference": "cbf9ee7fb717a69281a35442beb3bc3b8d3aa5b5"
++            },
++            "dist": {
++                "type": "zip",
++                "url": "https://api.github.com/repos/symfony/webhook/zipball/cbf9ee7fb717a69281a35442beb3bc3b8d3aa5b5",
++                "reference": "cbf9ee7fb717a69281a35442beb3bc3b8d3aa5b5",
++                "shasum": ""
++            },
++            "require": {
++                "php": ">=8.2",
++                "symfony/http-foundation": "^6.4|^7.0",
++                "symfony/http-kernel": "^6.4|^7.0",
++                "symfony/messenger": "^6.4|^7.0",
++                "symfony/remote-event": "^6.4|^7.0"
++            },
++            "require-dev": {
++                "symfony/http-client": "^6.4|^7.0",
++                "symfony/serializer": "^6.4|^7.0"
++            },
++            "type": "library",
++            "autoload": {
++                "psr-4": {
++                    "Symfony\\Component\\Webhook\\": ""
++                },
++                "exclude-from-classmap": [
++                    "/Tests/"
++                ]
++            },
++            "notification-url": "https://packagist.org/downloads/",
++            "license": [
++                "MIT"
++            ],
++            "authors": [
++                {
++                    "name": "Fabien Potencier",
++                    "email": "fabien@symfony.com"
++                },
++                {
++                    "name": "Symfony Community",
++                    "homepage": "https://symfony.com/contributors"
++                }
++            ],
++            "description": "Eases sending and consuming webhooks",
++            "homepage": "https://symfony.com",
++            "keywords": [
++                "webhook"
++            ],
++            "support": {
++                "source": "https://github.com/symfony/webhook/tree/v7.2.0"
++            },
++            "funding": [
++                {
++                    "url": "https://symfony.com/sponsor",
++                    "type": "custom"
++                },
++                {
++                    "url": "https://github.com/fabpot",
++                    "type": "github"
++                },
++                {
++                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
++                    "type": "tidelift"
++                }
++            ],
++            "time": "2024-11-25T15:21:05+00:00"
++        },
+         {
+             "name": "symfony/yaml",
+             "version": "v7.2.0",
+@@ -9689,7 +9826,7 @@
+     ],
+     "aliases": [],
+     "minimum-stability": "stable",
+-    "stability-flags": [],
++    "stability-flags": {},
+     "prefer-stable": false,
+     "prefer-lowest": false,
+     "platform": {
+@@ -9697,7 +9834,7 @@
+         "ext-ctype": "*",
+         "ext-iconv": "*"
+     },
+-    "platform-dev": [],
++    "platform-dev": {},
+     "platform-overrides": {
+         "php": "8.2"
+     },
+diff --git a/config/routes/webhook.yaml b/config/routes/webhook.yaml
+new file mode 100644
+index 0000000..bf07b38
+--- /dev/null
++++ b/config/routes/webhook.yaml
+@@ -0,0 +1,3 @@
++webhook:
++    resource: '@FrameworkBundle/Resources/config/routing/webhook.xml'
++    prefix: /webhook
+diff --git a/symfony.lock b/symfony.lock
+index e6396c9..004ecdc 100644
+--- a/symfony.lock
++++ b/symfony.lock
+@@ -257,6 +257,18 @@
+             "config/routes/web_profiler.yaml"
+         ]
+     },
++    "symfony/webhook": {
++        "version": "7.2",
++        "recipe": {
++            "repo": "github.com/symfony/recipes",
++            "branch": "main",
++            "version": "6.3",
++            "ref": "0bc853a74c98e448116ba53e118a7b6b3cdf9a03"
++        },
++        "files": [
++            "config/routes/webhook.yaml"
++        ]
++    },
+     "symfonycasts/tailwind-bundle": {
+         "version": "v0.6.0"
+     },
