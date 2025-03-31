@@ -9,38 +9,63 @@ enough: I love tests!
 
 Start by creating a new class: `BookingEmailFactory` in the `App\Email` namespace.
 Add a constructor, copy the `$termsPath` argument from `TripController::show()`,
-paste it here, and make it a private property.
+paste it here, and make it a private property:
+
+[[[ code('11961225d5') ]]]
 
 Now, stub out two *factory* methods: `public function createBookingConfirmation()`,
 which will accept `Booking $booking`, and return `TemplatedEmail`. Then,
-`public function createBookingReminder(Booking $booking)` also returning a `TemplatedEmail`.
+`public function createBookingReminder(Booking $booking)` also returning a `TemplatedEmail`:
+
+[[[ code('62556c35ed') ]]]
 
 Create a method to house that darn duplication: `private function createEmail()`,
-with arguments `Booking $booking` and `string $tag` that returns a `TemplatedEmail`.
+with arguments `Booking $booking` and `string $tag` that returns a `TemplatedEmail`:
+
+[[[ code('0d542d17dc') ]]]
+
 Jump to `TripController::show()`, copy *all* the email creation code, and paste it
 here. Up top, we need two variables: `$customer = $booking->getCustomer()` and
 `$trip = $booking->getTrip()`. Remove `attachFromPath()`, `subject()`, and
 `htmlTemplate()`. In this `TagHeader`, use the passed `$tag` variable. We can leave the
-metadata the same. Finally, return the `$email`.
+metadata the same. Finally, return the `$email`:
+
+[[[ code('aedc8d0d37') ]]]
 
 With our shared logic in place, use it in `createBookingConfirmation()`. Write
 `return $this->createEmail()`, passing the `$booking` variable and `booking` for
 the tag. Now, `->subject()`, copy this from `TripController::show()`, changing the `$trip`
-variable to `$booking->getTrip()`. Finally, `->htmlTemplate('email/booking_confirmation.html.twig')`.
+variable to `$booking->getTrip()`. Finally, `->htmlTemplate('email/booking_confirmation.html.twig')`:
+
+[[[ code('0ddbf27985') ]]]
 
 For `createBookingReminder()`, copy the insides of `createBookingConfirmation()` and
 paste here. Change the tag to `booking_reminder`, the subject to `Booking Reminder`,
-and the template to `email/booking_reminder.html.twig`.
+and the template to `email/booking_reminder.html.twig`:
+
+[[[ code('0ddbf27985') ]]]
 
 Now the fun part! *Using* our factory and *removing* a whole wack of code!
 
 In `TripController::show()`, instead of injecting `$termsPath`, inject
-`BookingEmailFactory $emailFactory`. Delete all the email creation code and
-inside `$mailer->send()`, write `$emailFactory->createBookingConfirmation($booking)`.
+`BookingEmailFactory $emailFactory`:
+
+[[[ code('ff3a7c2d7d') ]]]
+
+Delete all the email creation code and
+inside `$mailer->send()`, write `$emailFactory->createBookingConfirmation($booking)`:
+
+[[[ code('a2987df642') ]]]
 
 Over in `SendBookingRemindersCommand`, again, remove all the email creation code. Up
-in the constructor, autowire `private BookingEmailFactory $emailFactory`. Down here,
-inside `$this->mailer->send()`, write `$this->emailFactory->createBookingReminder($booking)`.
+in the constructor, autowire `private BookingEmailFactory $emailFactory`:
+
+[[[ code('aed5fb9865') ]]]
+
+Down here,
+inside `$this->mailer->send()`, write `$this->emailFactory->createBookingReminder($booking)`:
+
+[[[ code('7cec573aac') ]]]
 
 Oh yeah, that felt good! But did we break anything? We Canadians are known for being
 a bit wild. Check by running the tests:
@@ -59,7 +84,9 @@ Easy fix! During our refactor, I forgot to attach the
 thrilling terms of service PDF to the booking confirmation email. And our
 customers depend on that. Find
 `BookingEmailFactory::createBookingConfirmation()`, and add
-`->attachFromPath($this->termsPath, 'Terms of Service.pdf')`.
+`->attachFromPath($this->termsPath, 'Terms of Service.pdf')`:
+
+[[[ code('27928d071f') ]]]
 
 Re-run the tests:
 
