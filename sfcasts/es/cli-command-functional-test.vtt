@@ -1,0 +1,221 @@
+WEBVTT
+
+00:00:01.066 --> 00:00:04.666 align:middle
+¡El capitán está harto de que la gente
+corra detrás del cohete porque llegan tarde!
+
+00:00:05.066 --> 00:00:08.096 align:middle
+¡Por eso hemos creado un comando para
+enviar correos electrónicos recordatorios!
+
+00:00:08.366 --> 00:00:09.356 align:middle
+¡Problema resuelto!
+
+00:00:09.956 --> 00:00:12.356 align:middle
+Ahora escribamos una prueba para
+asegurarnos de que sigue funcionando.
+
+00:00:12.786 --> 00:00:15.266 align:middle
+"Nueva función, nueva
+prueba", ¡ese es mi lema!
+
+00:00:15.786 --> 00:00:21.016 align:middle
+Salta a tu terminal y ejecuta:
+symfony console make:test Teclea?
+
+00:00:21.316 --> 00:00:23.076 align:middle
+KernelTestCase.
+
+00:00:23.076 --> 00:00:26.146 align:middle
+¿Nombre? SendBookingRemindersCommandTest.
+
+00:00:27.306 --> 00:00:30.296 align:middle
+En nuestro IDE, la nueva
+clase se añadió a tests/.
+
+00:00:30.296 --> 00:00:33.806 align:middle
+Ábrelo y mueve la clase a
+un nuevo espacio de nombres:
+
+00:00:34.806 --> 00:00:38.696 align:middle
+App\Tests\Functional\Command, para
+mantener las cosas organizadas.
+
+00:00:39.466 --> 00:00:46.816 align:middle
+Perfecto. Primero, limpia las tripas y añade algunos
+rasgos de comportamiento: use ResetDatabase, Factories,
+
+00:00:47.176 --> 00:00:53.876 align:middle
+InteractsWithMailer: Elimina dos pruebas:
+public function testNoRemindersSent()
+
+00:00:54.556 --> 00:01:01.776 align:middle
+con $this->markTestIncomplete() y
+public function testRemindersSent().
+
+00:01:02.516 --> 00:01:11.316 align:middle
+Márcalo también como incompleto: De nuevo en el terminal,
+ejecuta las pruebas con: bin/phpunit Compruébalo,
+
+00:01:11.316 --> 00:01:14.106 align:middle
+nuestras dos pruebas originales
+pasan, los dos puntos,
+
+00:01:14.406 --> 00:01:17.066 align:middle
+y estas íes son las
+nuevas pruebas incompletas.
+
+00:01:17.456 --> 00:01:20.736 align:middle
+Me encanta esta pauta: escribe stubs
+de prueba para una nueva función,
+
+00:01:20.976 --> 00:01:24.896 align:middle
+y luego juega a eliminar los incompletos
+uno a uno hasta que desaparezcan todos.
+
+00:01:25.186 --> 00:01:26.626 align:middle
+Entonces, ¡la funcionalidad está terminada!
+
+00:01:26.626 --> 00:01:31.606 align:middle
+Symfony tiene algunas herramientas para
+probar comandos, pero me gusta usar un paquete
+
+00:01:31.606 --> 00:01:34.136 align:middle
+que las envuelve en una
+experiencia más agradable.
+
+00:01:34.536 --> 00:01:36.936 align:middle
+Instálalo con: composer require
+
+00:01:37.016 --> 00:01:45.526 align:middle
+--dev zenstruck/console-test Para activar los ayudantes
+de este paquete, añade un nuevo rasgo de comportamiento
+
+00:01:45.526 --> 00:01:50.636 align:middle
+a nuestra prueba: InteractsWithConsole:
+¡Estamos listos para derribar esos yoes!
+
+00:01:51.306 --> 00:01:55.456 align:middle
+La primera prueba es fácil: queremos asegurarnos
+de que, cuando no haya reservas que recordar,
+
+00:01:55.666 --> 00:01:57.646 align:middle
+el comando no envíe
+ningún correo electrónico.
+
+00:01:58.056 --> 00:02:04.976 align:middle
+Escribe $this->executeConsoleCommand() y sólo
+el nombre del comando: app:send-booking-reminders.
+
+00:02:05.706 --> 00:02:10.836 align:middle
+Asegúrate de que el comando se ejecuta
+correctamente con ->assertSuccessful()
+
+00:02:10.936 --> 00:02:16.886 align:middle
+y ->assertOutputContains('Sent 0 booking
+reminders'): ¡Pasamos a la siguiente prueba!
+
+00:02:17.266 --> 00:02:21.516 align:middle
+Ésta es más complicada: tenemos que crear
+una reserva que pueda recibir un recordatorio.
+
+00:02:22.116 --> 00:02:27.836 align:middle
+Crea la reserva con $booking
+= BookingFactory::createOne().
+
+00:02:28.336 --> 00:02:34.646 align:middle
+Pasa un array con 'trip' =>
+TripFactory::new(), y dentro de éste,
+
+00:02:34.646 --> 00:02:42.996 align:middle
+otro array con 'name' => 'Visit Mars', 'slug'
+=> 'iss' (para evitar el problema de la imagen).
+
+00:02:43.836 --> 00:02:49.666 align:middle
+La reserva también necesita un cliente:
+'customer' => CustomerFactory::new().
+
+00:02:50.456 --> 00:02:55.986 align:middle
+Lo único que nos importa es el correo electrónico
+del cliente: 'email' => 'steve@minecraft.com'.
+
+00:02:55.986 --> 00:03:05.786 align:middle
+Por último, la fecha de la reserva: 'date'
+=> new \DateTimeImmutable('+4 days'): ¡Uf!
+
+00:03:06.166 --> 00:03:08.956 align:middle
+Tenemos una reserva en la base de datos que
+necesita que se le envíe un recordatorio.
+
+00:03:09.306 --> 00:03:12.096 align:middle
+El paso de configuración, u
+ordenación, de esta prueba está hecho.
+
+00:03:12.526 --> 00:03:16.346 align:middle
+Añade una preafirmación para asegurarte de que
+no se ha enviado un recordatorio a esta reserva:
+
+00:03:16.816 --> 00:03:24.146 align:middle
+$this->assertNull($booking->getReminderSentAt()): Ahora el paso
+de actuar: $this->executeConsoleCommand('app:send-booking-reminders')
+
+00:03:24.616 --> 00:03:32.866 align:middle
+->assertSuccessful()->assertOutputContains('Sent
+1 booking reminders'):
+
+00:03:33.176 --> 00:03:36.846 align:middle
+Pasa a la fase de aserción
+
+00:03:37.636 --> 00:03:40.406 align:middle
+para asegurarte de que se ha enviado el
+correo electrónico. En BookingTest, copia la
+
+00:03:40.996 --> 00:03:44.316 align:middle
+aserción del correo electrónico y
+pégala aquí. Haz algunos ajustes:
+
+00:03:48.386 --> 00:03:55.326 align:middle
+el correo electrónico es steve@minecraft.com ,
+el asunto es Booking Reminder for Visit Mars y
+
+00:03:55.386 --> 00:04:00.526 align:middle
+este correo no tiene ningún archivo adjunto, así que elimina
+esa aserción por completo: Por último, escribe una aserción
+
+00:04:00.526 --> 00:04:05.546 align:middle
+que indique que el comando actualizó la reserva en la base de datos.
+$this->assertNotNull($booking->getReminderSentAt()): ¡El momento de la verdad!
+
+00:04:05.956 --> 00:04:12.976 align:middle
+Ejecuta las pruebas: ¡Todo en verde!
+
+00:04:12.976 --> 00:04:16.446 align:middle
+Creo que este tipo de
+
+00:04:16.446 --> 00:04:20.936 align:middle
+pruebas de fuera a dentro son muy divertidas y fáciles
+de escribir, porque no tienes que preocuparte demasiado de
+
+00:04:20.936 --> 00:04:23.436 align:middle
+probar la lógica interna
+e imitan la forma en que un
+
+00:04:23.436 --> 00:04:26.036 align:middle
+usuario interactúa con tu
+aplicación. No es casualidad que las
+
+00:04:26.526 --> 00:04:30.166 align:middle
+afirmaciones se centren en lo que el usuario debería ver y en
+algunas comprobaciones de alto nivel posteriores a la interacción
+
+00:04:30.446 --> 00:04:34.816 align:middle
+, como comprobar algo en la base
+de datos. Ahora que tenemos pruebas
+
+00:04:34.816 --> 00:04:38.466 align:middle
+para nuestras dos rutas de envío de correo
+electrónico, demos una vuelta de la victoria
+
+00:04:38.726 --> 00:04:42.936 align:middle
+y refactoricemos con confianza
+para eliminar la duplicación.
