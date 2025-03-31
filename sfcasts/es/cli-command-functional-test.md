@@ -10,7 +10,7 @@ symfony console make:test
 
 Teclea? `KernelTestCase`. ¿Nombre? `SendBookingRemindersCommandTest`.
 
-En nuestro IDE, la nueva clase se ha añadido a `tests/`. Ábrelo y mueve la clase a un nuevo espacio de nombres: `App\Tests\Functional\Command`, para mantener las cosas organizadas.
+En nuestro IDE, la nueva clase se añadió a `tests/`. Ábrelo y mueve la clase a un nuevo espacio de nombres: `App\Tests\Functional\Command`, para mantener las cosas organizadas.
 
 Perfecto. Primero, limpia las tripas y añade algunos rasgos de comportamiento:`use ResetDatabase, Factories, InteractsWithMailer`:
 
