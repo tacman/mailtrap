@@ -741,6 +741,32 @@
 
 ## Bonus: Scheduling our Email Command
 
+- Our intern is complaining about having to login at midnight to run our reminder emails command
+- `composer require scheduler`
+- `symfony console make:schedule`
+  - `default`
+- Open `App\Scheduler\MainSchedule`
+  - stateful: in case the scheduler stops and misses a task
+  - `->processOnlyLastMissedRun(true)`: to process only the last missed run
+  - `->lock()`: if you have multiple workers consuming the same schedule
+  - Add our command:
+    - `RecurringMessage::cron`
+    - `'0 0 * * *'`: every day at midnight
+    - `new RunCommandMessage('app:send-booking-reminders')`
+- `symfony console debug:schedule`
+  - `composer require dragonmantank/cron-expression`
+  - Run again
+- Remove task from `MainSchedule`
+- In `SendBookingRemindersCommand`
+  - add `#[AsCronTask('0 0 * * *')]`
+- `symfony console debug:schedule`
+- "hashed" cron expressions - "random" but predictable
+- `symfony console debug:schedule`
+- `symfony console debug:schedule`
+- Run the schedule!
+  - A special messenger transport
+  - `symfony console messenger:consume scheduler_default`
+
 ## Bonus: Monitoring Messenger
 
 ## Bonus: Signing Emails (SMIME)
