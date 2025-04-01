@@ -19,3 +19,4 @@ chapters:
   - email-factory-service
   - email-event-webhook
   - webhook-demo
+  - bonus-symfony-scheduler
