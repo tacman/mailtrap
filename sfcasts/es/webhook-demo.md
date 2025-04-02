@@ -1,14 +1,14 @@
-# Demuestra nuestro Webhook
+# Demoin nuestra Configuración de Webhook y Evento Remoto
 
-¡Es hora de probar nuestro webhook Mailtrap!
+¡Es hora de probar el webhook Mailtrap!
 
 En primer lugar, tenemos que volver a cambiar nuestro entorno de desarrollo para enviar en producción. En `.env.local`, cambia a tu Mailtrap de producción `MAILER_DSN` y en`config/services.yaml`, asegúrate de que el dominio `global_from_email`'s es el que configuraste con Mailtrap.
 
 En Mailtrap, ve a "Configuración" > "Webhooks" y haz clic en "Crear nuevo Webhook". Lo primero que necesitamos es una URL de Webhook. Hmm, esto tiene que ser `/webhook/mailtrap`pero tiene que ser una URL absoluta. En producción, esto no sería un problema: sería tu dominio de producción. En desarrollo, es un poco más complicado. No podemos usar simplemente la URL que nos da el servidor CLI de Symfony...
 
-Necesitamos exponer nuestro servidor Symfony local al público. Hay una herramienta muy útil para esto: [ngrok](https://ngrok.com/). Crea una cuenta gratuita, inicia sesión y sigue las instrucciones para configurar el cliente CLI ngrok.
+De alguna manera tenemos que exponer nuestro servidor Symfony local al público. Y hay una herramienta muy útil que hace exactamente esto: [ngrok](https://ngrok.com/). Crea una cuenta gratuita, inicia sesión y sigue las instrucciones para configurar el cliente CLI ngrok.
 
-En el terminal, reinicia con servidor web Symfony:
+En el terminal, reinicia el servidor web Symfony:
 
 ```terminal
 symfony server:stop
@@ -54,6 +54,6 @@ En tu navegador, reserva un viaje, recuerda utilizar una dirección de correo el
 
 De vuelta en el terminal del servidor de volcado, espera un poco... ¡y boom! ¡Otro evento! Esta vez, es un `MailerEngagementEvent` para `open`. ¡Qué guay!
 
-Muy bien, cadetes espaciales, ¡eso es todo por este curso! Hemos cubierto casi todas las características de Symfony Mailer.
+Muy bien, cadetes espaciales, ¡esto es todo por este curso! Hemos conseguido cubrir casi todas las funciones de Symfony Mailer sin hacer SPAM a nuestros usuarios. ¡Ganamos!
 
 hasta la próxima, ¡feliz programación!
