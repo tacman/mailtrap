@@ -13,10 +13,11 @@ composer require webhook remote-event
 ```
 
 The webhook component gives us a single endpoint to send all webhooks to.
-It parses the data sent to us - called thepayload and dispatches a *remote event* to a *consumer*.
+It parses the data sent to us - called the payload, converts it to a *remote event*
+object, and sends it to a *consumer*.
 You can think of remote events as similar to Symfony events. Instead of
 your app dispatching an event, a third-party service does it - hence
-*remote event*. An instead of *event listeners*, we say that remote events
+*remote event*. And instead of *event listeners*, we say that remote events
 have *consumers*.
 
 Run
@@ -39,9 +40,9 @@ configure some sort of a *type*.
 alert system - can send us *wildly* different payloads, we typically
 need to create our own parsers and remote events. Since email events are
 pretty standard, Symfony provides some out-of-the-box remote events for
-these. Some mailer bridges, including the Mailtrap bridge we're using,
-provide parsers for each service's webhooks. We just need
-to set it up.
+these: `MailerDeliveryEvent` and `MailerEngagementEvent`. Some mailer bridges,
+including the Mailtrap bridge we're using, provide parsers for each service's
+webhook payload to create these objects. We just need to set it up.
 
 In `config/packages/`, create a `webhook.yaml` file. Add: `framework`,
 `webhook`, `routing`, `mailtrap` (this is the *type* used in the URL),
