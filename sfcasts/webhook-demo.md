@@ -1,6 +1,6 @@
-# Demo our Webhook
+# Demoin our Webhook & Remote Event Setup
 
-Time to test-drive our Mailtrap webhook!
+Time to test-drive the Mailtrap webhook!
 
 First, we need to switch our development environment to send in production again.
 In `.env.local`, switch to your production Mailtrap `MAILER_DSN` and in
@@ -13,8 +13,8 @@ but it needs to be an absolute URL. In production, this wouldn't be a problem:
 it would be your production domain. In development, it's a bit trickier. We
 can't just use the URL the Symfony CLI server gives us...
 
-We need to *expose* our local Symfony server to the public. There's a neat tool for
-this: [ngrok](https://ngrok.com/). Create a free account, login, and follow the
+Somehow we need to *expose* our local Symfony server to the public. And there's a neat
+tool that does exactly this: [ngrok](https://ngrok.com/). Create a free account, log in, and follow the
 instructions to configure the ngrok CLI client.
 
 Over in the terminal, restart with Symfony webserver:
@@ -73,7 +73,7 @@ Let's try an engagement event! In your email client, open the email.
 Back in the dump server terminal, wait a bit... and boom! Another event! This
 time, it's a `MailerEngagementEvent` for `open`. This is cool!
 
-Alright space cadets, that's it for this course! We covered almost all
-Symfony Mailer features.
+Alright space cadets, that's it for this course! We managed to covere almost all
+of Symfony Mailer features without SPAM'ing our users. Win!
 
 'Til next time, happy coding!
