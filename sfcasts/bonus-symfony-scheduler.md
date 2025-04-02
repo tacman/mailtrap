@@ -2,23 +2,23 @@
 
 Hey! You're still here? Great! I have a bonus chapter for you.
 
-One of our interns, Hugo, is complaining that he has to login to our server
+One of our interns, Hugo, is complaining that he has to log in to our server
 and run the booking reminders command, every night at midnight. I don't know what
 the problem is - isn't that what interns are for?!
 
 But... I guess to be more robust, we should automate this in case he's sick
-or forgets.
-
-The Symfony Scheduler component is perfect for this. At your terminal, run:
+or forgets. We could set up a CRON job... but that wouldn't be nearly as cool
+or flexible as using the Symfony Scheduler component is perfect for this.
+At your terminal, run:
 
 ```terminal
 composer require scheduler
 ```
 
-You can think of Symfony Scheduler as an add-on for Symfony Messenger. It provides
+Think of Symfony Scheduler as an add-on for Messenger. It provides
 its own special transport that, instead of a queue, determines if it's time
 to run a job. Each job, or task, is a messenger message, so it requires a message
-handler. You consume the schedule like any messenger transport with the
+handler. You consume the schedule, like any messenger transport with the
 `messenger:consume` command.
 
 Create a schedule with:
@@ -28,28 +28,30 @@ symfony console make:schedule
 ```
 
 Transport name? Use `default`. Schedule name? Use the default: `MainSchedule`.
+Exciting!
 
 It's possible to have multiple schedules, but for most apps, a single schedule is
 enough.
 
 Check it out: `src/Scheduler/MainSchedule.php`. It's a service that implements
-`ScheduleProviderInterface` and marked with the `#[AsSchedule]` attribute with
+`ScheduleProviderInterface` and is marked with the `#[AsSchedule]` attribute with
 the name `default`. The maker automatically injected the cache, and we'll
 see why in a second. The `getSchedule()` method is where we configure the
 schedule and add tasks.
 
-This `->stateful()` that we're passing `$this->cache` is important. If the process
-that's running this schedule goes down, when it comes back online, it will know all
+This `->stateful()` that we're passing `$this->cache` to is important. If the process
+that's running this schedule goes down - like our messenger workers stop temporarily
+a server restart - when it comes back online, it will know all
 the jobs it missed and run them. If a task was supposed to run 10 times while it was
 down, it will run them all. That might not be desired so add
-`->processOnlyLastMissedRun(true)` to only run the last one.
+`->processOnlyLastMissedRun(true)` to only run the last one. Bullet proof!
 
 For more complex apps, you might be consuming the same schedule on multiple workers.
 Use `->lock()` to configure a lock so that only one worker runs the task when its
 due.
 
-Time to add our first task! In `->add()`, write `RecurringMessage::`. There's a
-few different ways to *trigger* tasks. I like to use `cron()`. I want this task to
+Time to add our first task! In `->add()`, write `RecurringMessage::`. There are a
+few different ways to *trigger* a task. I like to use `cron()`. I want this task to
 run at midnight, every day, so use `0 0 * * *`. The second argument is the messenger
 message to dispatch. We want to run the `SendBookingRemindersCommand`, but we can't
 add it here directly. Instead, use `new RunCommandMessage()` and pass the command
@@ -80,9 +82,9 @@ symfony console debug:schedule
 Here we go, the output's a little wonky on this small screen, but you can see the
 cron expression, the message (and command), and the next runtime: tonight at midnight.
 
-There's an alternate way we can schedule commands. In `MainSchedule::getSchedule()`, delete
-the `->add()`. Jump over to our `SendBookingRemindersCommand` and add another class
-attribute: `#[AsCronTask()]` with the first argument being the expression: `0 0 * * *`.
+There's an alternate to schedule commands. In `MainSchedule::getSchedule()`, delete
+the `->add()`. Then jump over to our `SendBookingRemindersCommand` and add another
+attribute: `#[AsCronTask()]` passing: `0 0 * * *`.
 
 In your terminal, debug the schedule again to make sure it's still listed:
 
