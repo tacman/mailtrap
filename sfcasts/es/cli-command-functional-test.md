@@ -50,7 +50,7 @@ Pasamos a la siguiente prueba Ésta es más complicada: tenemos que crear una re
 
 ¡Uf! Tenemos una reserva en la base de datos que necesita que se le envíe un recordatorio. El paso de configuración, u ordenación, de esta prueba está hecho.
 
-Añade una preafirmación para asegurarte de que a esta reserva no se le ha enviado un recordatorio:`$this->assertNull($booking->getReminderSentAt())`:
+Añade una preafirmación para asegurarte de que no se ha enviado un recordatorio a esta reserva:`$this->assertNull($booking->getReminderSentAt())`:
 
 [[[ code('44d45a0ee8') ]]]
 
