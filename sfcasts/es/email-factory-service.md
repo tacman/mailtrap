@@ -56,7 +56,7 @@ El fallo viene de `BookingTest`:
 
 > El mensaje no incluye un archivo con nombre de archivo [Condiciones del servicio.pdf].
 
-¡Fácil de arreglar! Durante nuestra refactorización, olvidé adjuntar el emocionante PDF de las condiciones del servicio al correo electrónico de confirmación de la reserva. Y nuestros clientes dependen de ello. Busca`BookingEmailFactory::createBookingConfirmation()`, y añade`->attachFromPath($this->termsPath, 'Terms of Service.pdf')`:
+¡Arreglo fácil! Durante nuestra refactorización, olvidé adjuntar el emocionante PDF de las condiciones del servicio al correo electrónico de confirmación de la reserva. Y nuestros clientes dependen de ello. Busca`BookingEmailFactory::createBookingConfirmation()`, y añade`->attachFromPath($this->termsPath, 'Terms of Service.pdf')`:
 
 [[[ code('27928d071f') ]]]
 
