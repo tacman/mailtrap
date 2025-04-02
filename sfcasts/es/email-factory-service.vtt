@@ -1,0 +1,217 @@
+WEBVTT
+
+00:00:01.076 --> 00:00:02.706 align:middle
+Nuestra aplicación envía
+dos correos electrónicos
+
+00:00:03.086 --> 00:00:06.766 align:middle
+en SendBookingRemindersCommand,
+y en TripController::show().
+
+00:00:07.516 --> 00:00:07.956 align:middle
+Hay...
+
+00:00:07.956 --> 00:00:09.396 align:middle
+mucha duplicación aquí.
+
+00:00:09.716 --> 00:00:10.806 align:middle
+¡Me hace daño a la vista!
+
+00:00:11.086 --> 00:00:11.856 align:middle
+¡Pero no te preocupes!
+
+00:00:12.116 --> 00:00:15.406 align:middle
+Podemos reorganizar esto en un servicio
+de fábrica de correo electrónico.
+
+00:00:15.666 --> 00:00:19.166 align:middle
+Y como tenemos pruebas que cubren
+ambos correos, podemos refactorizar
+
+00:00:19.166 --> 00:00:21.466 align:middle
+y estar seguros de que no hemos roto nada.
+
+00:00:21.736 --> 00:00:24.576 align:middle
+No me canso de decirlo:
+¡me encantan las pruebas!
+
+00:00:24.576 --> 00:00:30.946 align:middle
+Empieza creando una nueva clase: BookingEmailFactory
+en el espacio de nombres App\Email.
+
+00:00:31.356 --> 00:00:38.206 align:middle
+Añade un constructor, copia el argumento
+$termsPath de TripController::show(), pégalo aquí
+
+00:00:39.786 --> 00:00:44.636 align:middle
+y conviértelo en una propiedad privada:
+Ahora, crea dos métodos de fábrica:
+
+00:00:44.826 --> 00:00:47.436 align:middle
+public function createBookingConfirmation(),
+
+00:00:48.166 --> 00:00:52.116 align:middle
+que aceptarán Booking $booking,
+y devolverán TemplatedEmail.
+
+00:00:54.846 --> 00:00:59.906 align:middle
+Entonces, public function
+createBookingReminder(Booking $booking) también
+
+00:00:59.906 --> 00:01:04.306 align:middle
+devolverá un TemplatedEmail: Crea un método
+para albergar esa maldita duplicación:
+
+00:01:05.036 --> 00:01:11.066 align:middle
+private function createEmail(), con
+argumentos Booking $booking y string $tag
+
+00:01:11.286 --> 00:01:15.546 align:middle
+que devuelva un TemplatedEmail:
+Salta a TripController::show(),
+
+00:01:18.046 --> 00:01:20.986 align:middle
+copia todo el código de creación
+de correos, y pégalo aquí.
+
+00:01:25.846 --> 00:01:31.336 align:middle
+Arriba, necesitamos dos variables
+$customer = $booking->getCustomer()
+
+00:01:32.406 --> 00:01:35.386 align:middle
+y $trip = $booking->getTrip().
+
+00:01:37.166 --> 00:01:41.836 align:middle
+Elimina attachFromPath(),
+subject(), y htmlTemplate().
+
+00:01:42.836 --> 00:01:45.966 align:middle
+En este TagHeader, utiliza
+la variable $tag pasada.
+
+00:01:46.636 --> 00:01:48.116 align:middle
+Podemos dejar los metadatos igual.
+
+00:01:48.116 --> 00:01:55.296 align:middle
+Por último, devuelve $email: Con
+nuestra lógica compartida en su lugar,
+
+00:01:55.416 --> 00:01:57.526 align:middle
+úsala en createBookingConfirmation().
+
+00:01:58.166 --> 00:02:04.506 align:middle
+Escribe return $this->createEmail(), pasando
+la variable $booking y booking para la etiqueta.
+
+00:02:05.526 --> 00:02:09.466 align:middle
+Ahora, ->subject(), copia
+esto de TripController::show(),
+
+00:02:15.096 --> 00:02:18.056 align:middle
+cambiando la variable $trip
+por $booking->getTrip().
+
+00:02:19.786 --> 00:02:25.756 align:middle
+Por último,
+->htmlTemplate('email/booking_confirmation.html.twig'): Para
+
+00:02:27.416 --> 00:02:32.466 align:middle
+createBookingReminder(), copia el interior de
+createBookingConfirmation() y pégalo aquí. Cambia
+
+00:02:33.236 --> 00:02:37.696 align:middle
+la etiqueta a booking_reminder,
+el asunto a Booking Reminder, y
+
+00:02:38.176 --> 00:02:38.946 align:middle
+la plantilla a
+
+00:02:38.996 --> 00:02:43.506 align:middle
+email/booking_reminder.html.twig:
+¡Ahora viene lo divertido! ¡ Usar
+
+00:02:43.746 --> 00:02:46.906 align:middle
+nuestra fábrica y eliminar
+todo un montón de código! En
+
+00:02:47.676 --> 00:02:52.026 align:middle
+TripController::show(), en lugar
+de inyectar $termsPath, inyecta
+
+00:02:52.026 --> 00:02:58.516 align:middle
+BookingEmailFactory $emailFactory: Elimina todo
+el código de creación de correo electrónico y
+
+00:03:00.636 --> 00:03:07.296 align:middle
+dentro de $mailer->send(), escribe
+$emailFactory->createBookingConfirmation($booking):
+
+00:03:08.526 --> 00:03:13.446 align:middle
+EnSendBookingRemindersCommand, de nuevo, elimina todo
+el código de creación de correo electrónico. Arriba
+
+00:03:15.306 --> 00:03:22.136 align:middle
+, en el constructor, autoconecta private BookingEmailFactory
+$emailFactory: Aquí abajo, dentro de $this->mailer->send(),
+
+00:03:22.136 --> 00:03:24.986 align:middle
+escribe
+$this->emailFactory->createBookingReminder($booking):
+
+00:03:25.366 --> 00:03:30.566 align:middle
+Oh sí, ¡qué
+
+00:03:31.156 --> 00:03:32.706 align:middle
+bien me ha sentado! Pero, ¿hemos
+
+00:03:33.426 --> 00:03:34.696 align:middle
+roto algo? Los canadienses
+
+00:03:35.026 --> 00:03:37.176 align:middle
+tenemos fama de ser un poco
+salvajes. Compruébalo ejecutando
+
+00:03:37.676 --> 00:03:43.096 align:middle
+las pruebas: bin/phpunit ¡Uh oh, un fallo!
+
+00:03:43.546 --> 00:03:44.856 align:middle
+Menos mal que tenemos estas pruebas, ¿eh?
+
+00:03:45.576 --> 00:03:49.346 align:middle
+El fallo viene de BookingTest: El mensaje no incluye
+un archivo con nombre de archivo [Condiciones
+
+00:03:49.346 --> 00:03:52.636 align:middle
+del servicio.pdf]. ¡Fácil solución! Durante
+
+00:03:52.636 --> 00:03:58.056 align:middle
+nuestra refactorización, olvidé adjuntar el emocionante PDF de las
+condiciones del servicio al correo electrónico de confirmación de la reserva.
+
+00:03:58.056 --> 00:03:59.666 align:middle
+Y nuestros clientes
+
+00:03:59.996 --> 00:04:01.676 align:middle
+dependen de ello. Busca
+BookingEmailFactory::createBookingConfirmation(), y
+
+00:04:01.676 --> 00:04:06.596 align:middle
+añade
+->attachFromPath($this->termsPath, 'Terms
+
+00:04:07.296 --> 00:04:12.156 align:middle
+of Service.pdf'): Vuelve a ejecutar
+
+00:04:12.436 --> 00:04:18.496 align:middle
+las pruebas: ¡Pasadas! ¿Reforzamiento
+satisfactorio? ¡Comprobado! A continuación, vamos
+
+00:04:18.666 --> 00:04:20.096 align:middle
+a cambiar un poco de
+
+00:04:20.166 --> 00:04:25.236 align:middle
+marcha y sumergirnos en dos nuevos componentes de Symfony
+para consumir los eventos webhook de correo electrónico
+
+00:04:25.236 --> 00:04:28.296 align:middle
+de Mailtrap.
