@@ -54,7 +54,7 @@ Añade una preafirmación para asegurarte de que a esta reserva no se le ha envi
 
 [[[ code('44d45a0ee8') ]]]
 
-Ahora el paso de actuación:`$this->executeConsoleCommand('app:send-booking-reminders')``->assertSuccessful()->assertOutputContains('Sent 1 booking reminders')` :
+Ahora el paso importante:`$this->executeConsoleCommand('app:send-booking-reminders')``->assertSuccessful()->assertOutputContains('Sent 1 booking reminders')` :
 
 [[[ code('0ffcae7a07') ]]]
 
