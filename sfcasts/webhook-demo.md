@@ -1,4 +1,4 @@
-# Demoin our Webhook & Remote Event Setup
+# Demoing our Webhook & Remote Event Setup
 
 Time to test-drive the Mailtrap webhook!
 
