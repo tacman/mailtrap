@@ -1,4 +1,4 @@
-# Demostración de nuestro Gancho Web y Configuración de Eventos Remotos
+# Demostración de nuestro webhook a través de un agujero de gusano
 
 ¡Es hora de probar el webhook Mailtrap!
 
