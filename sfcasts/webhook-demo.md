@@ -1,4 +1,4 @@
-# Demoing our Webhook & Remote Event Setup
+# Demoing our Webhook via a Wormhole
 
 Time to test-drive the Mailtrap webhook!
 
