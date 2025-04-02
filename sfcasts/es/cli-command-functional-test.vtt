@@ -157,7 +157,7 @@ no se ha enviado un recordatorio a esta reserva:
 
 00:03:16.816 --> 00:03:24.146 align:middle
 $this->assertNull($booking->getReminderSentAt()): Ahora el paso
-de actuar: $this->executeConsoleCommand('app:send-booking-reminders')
+importante: $this->executeConsoleCommand('app:send-booking-reminders')
 
 00:03:24.616 --> 00:03:32.866 align:middle
 ->assertSuccessful()->assertOutputContains('Sent
