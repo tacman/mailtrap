@@ -4,7 +4,7 @@
 
 Uno de nuestros becarios, Hugo, se queja de que tiene que conectarse a nuestro servidor y ejecutar el comando de recordatorio de reservas, todas las noches a medianoche. No sé cuál es el problema, ¿no están para eso los becarios?
 
-Pero... Supongo que para ser más robustos, deberíamos automatizarlo por si se pone enfermo o se le olvida. Podríamos configurar una tarea CRON... pero eso no sería ni de lejos tan genial o flexible como utilizar el componente Programador de Symfony es perfecto para esto. En tu terminal, ejecuta:
+Pero... Supongo que para ser más robustos, deberíamos automatizarlo por si se pone enfermo o se le olvida. Podríamos configurar una tarea CRON... pero eso no sería ni de lejos tan genial o flexible como utilizar el componente Programador de Symfony. Es perfecto para esto. En tu terminal, ejecuta:
 
 ```terminal
 composer require scheduler
@@ -24,7 +24,7 @@ Es posible tener varios horarios, pero para la mayoría de las aplicaciones, un 
 
 Compruébalo: `src/Scheduler/MainSchedule.php`. Es un servicio que implementa`ScheduleProviderInterface` y está marcado con el atributo `#[AsSchedule]` con el nombre `default`. El creador inyectó automáticamente la caché, y veremos por qué en un segundo. El método `getSchedule()` es donde configuramos la programación y añadimos tareas.
 
-Este `->stateful()` al que pasamos `$this->cache` es importante. Si el proceso que está ejecutando este programa se detiene -por ejemplo, nuestros trabajadores de mensajería se detienen temporalmente al reiniciarse el servidor-, cuando vuelva a estar en línea, sabrá todas las tareas que se ha saltado y las ejecutará. Si se suponía que una tarea debía ejecutarse 10 veces mientras estaba inactiva, las ejecutará todas. Esto puede no ser lo deseado, así que añade`->processOnlyLastMissedRun(true)` para que sólo se ejecute la última. ¡A prueba de balas!
+Este `->stateful()` al que pasamos `$this->cache` es importante. Si el proceso que está ejecutando este programa se cae -como si nuestros trabajadores de Messenger se detuvieran temporalmente durante un reinicio del servidor-, cuando vuelva a estar en línea, sabrá todas las tareas que se ha saltado y las ejecutará. Si se suponía que una tarea debía ejecutarse 10 veces mientras estaba inactiva, las ejecutará todas. Esto puede no ser lo deseado, así que añade`->processOnlyLastMissedRun(true)` para que sólo se ejecute la última. ¡A prueba de balas!
 
 Para aplicaciones más complejas, puedes estar consumiendo el mismo programa en varios trabajadores. Utiliza `->lock()` para configurar un bloqueo de modo que sólo un trabajador ejecute la tarea cuando le corresponda.
 
