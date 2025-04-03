@@ -54,6 +54,6 @@ En tu navegador, reserva un viaje, recuerda utilizar una dirección de correo el
 
 De vuelta en el terminal del servidor de volcado, espera un poco... ¡y boom! ¡Otro evento! Esta vez, es un `MailerEngagementEvent` para `open`. ¡Qué guay!
 
-Muy bien, cadetes espaciales, ¡esto es todo por este curso! Hemos conseguido cubrir casi todas las funciones de Symfony Mailer sin hacer SPAM a nuestros usuarios. ¡Ganamos!
+Muy bien, cadetes espaciales, ¡esto es todo por este curso! Hemos conseguido cubrir casi todas las funcionalidades de Symfony Mailer sin SPAMear a nuestros usuarios. ¡Ganamos!
 
 hasta la próxima, ¡feliz programación!
