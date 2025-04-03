@@ -2,10 +2,10 @@
 
 In Mailtrap, when we send emails in production, remember that we can check
 each email: was it sent, delivered, opened, bounced (which is important!)
-and more. Mailtrap lets us set a webhook URL so it can to send info about
-these events to *to* us.
+and more. Mailtrap lets us set a webhook URL so it can send info about
+these events *to* us.
 
-As a bonus, we get to discover *two* new Symfony commponents! Find your terminal
+As a bonus, we get to discover *two* new Symfony components! Find your terminal
 and install them:
 
 ```terminal
@@ -53,7 +53,7 @@ Find the service id for the Mailtrap parser, copy it... and paste it here.
 Now we need a consumer. Create a new class called `EmailEventConsumer`
 in the `App\Webhook` namespace. This needs to implement
 `ConsumerInterface` from `RemoteEvent`. Add the necessary `consume()` method.
-To tell Symfony know which webhook *type* we want this to consume, add
+To tell Symfony which webhook *type* we want this to consume, add
 the `#[AsRemoteEventConsumer]` attribute with `mailtrap`.
 
 Above `consume()`, add a docblock to help our IDE:
@@ -68,7 +68,7 @@ trying again as this can hurt your email reliability.
 But for our purposes, just `dump($event)`.
 
 One last thing: the webhook controller sends the remote event to the consumer
-via Symfony Messenge inside of a message class called `ConsumeRemoteEventMessage`.
+via Symfony Messenger, inside of a message class called `ConsumeRemoteEventMessage`.
 
 To handle this asynchronously & keep your webhook responses fast, in 
 `config/packages/messenger.yaml`, under `routing`, add
