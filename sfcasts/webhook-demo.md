@@ -73,7 +73,7 @@ Let's try an engagement event! In your email client, open the email.
 Back in the dump server terminal, wait a bit... and boom! Another event! This
 time, it's a `MailerEngagementEvent` for `open`. This is cool!
 
-Alright space cadets, that's it for this course! We managed to covere almost all
+Alright space cadets, that's it for this course! We managed to cover almost all
 of Symfony Mailer features without SPAM'ing our users. Win!
 
 'Til next time, happy coding!

@@ -8,7 +8,7 @@ the problem is - isn't that what interns are for?!
 
 But... I guess to be more robust, we should automate this in case he's sick
 or forgets. We could set up a CRON job... but that wouldn't be nearly as cool
-or flexible as using the Symfony Scheduler component is perfect for this.
+or flexible as using the Symfony Scheduler component. It's perfect for this.
 At your terminal, run:
 
 ```terminal
@@ -41,10 +41,10 @@ schedule and add tasks.
 
 This `->stateful()` that we're passing `$this->cache` to is important. If the process
 that's running this schedule goes down - like our messenger workers stop temporarily
-a server restart - when it comes back online, it will know all
+during a server restart - when it comes back online, it will know all
 the jobs it missed and run them. If a task was supposed to run 10 times while it was
 down, it will run them all. That might not be desired so add
-`->processOnlyLastMissedRun(true)` to only run the last one. Bullet proof!
+`->processOnlyLastMissedRun(true)` to only run the last one. Bulletproof!
 
 For more complex apps, you might be consuming the same schedule on multiple workers.
 Use `->lock()` to configure a lock so that only one worker runs the task when its
