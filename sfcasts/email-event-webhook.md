@@ -5,6 +5,8 @@ each email: was it sent, delivered, opened, bounced (which is important!)
 and more. Mailtrap lets us set a webhook URL so it can send info about
 these events *to* us.
 
+## Webhook & RemoteEvent Components
+
 As a bonus, we get to discover *two* new Symfony components! Find your terminal
 and install them:
 
@@ -44,20 +46,32 @@ these: `MailerDeliveryEvent` and `MailerEngagementEvent`. Some mailer bridges,
 including the Mailtrap bridge we're using, provide parsers for each service's
 webhook payload to create these objects. We just need to set it up.
 
+## Mailtrap *Parser* Configuration
+
 In `config/packages/`, create a `webhook.yaml` file. Add: `framework`,
 `webhook`, `routing`, `mailtrap` (this is the *type* used in the URL),
 and then `service`. To figure out the Mailtrap parser service id, pop over to the
 [Symfony Webhook documentation](https://symfony.com/doc/current/webhook.html).
-Find the service id for the Mailtrap parser, copy it... and paste it here.
+Find the service id for the Mailtrap parser, copy it... and paste it here:
+
+[[[ code('14f5cd05c6') ]]]
+
+## `EmailEventConsumer`
 
 Now we need a consumer. Create a new class called `EmailEventConsumer`
 in the `App\Webhook` namespace. This needs to implement
-`ConsumerInterface` from `RemoteEvent`. Add the necessary `consume()` method.
+`ConsumerInterface` from `RemoteEvent` Add the necessary `consume()` method.
 To tell Symfony which webhook *type* we want this to consume, add
-the `#[AsRemoteEventConsumer]` attribute with `mailtrap`.
+the `#[AsRemoteEventConsumer]` attribute with `mailtrap`:
+
+[[[ code('4a02718937') ]]]
 
 Above `consume()`, add a docblock to help our IDE:
-`@param MailerDeliveryEvent|MailerEngagementEvent $event`. These are the
+`@param MailerDeliveryEvent|MailerEngagementEvent $event`:
+
+[[[ code('18a5074420') ]]]
+
+These are the
 generic mailer remote events Symfony provides. Inside,
 write `$event->` to see the methods available.
 
@@ -65,7 +79,11 @@ In a real app, this would be where you'd do something with these events like
 save them to the database or notify an admin if an email bounced. Actually
 if an email bounces a few times, you may want to update something to *prevent*
 trying again as this can hurt your email reliability.
-But for our purposes, just `dump($event)`.
+But for our purposes, just `dump($event)`:
+
+[[[ code('7fa3766a8f') ]]]
+
+## Asynchronous Consumers
 
 One last thing: the webhook controller sends the remote event to the consumer
 via Symfony Messenger, inside of a message class called `ConsumeRemoteEventMessage`.
@@ -73,6 +91,8 @@ via Symfony Messenger, inside of a message class called `ConsumeRemoteEventMessa
 To handle this asynchronously & keep your webhook responses fast, in 
 `config/packages/messenger.yaml`, under `routing`, add
 `Symfony\Component\RemoteEvent\Messenger\ConsumeRemoteEventMessage` and
-send it to our `async` transport.
+send it to our `async` transport:
+
+[[[ code('be482a5a8b') ]]]
 
 Ok! We're ready to demo this webhook. That's next!

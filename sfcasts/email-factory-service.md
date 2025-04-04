@@ -7,6 +7,8 @@ service. And because we have tests covering both emails,
 we can refactor and be confident that we haven't broken anything. I can't say it
 enough: I love tests!
 
+## `BookingEmailFactory`
+
 Start by creating a new class: `BookingEmailFactory` in the `App\Email` namespace.
 Add a constructor, copy the `$termsPath` argument from `TripController::show()`,
 paste it here, and make it a private property:
@@ -45,6 +47,8 @@ and the template to `email/booking_reminder.html.twig`:
 
 [[[ code('0ddbf27985') ]]]
 
+## The Refactor
+
 Now the fun part! *Using* our factory and *removing* a whole wack of code!
 
 In `TripController::show()`, instead of injecting `$termsPath`, inject
@@ -67,6 +71,8 @@ inside `$this->mailer->send()`, write `$this->emailFactory->createBookingReminde
 
 [[[ code('7cec573aac') ]]]
 
+## Test It
+
 Oh yeah, that felt good! But did we break anything? We Canadians are known for being
 a bit wild. Check by running the tests:
 
@@ -79,6 +85,8 @@ Uh oh, a failure! Good thing we have these tests, eh?
 The failure comes from `BookingTest`:
 
 > Message does not include file with filename [Terms of Service.pdf].
+
+## Fix It
 
 Easy fix! During our refactor, I forgot to attach the
 thrilling terms of service PDF to the booking confirmation email. And our

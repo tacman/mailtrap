@@ -13,6 +13,8 @@ symfony console make:test
 
 Type? `KernelTestCase`. Name? `SendBookingRemindersCommandTest`.
 
+## `SendBookingRemindersCommandTest`
+
 In our IDE, the new class was added to `tests/`. Open
 it up and move the class to a new namespace: `App\Tests\Functional\Command`,
 to keep things organized.
@@ -35,6 +37,8 @@ Back in the terminal run the tests with:
 bin/phpunit
 ```
 
+## Testing TODO List
+
 Check it out, our original two tests are passing, the two *dots*, and these
 *I's* are the new incomplete tests. I love this pattern: write test stubs
 for a new feature, then make a game of removing the incompletes one-by-one
@@ -42,6 +46,8 @@ until they're all gone. *Then*, the feature is done!
 
 Symfony has some out-of-the-box tooling for testing commands, but I like to
 use a package that wraps these up into a nicer experience. Install it with:
+
+## `zenstruck/console-test`
 
 ```terminal
 composer require --dev zenstruck/console-test
@@ -54,6 +60,8 @@ To enable this package's helpers, add a new *behavior* trait to our test:
 
 We're ready to knock down those I's!
 
+## `testNoRemindersSent()`
+
 The first test is easy: we want to ensure that, when there's no bookings to
 remind, the command doesn't send any emails. Write
 `$this->executeConsoleCommand()` and just the command name: `app:send-booking-reminders`.
@@ -61,6 +69,10 @@ Ensure the command ran successfully with `->assertSuccessful()` and
 `->assertOutputContains('Sent 0 booking reminders')`:
 
 [[[ code('5310e32269') ]]]
+
+## `testRemindersSent()`
+
+### *Arrange*
 
 On to the next test! This one is more involved: we need to
 create a booking that is eligible for a reminder. Create the booking fixture with
@@ -76,16 +88,22 @@ Finally, the booking date: `'date' => new \DateTimeImmutable('+4 days')`:
 Phew! We have a booking in the database that needs a reminder sent. This
 test's setup, or *arrange* step, is done.
 
+### *Pre-Assertion*
+
 Add a pre-assertion to ensure this booking hasn't had a reminder sent:
 `$this->assertNull($booking->getReminderSentAt())`:
 
 [[[ code('44d45a0ee8') ]]]
+
+### *Act*
 
 Now for the *act* step:
 `$this->executeConsoleCommand('app:send-booking-reminders')`
 `->assertSuccessful()->assertOutputContains('Sent 1 booking reminders')`:
 
 [[[ code('0ffcae7a07') ]]]
+
+### *Assert*
 
 Onto the *assert* phase to ensure the email was sent. In `BookingTest`,
 copy the email assertion and paste it here. Make a few adjustments:
@@ -106,6 +124,8 @@ bin/phpunit
 ```
 
 All green!
+
+## *Outside-In* Testing
 
 I find these type of *outside-in* tests really fun and easy to write because you
 don't have to worry too much about testing the inner logic and they mimic
