@@ -2,6 +2,8 @@
 
 Nuestra aplicación envía dos correos electrónicos: en `SendBookingRemindersCommand`, y en`TripController::show()`. Aquí hay... mucha duplicación. ¡Me duele la vista! ¡Pero no te preocupes! Podemos reorganizar esto en un servicio de fábrica de correos electrónicos. Y como tenemos pruebas que cubren ambos correos, podemos refactorizar y estar seguros de que no hemos roto nada. No me canso de decirlo: ¡me encantan las pruebas!
 
+## `BookingEmailFactory`
+
 Empieza creando una nueva clase: `BookingEmailFactory` en el espacio de nombres `App\Email`. Añade un constructor, copia el argumento `$termsPath` de `TripController::show()`, pégalo aquí y conviértelo en una propiedad privada:
 
 [[[ code('11961225d5') ]]]
@@ -26,7 +28,9 @@ Para `createBookingReminder()`, copia el interior de `createBookingConfirmation(
 
 [[[ code('0ddbf27985') ]]]
 
-¡Ahora viene lo divertido! ¡Usar nuestra fábrica y eliminar todo un montón de código!
+## El refactorizador
+
+¡Ahora viene lo divertido! ¡Usar nuestra fábrica y eliminar un montón de código!
 
 En `TripController::show()`, en lugar de inyectar `$termsPath`, inyecta`BookingEmailFactory $emailFactory`:
 
@@ -44,7 +48,9 @@ Aquí abajo, dentro de `$this->mailer->send()`, escribe `$this->emailFactory->cr
 
 [[[ code('7cec573aac') ]]]
 
-Oh sí, ¡qué bien me ha sentado! Pero, ¿hemos roto algo? Los canadienses tenemos fama de ser un poco salvajes. Compruébalo ejecutando las pruebas:
+## Pruébalo
+
+Oh, sí, ¡qué bien me ha sentado! ¿Pero hemos roto algo? Los canadienses tenemos fama de ser un poco salvajes. Compruébalo ejecutando las pruebas:
 
 ```terminal
 bin/phpunit
@@ -56,7 +62,9 @@ El fallo viene de `BookingTest`:
 
 > El mensaje no incluye un archivo con nombre de archivo [Condiciones del servicio.pdf].
 
-¡Arreglo fácil! Durante nuestra refactorización, olvidé adjuntar el emocionante PDF de las condiciones del servicio al correo electrónico de confirmación de la reserva. Y nuestros clientes dependen de ello. Busca`BookingEmailFactory::createBookingConfirmation()`, y añade`->attachFromPath($this->termsPath, 'Terms of Service.pdf')`:
+## Arréglalo
+
+¡Fácil de arreglar! Durante nuestra refactorización, olvidé adjuntar el emocionante PDF de las condiciones del servicio al correo electrónico de confirmación de la reserva. Y nuestros clientes dependen de ello. Busca`BookingEmailFactory::createBookingConfirmation()`, y añade`->attachFromPath($this->termsPath, 'Terms of Service.pdf')`:
 
 [[[ code('27928d071f') ]]]
 
