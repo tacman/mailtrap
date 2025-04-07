@@ -314,7 +314,42 @@
             "id": "webhook-consumer",
             "name": "Webhook: consumer",
             "description": null
+        },
+        {
+            "id": "scheduler-add-package",
+            "name": "Scheduler: add package",
+            "description": null
+        },
+        {
+            "id": "scheduler-make-schedule",
+            "name": "Scheduler: make:schedule",
+            "description": null
+        },
+        {
+            "id": "scheduler-add-task",
+            "name": "Scheduler: add task",
+            "description": null
+        },
+        {
+            "id": "scheduler-add-cron-expression-package",
+            "name": "Scheduler: add cron-expression package",
+            "description": null
+        },
+        {
+            "id": "scheduler-ascrontask",
+            "name": "Scheduler: AsCronTask",
+            "description": null
+        },
+        {
+            "id": "scheduler-hashed-expression",
+            "name": "Scheduler: hashed expression",
+            "description": null
+        },
+        {
+            "id": "scheduler-midnight",
+            "name": "Scheduler: #midnight",
+            "description": null
         }
     ],
-    "sha": "9aabae2907e7ac5a117f60da1bca1a59495fd69a"
+    "sha": "12dd0934c08cc4a7bc066e337259d02cce48a7af"
 }
