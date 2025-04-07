@@ -4,7 +4,7 @@ En Mailtrap, cuando enviamos correos electrónicos en producción, recordemos qu
 
 ## Componentes Webhook y RemoteEvent
 
-Como extra, ¡descubrimos dos nuevos componentes de Symfony! Busca tu terminal e instálalos:
+Como bonus, ¡descubrimos dos nuevos componentes de Symfony! Busca tu terminal e instálalos:
 
 ```terminal
 composer require webhook remote-event
@@ -26,7 +26,7 @@ symfony console debug:route webhook
 
 Comprueba la primera. La ruta es `/webhook/{type}`. Así que ahora tenemos que configurar algún tipo.
 
-los webhooks de terceros -como los de Mailtrap o los de un procesador de pagos o un sistema de alertas de Supernova- pueden enviarnos cargas útiles muy diferentes, por lo que normalmente necesitamos crear nuestros propios analizadores y eventos remotos. Dado que los eventos de correo electrónico son bastante estándar, Symfony proporciona algunos eventos remotos out-of-the-box para estos: `MailerDeliveryEvent` y `MailerEngagementEvent`. Algunos puentes de correo, incluido el puente Mailtrap que estamos utilizando, proporcionan analizadores para cada carga útil de webhook del servicio para crear estos objetos. Sólo tenemos que configurarlo.
+los webhooks de terceros -como los de Mailtrap o los de un procesador de pagos o un sistema de alertas de Supernova- pueden enviarnos cargas útiles muy diferentes, por lo que normalmente necesitamos crear nuestros propios analizadores y eventos remotos. Dado que los eventos de correo electrónico son bastante estándar, Symfony proporciona algunos eventos remotos out-of-the-box para ellos: `MailerDeliveryEvent` y `MailerEngagementEvent`. Algunos puentes de correo, incluido el puente Mailtrap que estamos utilizando, proporcionan analizadores para cada carga útil de webhook del servicio para crear estos objetos. Sólo tenemos que configurarlo.
 
 ## Configuración del analizador sintáctico Mailtrap
 
