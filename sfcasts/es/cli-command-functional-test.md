@@ -64,7 +64,7 @@ Pasamos a la siguiente prueba Ésta es más complicada: tenemos que crear una re
 
 ### Pre-Aserción
 
-Añade una preafirmación para asegurarte de que a esta reserva no se ha enviado un recordatorio:`$this->assertNull($booking->getReminderSentAt())`:
+Añade una preafirmación para asegurarte de que no se ha enviado un recordatorio a esta reserva:`$this->assertNull($booking->getReminderSentAt())`:
 
 [[[ code('44d45a0ee8') ]]]
 
