@@ -1,0 +1,186 @@
+WEBVTT
+
+00:00:01.086 --> 00:00:03.076 align:middle
+¡Es hora de probar el webhook Mailtrap!
+
+00:00:03.196 --> 00:00:07.226 align:middle
+En primer lugar, tenemos que volver a cambiar nuestro
+entorno de desarrollo para enviar en producción.
+
+00:00:07.886 --> 00:00:16.326 align:middle
+En .env.local, cambia a tu Mailtrap de
+producción MAILER_DSN y en config/services.yaml,
+
+00:00:16.596 --> 00:00:20.716 align:middle
+asegúrate de que el dominio de global_from_email
+es el que configuraste con Mailtrap.
+
+00:00:22.766 --> 00:00:27.686 align:middle
+En Mailtrap, ve a "Configuración" >
+"Webhooks" y haz clic en "Crear nuevo Webhook".
+
+00:00:27.826 --> 00:00:30.376 align:middle
+Lo primero que necesitamos
+es una URL de Webhook.
+
+00:00:30.606 --> 00:00:36.406 align:middle
+Hmm, esto tiene que ser /webhook/mailtrap
+pero tiene que ser una URL absoluta.
+
+00:00:37.066 --> 00:00:40.826 align:middle
+En producción, esto no sería un
+problema: sería tu dominio de producción.
+
+00:00:41.246 --> 00:00:43.006 align:middle
+En desarrollo, es un poco más complicado.
+
+00:00:43.336 --> 00:00:46.696 align:middle
+No podemos usar simplemente la URL que
+nos da el servidor CLI de Symfony...
+
+00:00:46.836 --> 00:00:51.016 align:middle
+De alguna manera tenemos que exponer
+nuestro servidor Symfony local al público.
+
+00:00:51.246 --> 00:00:54.426 align:middle
+Y hay una herramienta genial que
+hace exactamente esto: ngrok.
+
+00:00:55.186 --> 00:01:00.626 align:middle
+Crea una cuenta gratuita, inicia sesión y sigue las
+instrucciones para configurar el cliente CLI ngrok.
+
+00:01:01.516 --> 00:01:04.186 align:middle
+En el terminal, reinicia
+el servidor web Symfony:
+
+00:01:04.476 --> 00:01:07.676 align:middle
+symfony server:stop No se está ejecutando.
+
+00:01:07.676 --> 00:01:15.146 align:middle
+Inícialo con: symfony serve -d Esta es la URL
+que necesitamos exponer, cópiala y ejecútala:
+
+00:01:15.896 --> 00:01:19.816 align:middle
+ngrok http Pega la URL y pulsa intro.
+
+00:01:19.976 --> 00:01:21.136 align:middle
+¡Agujero de gusano abierto!
+
+00:01:21.506 --> 00:01:24.736 align:middle
+Esta URL de "Reenvío" de
+aspecto loco es la URL pública.
+
+00:01:25.316 --> 00:01:27.146 align:middle
+Cópiala y pégala en tu navegador.
+
+00:01:29.186 --> 00:01:31.586 align:middle
+Esta advertencia sólo te permite
+saber que estás atravesando un túnel.
+
+00:01:32.356 --> 00:01:34.056 align:middle
+Haz clic en "Visitar sitio"
+para ver tu aplicación.
+
+00:01:34.896 --> 00:01:41.186 align:middle
+¡Genial! De vuelta en Mailtrap, pega esta
+URL y añade /webhook/mailtrap al final.
+
+00:01:42.706 --> 00:01:45.156 align:middle
+En "Seleccionar flujo", elige "Transaccional".
+
+00:01:45.156 --> 00:01:48.646 align:middle
+En "Seleccionar dominio", elige
+tu dominio Mailtrap configurado.
+
+00:01:49.166 --> 00:01:51.806 align:middle
+Selecciona todos los eventos y luego "Guardar".
+
+00:01:53.636 --> 00:01:56.446 align:middle
+Vuelve al nuevo webhook y haz
+clic en "Ejecuta la prueba".
+
+00:01:58.086 --> 00:02:01.586 align:middle
+La prueba de la URL del webhook se ha
+completado correctamente ¡Es una buena señal!
+
+00:02:02.226 --> 00:02:05.676 align:middle
+¿Recuerdas que en nuestro EmailEventConsumer,
+sólo estamos volcando el evento?
+
+00:02:05.866 --> 00:02:10.146 align:middle
+Como el acceso al webhook se produce entre
+bastidores, no podemos ver el volcado...
+
+00:02:10.606 --> 00:02:11.306 align:middle
+¿o sí?
+
+00:02:12.016 --> 00:02:17.706 align:middle
+Ejecuta en un nuevo terminal: symfony console
+server:dump Esto se conecta a nuestra aplicación
+
+00:02:17.706 --> 00:02:19.826 align:middle
+y cualquier volcado se
+mostrará aquí en directo.
+
+00:02:20.066 --> 00:02:26.616 align:middle
+¡Inteligente! En tu navegador, reserva un viaje, recuerda utilizar
+una dirección de correo electrónico real (¡pero no la mía!)
+
+00:02:30.986 --> 00:02:31.976 align:middle
+¡Momento de la verdad!
+
+00:02:32.236 --> 00:02:35.206 align:middle
+De nuevo en el terminal ejecutando el
+servidor de volcado, espera un poco...
+
+00:02:35.996 --> 00:02:37.446 align:middle
+¡Muy bien! ¡Tenemos un volcado!
+
+00:02:37.446 --> 00:02:38.586 align:middle
+Desplázate un poco hacia arriba...
+
+00:02:38.976 --> 00:02:41.456 align:middle
+Se trata de un MailerDeliveryEvent
+para delivered.
+
+00:02:42.256 --> 00:02:47.826 align:middle
+Vemos el ID interno que Mailtrap asignó, la carga útil sin
+procesar, la fecha, el correo electrónico del destinatario,
+
+00:02:48.106 --> 00:02:49.856 align:middle
+incluso nuestros metadatos
+y etiqueta personalizados.
+
+00:02:49.856 --> 00:02:52.336 align:middle
+¡Probemos con un evento de compromiso!
+
+00:02:53.096 --> 00:02:55.196 align:middle
+En tu cliente de correo
+electrónico, abre el correo.
+
+00:02:57.686 --> 00:03:00.486 align:middle
+De vuelta en el terminal del servidor
+de volcado, espera un poco...
+
+00:03:00.486 --> 00:03:02.076 align:middle
+¡y boom! ¡Otro evento!
+
+00:03:03.516 --> 00:03:06.556 align:middle
+Esta vez, es un
+MailerEngagementEvent para open.
+
+00:03:06.776 --> 00:03:07.656 align:middle
+¡Esto mola!
+
+00:03:08.676 --> 00:03:11.196 align:middle
+Muy bien, cadetes espaciales,
+¡eso es todo por este curso!
+
+00:03:11.376 --> 00:03:16.006 align:middle
+Hemos conseguido cubrir casi todas las funciones
+de Symfony Mailer sin SPAMear a nuestros usuarios.
+
+00:03:16.086 --> 00:03:18.816 align:middle
+¡Ganamos! hasta la próxima,
+¡feliz programación!
