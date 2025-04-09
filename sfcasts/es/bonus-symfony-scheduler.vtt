@@ -1,0 +1,329 @@
+WEBVTT
+
+00:00:01.066 --> 00:00:02.266 align:middle
+¡Eh! ¿Todavía estás aquí?
+
+00:00:02.496 --> 00:00:04.606 align:middle
+¡Estupendo! Tengo un capítulo extra para ti.
+
+00:00:05.256 --> 00:00:09.306 align:middle
+Uno de nuestros becarios, Hugo, se queja de
+que tiene que conectarse a nuestro servidor
+
+00:00:09.466 --> 00:00:12.326 align:middle
+y ejecutar el comando de recordatorio de
+reservas todas las noches a medianoche.
+
+00:00:12.396 --> 00:00:15.846 align:middle
+No sé cuál es el problema, ¿no
+están para eso los becarios?
+
+00:00:16.706 --> 00:00:21.946 align:middle
+Pero... Supongo que para ser más robustos, deberíamos
+automatizarlo por si se pone enfermo o se le olvida.
+
+00:00:21.946 --> 00:00:23.606 align:middle
+Podríamos crear una tarea CRON...
+
+00:00:23.946 --> 00:00:28.506 align:middle
+pero eso no sería ni de lejos tan genial o flexible
+como utilizar el componente Programador de Symfony.
+
+00:00:28.676 --> 00:00:30.536 align:middle
+Es perfecto para esto.
+
+00:00:30.536 --> 00:00:34.866 align:middle
+En tu terminal, ejecuta:
+composer require scheduler Piensa
+
+00:00:34.866 --> 00:00:37.556 align:middle
+en Symfony Scheduler como un
+complemento para Messenger.
+
+00:00:38.026 --> 00:00:41.716 align:middle
+Proporciona su propio transporte
+especial que, en lugar de una cola,
+
+00:00:41.766 --> 00:00:43.846 align:middle
+determina si es el momento
+de ejecutar un trabajo.
+
+00:00:44.496 --> 00:00:49.396 align:middle
+Cada trabajo, o tarea, es un mensaje de Messenger,
+por lo que requiere un gestor de mensajes.
+
+00:00:50.186 --> 00:00:54.856 align:middle
+Consumes la programación, como cualquier transporte
+de Messenger, con el comando messenger:consume.
+
+00:00:55.296 --> 00:01:01.176 align:middle
+Crea un horario con: symfony console
+make:schedule ¿Nombre del transporte?
+
+00:01:01.336 --> 00:01:02.186 align:middle
+Utiliza default.
+
+00:01:02.576 --> 00:01:03.376 align:middle
+¿Nombre del programa?
+
+00:01:03.526 --> 00:01:05.276 align:middle
+Utiliza el predeterminado: MainSchedule.
+
+00:01:05.526 --> 00:01:08.696 align:middle
+¡Emocionante! Es posible
+tener varios horarios,
+
+00:01:08.916 --> 00:01:11.846 align:middle
+pero para la mayoría de las aplicaciones,
+un solo horario es suficiente.
+
+00:01:11.846 --> 00:01:15.436 align:middle
+Compruébalo: src/Scheduler/MainSchedule.php.
+
+00:01:15.436 --> 00:01:20.126 align:middle
+Es un servicio que implementa
+ScheduleProviderInterface y está marcado
+
+00:01:20.126 --> 00:01:23.286 align:middle
+con el atributo #[AsSchedule]
+con el nombre default.
+
+00:01:25.046 --> 00:01:28.816 align:middle
+El creador inyectó automáticamente la
+caché, y veremos por qué en un segundo.
+
+00:01:29.446 --> 00:01:33.346 align:middle
+El método getSchedule() es donde configuramos
+la programación y añadimos tareas.
+
+00:01:33.876 --> 00:01:38.136 align:middle
+Este ->stateful() al que pasamos
+$this->cache es importante.
+
+00:01:38.136 --> 00:01:41.326 align:middle
+Si el proceso que está
+ejecutando este programa se cae
+
+00:01:41.476 --> 00:01:44.916 align:middle
+-como si nuestros trabajadores de Messenger se detuvieran
+temporalmente durante un reinicio del servidor-
+
+00:01:45.316 --> 00:01:49.016 align:middle
+, cuando vuelva a estar en línea, sabrá todas
+las tareas que se ha saltado y las ejecutará.
+
+00:01:49.016 --> 00:01:53.656 align:middle
+Si se suponía que una tarea debía ejecutarse 10
+veces mientras estaba inactiva, las ejecutará todas.
+
+00:01:53.926 --> 00:01:59.716 align:middle
+Esto puede no ser lo deseado, así que
+añade ->processOnlyLastMissedRun(true)
+
+00:02:00.066 --> 00:02:02.426 align:middle
+para que sólo se ejecute la
+última: ¡A prueba de balas!
+
+00:02:02.566 --> 00:02:07.626 align:middle
+Para aplicaciones más complejas, puede que estés
+consumiendo la misma programación en varios trabajadores.
+
+00:02:08.226 --> 00:02:13.056 align:middle
+Utiliza ->lock() para configurar un bloqueo de modo que
+sólo un trabajador ejecute la tarea cuando corresponda.
+
+00:02:13.976 --> 00:02:15.346 align:middle
+¡Es hora de añadir nuestra primera tarea!
+
+00:02:16.006 --> 00:02:19.006 align:middle
+En ->add(), escribe RecurringMessage::.
+
+00:02:19.106 --> 00:02:22.636 align:middle
+Hay varias formas de activar una tarea.
+
+00:02:22.936 --> 00:02:24.116 align:middle
+A mí me gusta utilizar cron().
+
+00:02:24.886 --> 00:02:27.386 align:middle
+Quiero que esta tarea se ejecute
+a medianoche, todos los días,
+
+00:02:27.566 --> 00:02:34.616 align:middle
+así que utiliza 0 0 * * *. El segundo
+argumento es el mensaje de Messenger a enviar.
+
+00:02:34.876 --> 00:02:38.946 align:middle
+Queremos ejecutar SendBookingRemindersCommand,
+pero no podemos añadirlo aquí directamente.
+
+00:02:38.946 --> 00:02:43.796 align:middle
+En su lugar, utiliza new RunCommandMessage()
+y pasa el nombre del comando:
+
+00:02:44.066 --> 00:02:48.326 align:middle
+app:send-booking-reminders (aquí también
+puedes pasar argumentos y opciones):
+
+00:02:49.086 --> 00:02:52.066 align:middle
+En tu terminal, lista las tareas
+de nuestro programa ejecutando:
+
+00:02:52.066 --> 00:02:56.426 align:middle
+symfony console debug:schedule
+Tenemos un error.
+
+00:02:56.736 --> 00:02:59.226 align:middle
+No puedes utilizar
+"CronExpressionTrigger" porque el
+
+00:02:59.226 --> 00:03:05.006 align:middle
+paquete "cron expression" no está instalado Solución
+fácil: copia el comando de instalación y ejecútalo:
+
+00:03:06.316 --> 00:03:10.906 align:middle
+composer require
+dragonmantank/cron-expression ¡Buen nombre!
+
+00:03:12.066 --> 00:03:18.936 align:middle
+Ahora vuelve a ejecutar el comando de depuración: Aquí vamos,
+la salida está un poco torcida en esta pequeña pantalla,
+
+00:03:19.226 --> 00:03:22.656 align:middle
+pero puedes ver la expresión
+cron, el mensaje (y el comando),
+
+00:03:22.656 --> 00:03:25.136 align:middle
+y el próximo tiempo de ejecución:
+esta noche a medianoche.
+
+00:03:26.496 --> 00:03:28.436 align:middle
+Hay una alternativa para programar comandos.
+
+00:03:29.036 --> 00:03:32.176 align:middle
+En MainSchedule::getSchedule(),
+borra el ->add().
+
+00:03:32.646 --> 00:03:35.206 align:middle
+Luego salta a nuestro
+SendBookingRemindersCommand
+
+00:03:35.446 --> 00:03:41.676 align:middle
+y añade otro atributo: #[AsCronTask()]
+pasando: 0 0 * * *: En tu terminal,
+
+00:03:42.466 --> 00:03:47.826 align:middle
+depura de nuevo el horario para asegurarte de
+que sigue apareciendo: Y lo está, bastante bien.
+
+00:03:47.826 --> 00:03:51.726 align:middle
+Si tienes muchas tareas programadas
+a la misma hora, como a medianoche,
+
+00:03:51.906 --> 00:03:54.566 align:middle
+puede que veas un pico de CPU
+a esta hora en tu servidor.
+
+00:03:55.136 --> 00:03:59.856 align:middle
+A menos que sea superimportante que las tareas se
+ejecuten a una hora muy concreta, deberías repartirlas.
+
+00:04:00.576 --> 00:04:03.986 align:middle
+Una forma de hacerlo, por supuesto, es asegurarte
+manualmente de que todas tienen expresiones cron diferentes
+
+00:04:03.986 --> 00:04:05.126 align:middle
+, pero...
+
+00:04:05.296 --> 00:04:05.986 align:middle
+eso es un aburrimiento.
+
+00:04:05.986 --> 00:04:09.136 align:middle
+Para nuestro comando
+app:send-booking-reminders,
+
+00:04:09.256 --> 00:04:12.146 align:middle
+no me importa cuándo se ejecute,
+sólo que se ejecute una vez al día.
+
+00:04:12.706 --> 00:04:14.826 align:middle
+Podemos utilizar una expresión cron con hash.
+
+00:04:15.456 --> 00:04:18.306 align:middle
+En nuestra expresión, sustituye los 0 por #.
+
+00:04:18.836 --> 00:04:22.106 align:middle
+El # significa "elige un valor
+aleatorio válido para esta parte":
+
+00:04:23.966 --> 00:04:28.576 align:middle
+Vuelve a depurar la programación: Está
+programado para ejecutarse a las 5:11 h.
+
+00:04:30.286 --> 00:04:33.386 align:middle
+Ejecuta de nuevo el comando:
+Siguen siendo las 5:11 h.
+
+00:04:33.856 --> 00:04:38.986 align:middle
+Vale, no es realmente aleatorio, los
+valores se calculan de forma determinista
+
+00:04:38.986 --> 00:04:40.216 align:middle
+en función de los detalles del mensaje.
+
+00:04:40.646 --> 00:04:44.166 align:middle
+En nuestro caso, la cadena
+app:send-booking-reminders.
+
+00:04:44.296 --> 00:04:47.906 align:middle
+Un comando diferente con la misma
+expresión hash tendrá valores diferentes.
+
+00:04:48.666 --> 00:04:51.406 align:middle
+La documentación del Programador
+tiene todos los detalles al respecto.
+
+00:04:52.136 --> 00:04:54.396 align:middle
+Incluso hay alias para hashes comunes.
+
+00:04:54.476 --> 00:04:58.326 align:middle
+Por ejemplo, #mignight elegirá una hora
+entre medianoche y las 3 de la madrugada.
+
+00:04:58.806 --> 00:05:06.356 align:middle
+Utilízalo para nuestra expresión: y vuelve a
+depurar el programador: Uy, una errata, lo arreglo
+
+00:05:06.356 --> 00:05:14.736 align:middle
+y lo vuelvo a ejecutar: Ahora está programado
+para ejecutarse todos los días a las 2:11 h.
+
+00:05:15.006 --> 00:05:18.356 align:middle
+¡Genial! Hemos configurado nuestro
+programa, pero ¿cómo lo ejecutamos?
+
+00:05:18.906 --> 00:05:21.756 align:middle
+Recuerda que las programaciones no
+son más que transportes de Messenger.
+
+00:05:22.266 --> 00:05:28.926 align:middle
+El nombre del transporte es scheduler_<schedule_name>,
+en nuestro caso, scheduler_default.
+
+00:05:29.426 --> 00:05:36.846 align:middle
+Ejecútalo con: symfony console messenger:consume
+scheduler_default En tu servidor de producción,
+
+00:05:36.846 --> 00:05:40.386 align:middle
+configúralo para que se ejecute en segundo
+plano como un trabajador normal de Messenger.
+
+00:05:41.236 --> 00:05:44.166 align:middle
+Muy bien, éste es un rápido
+resumen del componente Programador.
+
+00:05:44.496 --> 00:05:46.786 align:middle
+Consulta la documentación
+para obtener más información
+
+00:05:47.196 --> 00:05:49.286 align:middle
+¡Feliz programación!
