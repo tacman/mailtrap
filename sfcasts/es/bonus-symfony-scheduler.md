@@ -22,7 +22,11 @@ Crea un horario con:
 symfony console make:schedule
 ```
 
-¿Nombre del transporte? Utiliza `default`. ¿Nombre del programa? Utiliza el predeterminado: `MainSchedule`. ¡Excitante!
+***NOTE
+`symfony/scheduler` ahora tiene una receta oficial que crea `src/Schedule.php`por ti, por lo que este paso ya no es necesario.
+***
+
+¿Nombre del transporte? Utiliza `default`. ¿Nombre del programa? Utiliza el predeterminado: `MainSchedule`. ¡Emocionante!
 
 Es posible tener varios horarios, pero para la mayoría de las aplicaciones, un solo horario es suficiente.
 
@@ -134,6 +138,6 @@ symfony console messenger:consume scheduler_default
 
 En tu servidor de producción, configúralo para que se ejecute en segundo plano como un trabajador normal de Messenger.
 
-Muy bien, éste es un rápido resumen del componente Programador. Consulta la documentación para obtener más información
+Muy bien, éste es un breve resumen del componente Programador. Consulta la documentación para obtener más información
 
 ¡Feliz programación!
