@@ -769,6 +769,64 @@
 
 ## Bonus: Monitoring Messenger
 
+- Another, final bonus chapter
+- A lot of messages and schedules running in the background
+  - We need a way to monitor these
+- `composer require zenstruck/messenger-monitor-bundle`
+  - `y` to install the recipe
+- In our IDE:
+  - `symfony/scheduler` recipe added `src/Schedule.php` - delete this
+  - `src/Entity/ProcessedMessage.php`: entity require for tracking messenger history
+  - `config/packages/zenstruck_messenger_monitor.yaml`: configuration to let
+    the bundle know about our entity
+  - `src/Controller/Admin/MessengerMonitorController.php`: this is the UI for
+    the bundle
+    - remove the `#[IsGranted]` attribute (we don't have security yet but be
+      sure this controller is secured before going to production!)
+- Run your migrations... for us: `symfony console doctrine:schema:update --force`
+- Install some optional packages (they make the UI a bit nicer):
+  - `composer require knplabs/knp-time-bundle`: makes dates easier to read
+  - `composer require lorisleiva/cron-translator`: human-readable cron
+    expressions
+- Reload our fixtures so there's an email to send:
+  - `symfony console doctrine:fixtures:load`
+- In the app, visit `/admin/messenger`
+- Dashboard page:
+  - Worker status - 1 running for `async` (Symfony CLI worker)
+  - Transport status - `async` running but `scheduler_default` isn't, also
+    shows the queue size
+  - Snapshot statistics for the last 24 hours
+  - Latest messages
+  - All these auto-refresh every 5 seconds
+- Schedule tab:
+  - No workers running but that's expected
+  - Here's our scheduled booking reminder - nice cron expression
+  - Run it manually on the `async` transport
+  - Wait a sec and refresh the page...
+  - Now we can see details on the last run! Click details
+  - Click "History"
+- This tab allows filtering all messages - it's auto-filtered to the specific
+  scheduled task
+  - Reset the filter
+  - Here's our email message! Details to see metadata
+  - Filters: date range, transport, success/failed, message class
+- Top bar:
+  - Transports
+    - `async`: shows queued messages if applicable
+    - `failed`: failures shown here - can retry/delete from the UI
+    - Schedule transports aren't shown as their *special*
+  - Statistics
+    - Per-message stats for date range
+- These messages can pile up so we need a way to clean up old ones:
+  - In `src/Scheduler/MainSchedule.php`
+    - Add `messenger:monitor:purge --exclude-schedules` at `#midnight`
+      - Will delete messages older than 30 days
+      - But excludes messages triggered by schedules
+    - Add `messenger:monitor:schedule:purge` at `#midnight`
+      - Keeps the last 10 runs of each scheduled task
+      - We keep these commands separate as to ensure you can keep enough history
+- Back in the UI, check these new tasks
+
 ## Bonus: Signing Emails (SMIME)
 
 - Verify the email hasn't been tampered with
