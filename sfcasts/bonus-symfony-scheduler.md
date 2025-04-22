@@ -31,6 +31,11 @@ Create a schedule with:
 symfony console make:schedule
 ```
 
+***NOTE
+`symfony/scheduler` now has an official recipe that creates `src/Schedule.php`
+for you, so this step is no longer required.
+***
+
 Transport name? Use `default`. Schedule name? Use the default: `MainSchedule`.
 Exciting!
 
