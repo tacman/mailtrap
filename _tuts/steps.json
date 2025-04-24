@@ -349,7 +349,17 @@
             "id": "scheduler-midnight",
             "name": "Scheduler: #midnight",
             "description": null
+        },
+        {
+            "id": "messenger-monitor-install",
+            "name": "Messenger Monitor: install",
+            "description": null
+        },
+        {
+            "id": "messenger-monitor-purge-commands",
+            "name": "Messenger Monitor: purge commands",
+            "description": null
         }
     ],
-    "sha": "12dd0934c08cc4a7bc066e337259d02cce48a7af"
+    "sha": "befa798efb9766205292430b161207b49fc8e88a"
 }

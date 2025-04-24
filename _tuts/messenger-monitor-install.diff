@@ -1,0 +1,602 @@
+diff --git a/composer.json b/composer.json
+index 8dba320..ded45a2 100644
+--- a/composer.json
++++ b/composer.json
+@@ -10,6 +10,7 @@
+         "doctrine/doctrine-fixtures-bundle": "^3.6",
+         "doctrine/orm": "^3.3",
+         "dragonmantank/cron-expression": "^3.4",
++        "knplabs/knp-time-bundle": "^2.4",
+         "league/html-to-markdown": "^5.1",
+         "symfony/asset": "7.2.*",
+         "symfony/asset-mapper": "7.2.*",
+@@ -36,7 +37,8 @@
+         "twig/cssinliner-extra": "^3.18",
+         "twig/extra-bundle": "^3.0",
+         "twig/inky-extra": "^3.19",
+-        "twig/twig": "^3.0"
++        "twig/twig": "^3.0",
++        "zenstruck/messenger-monitor-bundle": "^0.5.1"
+     },
+     "require-dev": {
+         "phpunit/phpunit": "^9.5",
+diff --git a/composer.lock b/composer.lock
+index dcd5565..aa9fe49 100644
+--- a/composer.lock
++++ b/composer.lock
+@@ -4,7 +4,7 @@
+         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+         "This file is @generated automatically"
+     ],
+-    "content-hash": "cbe67f005abe60f58763c33167908b60",
++    "content-hash": "bc9dac36e718fc53cb4b86b50acb2c97",
+     "packages": [
+         {
+             "name": "composer/semver",
+@@ -1414,6 +1414,81 @@
+             ],
+             "time": "2024-12-27T00:36:43+00:00"
+         },
++        {
++            "name": "knplabs/knp-time-bundle",
++            "version": "v2.4.0",
++            "source": {
++                "type": "git",
++                "url": "https://github.com/KnpLabs/KnpTimeBundle.git",
++                "reference": "93e9528415b28a19872d74b28e816045c0fd217b"
++            },
++            "dist": {
++                "type": "zip",
++                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/93e9528415b28a19872d74b28e816045c0fd217b",
++                "reference": "93e9528415b28a19872d74b28e816045c0fd217b",
++                "shasum": ""
++            },
++            "require": {
++                "php": ">=8.1",
++                "symfony/config": "^5.4|^6.0|^7.0",
++                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
++                "symfony/translation": "^5.4|^6.0|^7.0"
++            },
++            "conflict": {
++                "phpunit/phpunit": "<8.0"
++            },
++            "require-dev": {
++                "phpstan/phpstan": "^1.11",
++                "phpunit/phpunit": "^9.6",
++                "symfony/framework-bundle": "^5.4|^6.0|^7.0",
++                "symfony/phpunit-bridge": "^5.4|^6.0|^7.0",
++                "symfony/twig-bundle": "^5.4|^6.0|^7.0"
++            },
++            "suggest": {
++                "symfony/twig-bundle": "to use the Twig `time_diff()` function and `|time_diff`/`|duration` filter"
++            },
++            "type": "symfony-bundle",
++            "extra": {
++                "branch-alias": {
++                    "dev-master": "2.x-dev"
++                }
++            },
++            "autoload": {
++                "psr-4": {
++                    "Knp\\Bundle\\TimeBundle\\": "src/"
++                }
++            },
++            "notification-url": "https://packagist.org/downloads/",
++            "license": [
++                "MIT"
++            ],
++            "authors": [
++                {
++                    "name": "KnpLabs Team",
++                    "homepage": "https://knplabs.com"
++                },
++                {
++                    "name": "Symfony Community",
++                    "homepage": "https://github.com/KnpLabs/KnpTimeBundle/contributors"
++                }
++            ],
++            "description": "Making your dates and durations look sensible and descriptive",
++            "homepage": "https://github.com/KnpLabs/KnpTimeBundle",
++            "keywords": [
++                "bundle",
++                "date",
++                "descriptive time",
++                "duration",
++                "knp",
++                "knplabs",
++                "time"
++            ],
++            "support": {
++                "issues": "https://github.com/KnpLabs/KnpTimeBundle/issues",
++                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v2.4.0"
++            },
++            "time": "2024-06-11T09:38:28+00:00"
++        },
+         {
+             "name": "league/html-to-markdown",
+             "version": "5.1.1",
+@@ -6003,6 +6078,101 @@
+             ],
+             "time": "2024-11-13T13:31:26+00:00"
+         },
++        {
++            "name": "symfony/translation",
++            "version": "v7.2.4",
++            "source": {
++                "type": "git",
++                "url": "https://github.com/symfony/translation.git",
++                "reference": "283856e6981286cc0d800b53bd5703e8e363f05a"
++            },
++            "dist": {
++                "type": "zip",
++                "url": "https://api.github.com/repos/symfony/translation/zipball/283856e6981286cc0d800b53bd5703e8e363f05a",
++                "reference": "283856e6981286cc0d800b53bd5703e8e363f05a",
++                "shasum": ""
++            },
++            "require": {
++                "php": ">=8.2",
++                "symfony/deprecation-contracts": "^2.5|^3",
++                "symfony/polyfill-mbstring": "~1.0",
++                "symfony/translation-contracts": "^2.5|^3.0"
++            },
++            "conflict": {
++                "symfony/config": "<6.4",
++                "symfony/console": "<6.4",
++                "symfony/dependency-injection": "<6.4",
++                "symfony/http-client-contracts": "<2.5",
++                "symfony/http-kernel": "<6.4",
++                "symfony/service-contracts": "<2.5",
++                "symfony/twig-bundle": "<6.4",
++                "symfony/yaml": "<6.4"
++            },
++            "provide": {
++                "symfony/translation-implementation": "2.3|3.0"
++            },
++            "require-dev": {
++                "nikic/php-parser": "^4.18|^5.0",
++                "psr/log": "^1|^2|^3",
++                "symfony/config": "^6.4|^7.0",
++                "symfony/console": "^6.4|^7.0",
++                "symfony/dependency-injection": "^6.4|^7.0",
++                "symfony/finder": "^6.4|^7.0",
++                "symfony/http-client-contracts": "^2.5|^3.0",
++                "symfony/http-kernel": "^6.4|^7.0",
++                "symfony/intl": "^6.4|^7.0",
++                "symfony/polyfill-intl-icu": "^1.21",
++                "symfony/routing": "^6.4|^7.0",
++                "symfony/service-contracts": "^2.5|^3",
++                "symfony/yaml": "^6.4|^7.0"
++            },
++            "type": "library",
++            "autoload": {
++                "files": [
++                    "Resources/functions.php"
++                ],
++                "psr-4": {
++                    "Symfony\\Component\\Translation\\": ""
++                },
++                "exclude-from-classmap": [
++                    "/Tests/"
++                ]
++            },
++            "notification-url": "https://packagist.org/downloads/",
++            "license": [
++                "MIT"
++            ],
++            "authors": [
++                {
++                    "name": "Fabien Potencier",
++                    "email": "fabien@symfony.com"
++                },
++                {
++                    "name": "Symfony Community",
++                    "homepage": "https://symfony.com/contributors"
++                }
++            ],
++            "description": "Provides tools to internationalize your application",
++            "homepage": "https://symfony.com",
++            "support": {
++                "source": "https://github.com/symfony/translation/tree/v7.2.4"
++            },
++            "funding": [
++                {
++                    "url": "https://symfony.com/sponsor",
++                    "type": "custom"
++                },
++                {
++                    "url": "https://github.com/fabpot",
++                    "type": "github"
++                },
++                {
++                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
++                    "type": "tidelift"
++                }
++            ],
++            "time": "2025-02-13T10:27:23+00:00"
++        },
+         {
+             "name": "symfony/translation-contracts",
+             "version": "v3.5.1",
+@@ -7210,6 +7380,228 @@
+                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
+             },
+             "time": "2022-06-03T18:03:27+00:00"
++        },
++        {
++            "name": "zenstruck/bytes",
++            "version": "v1.0.0",
++            "source": {
++                "type": "git",
++                "url": "https://github.com/zenstruck/bytes.git",
++                "reference": "e39fa60a6204576dbc62304bbab2ac395ff7610f"
++            },
++            "dist": {
++                "type": "zip",
++                "url": "https://api.github.com/repos/zenstruck/bytes/zipball/e39fa60a6204576dbc62304bbab2ac395ff7610f",
++                "reference": "e39fa60a6204576dbc62304bbab2ac395ff7610f",
++                "shasum": ""
++            },
++            "require": {
++                "php": ">=8.0"
++            },
++            "require-dev": {
++                "phpstan/phpstan": "^1.4",
++                "phpunit/phpunit": "^9.5.0",
++                "symfony/phpunit-bridge": "^6.3",
++                "symfony/var-dumper": "^5.4|^6.0"
++            },
++            "type": "library",
++            "autoload": {
++                "psr-4": {
++                    "Zenstruck\\": [
++                        "src/"
++                    ]
++                }
++            },
++            "notification-url": "https://packagist.org/downloads/",
++            "license": [
++                "MIT"
++            ],
++            "authors": [
++                {
++                    "name": "Kevin Bond",
++                    "email": "kevinbond@gmail.com"
++                }
++            ],
++            "description": "Parse, manipulate, humanize, and format bytes.",
++            "homepage": "https://github.com/zenstruck/bytes",
++            "keywords": [
++                "information",
++                "unit"
++            ],
++            "support": {
++                "issues": "https://github.com/zenstruck/bytes/issues",
++                "source": "https://github.com/zenstruck/bytes/tree/v1.0.0"
++            },
++            "funding": [
++                {
++                    "url": "https://github.com/kbond",
++                    "type": "github"
++                }
++            ],
++            "time": "2023-07-26T15:23:27+00:00"
++        },
++        {
++            "name": "zenstruck/collection",
++            "version": "v0.5.0",
++            "source": {
++                "type": "git",
++                "url": "https://github.com/zenstruck/collection.git",
++                "reference": "fc126936e76d24ba6c5ad49df6b1e7eefe9cb62c"
++            },
++            "dist": {
++                "type": "zip",
++                "url": "https://api.github.com/repos/zenstruck/collection/zipball/fc126936e76d24ba6c5ad49df6b1e7eefe9cb62c",
++                "reference": "fc126936e76d24ba6c5ad49df6b1e7eefe9cb62c",
++                "shasum": ""
++            },
++            "require": {
++                "php": ">=8.1"
++            },
++            "require-dev": {
++                "composer-runtime-api": "^2.0",
++                "doctrine/collections": "^2.1",
++                "doctrine/dbal": "^3.0|^4.0",
++                "doctrine/doctrine-bundle": "^2.7",
++                "doctrine/orm": "^2.15|^3.0",
++                "pagerfanta/pagerfanta": "^1.0|^2.0|^3.0|^4.0",
++                "phpstan/phpstan": "^1.4",
++                "phpunit/phpunit": "^9.6.21",
++                "symfony/expression-language": "^6.4|^7.0",
++                "symfony/framework-bundle": "^6.4|^7.0",
++                "symfony/phpunit-bridge": "^6.3|^7.0",
++                "symfony/var-dumper": "^6.4|^7.0",
++                "zenstruck/foundry": "^1.38.3",
++                "zenstruck/uri": "^2.3"
++            },
++            "suggest": {
++                "doctrine/collections": "To use CollectionDecorator.",
++                "doctrine/dbal": "To use DBAL implementation (>=3.0).",
++                "doctrine/orm": "To use ORM implementation and batch utilities (>=2.15).",
++                "pagerfanta/pagerfanta": "To use CollectionAdapter."
++            },
++            "type": "library",
++            "autoload": {
++                "files": [
++                    "src/functions.php"
++                ],
++                "psr-4": {
++                    "Zenstruck\\": [
++                        "src/"
++                    ]
++                }
++            },
++            "notification-url": "https://packagist.org/downloads/",
++            "license": [
++                "MIT"
++            ],
++            "authors": [
++                {
++                    "name": "Kevin Bond",
++                    "email": "kevinbond@gmail.com"
++                }
++            ],
++            "description": "Helpers for iterating/paginating/filtering collections (with Doctrine ORM/DBAL implementations and batch processing utilities).",
++            "homepage": "https://github.com/zenstruck/collection",
++            "keywords": [
++                "batch",
++                "collection",
++                "dbal",
++                "doctrine",
++                "iterate",
++                "orm",
++                "pager",
++                "paginate"
++            ],
++            "support": {
++                "issues": "https://github.com/zenstruck/collection/issues",
++                "source": "https://github.com/zenstruck/collection/tree/v0.5.0"
++            },
++            "funding": [
++                {
++                    "url": "https://github.com/kbond",
++                    "type": "github"
++                }
++            ],
++            "time": "2024-11-23T20:48:41+00:00"
++        },
++        {
++            "name": "zenstruck/messenger-monitor-bundle",
++            "version": "v0.5.1",
++            "source": {
++                "type": "git",
++                "url": "https://github.com/zenstruck/messenger-monitor-bundle.git",
++                "reference": "cb1ff7369d452e8ddd844101e8a136bc85727a4c"
++            },
++            "dist": {
++                "type": "zip",
++                "url": "https://api.github.com/repos/zenstruck/messenger-monitor-bundle/zipball/cb1ff7369d452e8ddd844101e8a136bc85727a4c",
++                "reference": "cb1ff7369d452e8ddd844101e8a136bc85727a4c",
++                "shasum": ""
++            },
++            "require": {
++                "php": ">=8.1",
++                "symfony/framework-bundle": "^6.4.1|^7.0",
++                "symfony/messenger": "^6.4|^7.0",
++                "zenstruck/bytes": "^1.0",
++                "zenstruck/collection": "^0.5"
++            },
++            "require-dev": {
++                "doctrine/doctrine-bundle": "^2.10",
++                "doctrine/orm": "^2.15|^3.1",
++                "knplabs/knp-time-bundle": "^1.20|^2.0",
++                "lorisleiva/cron-translator": "^0.4.3",
++                "matthiasnoback/symfony-dependency-injection-test": "^4.3|^5.0",
++                "phpstan/phpstan": "^1.4",
++                "phpunit/phpunit": "^9.6.0",
++                "symfony/config": "^6.4|^7.0",
++                "symfony/console": "^6.4|^7.0",
++                "symfony/http-client-contracts": "^3.3",
++                "symfony/mailer": "^6.4|^7.0",
++                "symfony/phpunit-bridge": "^6.1|^7.0",
++                "symfony/process": "^6.4|^7.0",
++                "symfony/scheduler": "^6.4|^7.0",
++                "symfony/security-bundle": "^6.4|^7.0",
++                "symfony/serializer": "^6.4|^7.0",
++                "symfony/var-dumper": "^6.4|^7.0",
++                "zenstruck/console-test": "^1.5",
++                "zenstruck/foundry": "^2.2",
++                "zenstruck/messenger-test": "^1.11"
++            },
++            "suggest": {
++                "knplabs/knp-time-bundle": "For human readable timestamps and durations on your dashboard.",
++                "lorisleiva/cron-translator": "For human readable cron expressions on your dashboard."
++            },
++            "type": "symfony-bundle",
++            "autoload": {
++                "psr-4": {
++                    "Zenstruck\\Messenger\\Monitor\\": [
++                        "src/"
++                    ]
++                }
++            },
++            "notification-url": "https://packagist.org/downloads/",
++            "license": [
++                "MIT"
++            ],
++            "authors": [
++                {
++                    "name": "Kevin Bond",
++                    "email": "kevinbond@gmail.com"
++                }
++            ],
++            "description": "Batteries included UI to monitor your Messenger workers, transports, schedules, and messages.",
++            "homepage": "https://github.com/zenstruck/messenger-monitor-bundle",
++            "support": {
++                "issues": "https://github.com/zenstruck/messenger-monitor-bundle/issues",
++                "source": "https://github.com/zenstruck/messenger-monitor-bundle/tree/v0.5.1"
++            },
++            "funding": [
++                {
++                    "url": "https://github.com/kbond",
++                    "type": "github"
++                }
++            ],
++            "time": "2024-11-28T01:58:52+00:00"
+         }
+     ],
+     "packages-dev": [
+diff --git a/config/bundles.php b/config/bundles.php
+index b8b06cf..032b7f1 100644
+--- a/config/bundles.php
++++ b/config/bundles.php
+@@ -14,4 +14,6 @@ return [
+     Symfonycasts\TailwindBundle\SymfonycastsTailwindBundle::class => ['all' => true],
+     Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
+     Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
++    Zenstruck\Messenger\Monitor\ZenstruckMessengerMonitorBundle::class => ['all' => true],
++    Knp\Bundle\TimeBundle\KnpTimeBundle::class => ['all' => true],
+ ];
+diff --git a/config/packages/translation.yaml b/config/packages/translation.yaml
+new file mode 100644
+index 0000000..b3f8f9c
+--- /dev/null
++++ b/config/packages/translation.yaml
+@@ -0,0 +1,7 @@
++framework:
++    default_locale: en
++    translator:
++        default_path: '%kernel.project_dir%/translations'
++        fallbacks:
++            - en
++        providers:
+diff --git a/config/packages/zenstruck_messenger_monitor.yaml b/config/packages/zenstruck_messenger_monitor.yaml
+new file mode 100644
+index 0000000..74413d1
+--- /dev/null
++++ b/config/packages/zenstruck_messenger_monitor.yaml
+@@ -0,0 +1,4 @@
++zenstruck_messenger_monitor:
++    storage:
++        orm:
++            entity_class: App\Entity\ProcessedMessage
+diff --git a/src/Controller/Admin/MessengerMonitorController.php b/src/Controller/Admin/MessengerMonitorController.php
+new file mode 100644
+index 0000000..9344c21
+--- /dev/null
++++ b/src/Controller/Admin/MessengerMonitorController.php
+@@ -0,0 +1,11 @@
++<?php
++
++namespace App\Controller\Admin;
++
++use Symfony\Component\Routing\Attribute\Route;
++use Zenstruck\Messenger\Monitor\Controller\MessengerMonitorController as BaseMessengerMonitorController;
++
++#[Route('/admin/messenger')]
++class MessengerMonitorController extends BaseMessengerMonitorController
++{
++}
+diff --git a/src/Entity/ProcessedMessage.php b/src/Entity/ProcessedMessage.php
+new file mode 100644
+index 0000000..035f74b
+--- /dev/null
++++ b/src/Entity/ProcessedMessage.php
+@@ -0,0 +1,21 @@
++<?php
++
++namespace App\Entity;
++
++use Zenstruck\Messenger\Monitor\History\Model\ProcessedMessage as BaseProcessedMessage;
++use Doctrine\ORM\Mapping as ORM;
++
++#[ORM\Entity(readOnly: true)]
++#[ORM\Table('messenger_processed_messages')]
++class ProcessedMessage extends BaseProcessedMessage
++{
++    #[ORM\Id]
++    #[ORM\GeneratedValue]
++    #[ORM\Column]
++    private ?int $id = null;
++
++    public function id(): ?int
++    {
++        return $this->id;
++    }
++}
+diff --git a/symfony.lock b/symfony.lock
+index 004ecdc..a4290aa 100644
+--- a/symfony.lock
++++ b/symfony.lock
+@@ -25,6 +25,9 @@
+             "src/DataFixtures/AppFixtures.php"
+         ]
+     },
++    "knplabs/knp-time-bundle": {
++        "version": "v2.4.0"
++    },
+     "phpunit/phpunit": {
+         "version": "9.6",
+         "recipe": {
+@@ -204,6 +207,18 @@
+             "config/routes.yaml"
+         ]
+     },
++    "symfony/scheduler": {
++        "version": "7.2",
++        "recipe": {
++            "repo": "github.com/symfony/recipes",
++            "branch": "main",
++            "version": "7.2",
++            "ref": "caea3c928ee9e1b21288fd76aef36f16ea355515"
++        },
++        "files": [
++            "src/Schedule.php"
++        ]
++    },
+     "symfony/stimulus-bundle": {
+         "version": "2.22",
+         "recipe": {
+@@ -219,6 +234,19 @@
+             "assets/controllers/hello_controller.js"
+         ]
+     },
++    "symfony/translation": {
++        "version": "7.2",
++        "recipe": {
++            "repo": "github.com/symfony/recipes",
++            "branch": "main",
++            "version": "6.3",
++            "ref": "e28e27f53663cc34f0be2837aba18e3a1bef8e7b"
++        },
++        "files": [
++            "config/packages/translation.yaml",
++            "translations/.gitignore"
++        ]
++    },
+     "symfony/twig-bundle": {
+         "version": "7.1",
+         "recipe": {
+@@ -298,5 +326,19 @@
+     },
+     "zenstruck/mailer-test": {
+         "version": "v1.4.2"
++    },
++    "zenstruck/messenger-monitor-bundle": {
++        "version": "0.5",
++        "recipe": {
++            "repo": "github.com/symfony/recipes-contrib",
++            "branch": "main",
++            "version": "0.5",
++            "ref": "e830a96e19aef36b23c63a4f8884fe51815f06d8"
++        },
++        "files": [
++            "config/packages/zenstruck_messenger_monitor.yaml",
++            "src/Controller/Admin/MessengerMonitorController.php",
++            "src/Entity/ProcessedMessage.php"
++        ]
+     }
+ }
+diff --git a/translations/.gitignore b/translations/.gitignore
+new file mode 100644
+index 0000000..e69de29

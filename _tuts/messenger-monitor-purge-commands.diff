@@ -1,0 +1,31 @@
+diff --git a/src/Scheduler/MainSchedule.php b/src/Scheduler/MainSchedule.php
+index 23f8479..2012f37 100644
+--- a/src/Scheduler/MainSchedule.php
++++ b/src/Scheduler/MainSchedule.php
+@@ -2,7 +2,9 @@
+ 
+ namespace App\Scheduler;
+ 
++use Symfony\Component\Console\Messenger\RunCommandMessage;
+ use Symfony\Component\Scheduler\Attribute\AsSchedule;
++use Symfony\Component\Scheduler\RecurringMessage;
+ use Symfony\Component\Scheduler\Schedule;
+ use Symfony\Component\Scheduler\ScheduleProviderInterface;
+ use Symfony\Contracts\Cache\CacheInterface;
+@@ -20,6 +22,16 @@ final class MainSchedule implements ScheduleProviderInterface
+         return (new Schedule())
+             ->stateful($this->cache)
+             ->processOnlyLastMissedRun(true)
++            ->add(RecurringMessage::cron(
++                    '#midnight',
++                    new RunCommandMessage('messenger:monitor:purge --exclude-schedules'),
++                )
++            )
++            ->add(RecurringMessage::cron(
++                    '#midnight',
++                    new RunCommandMessage('messenger:monitor:schedule:purge'),
++                )
++            )
+         ;
+     }
+ }
