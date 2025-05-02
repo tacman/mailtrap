@@ -1,3 +1,23 @@
-messenger-monitor-bundle:
-    tutsFirstStep: messenger-monitor-install
-    tutsLastStep: messenger-monitor-purge-commands
+chapters:
+  - installing-mailer
+  - sending-first-email
+  - better-email
+  - mailtrap-email-testing
+  - html-email
+  - css-email
+  - inky-foundation
+  - attachments-images
+  - global-from-email-events
+  - production-sending-mailtrap
+  - tags-metadata
+  - async-email-sending
+  - console-urls
+  - functional-test-emails
+  - twig-email-layout
+  - cli-command-email
+  - cli-command-functional-test
+  - email-factory-service
+  - email-event-webhook
+  - webhook-demo
+  - bonus-symfony-scheduler
+  - messenger-monitor-bundle
