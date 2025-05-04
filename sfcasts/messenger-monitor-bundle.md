@@ -4,9 +4,9 @@ Hey, you're *still* here? Great! Let's do one final bonus chapter!
 
 When you have a bunch of messages and schedules running in the background,
 it can be hard to know what's happening. Are my workers running? Is my schedule
-running? Do I have failures? I mean, we have logs, but... *logs*. I'm
-going to show you a cool bundle that provides a UI to get some
-visibility on what's going on. 
+running? And where is it running to? What about failures? I mean, we have logs,
+but... *logs*. Instead, let's explore a cool bundle that givesus a UI to get some
+visibility on what's going on with our army of worker robots!
 
 At your terminal, run:
 
@@ -24,8 +24,8 @@ have one, delete this file.
 
 A new controller was added: `src/Controller/Admin/MessengerMonitorController.php`.
 This is a *stub* to enable the bundle's UI. It extends this `BaseMessengerMonitorController`
-from the bundle and adds a route prefix of `/admin/messenger`. It's also
-adding this `#[IsGranted('ROLE_ADMIN')]` attribute. This is *super* important
+from the bundle and adds a route prefix of `/admin/messenger`. It also
+adds this `#[IsGranted('ROLE_ADMIN')]` attribute. This is *super* important
 for your *real* apps. You *only* want site admins to access the UI as it
 shows sensitive information. We don't have security configured in this app,
 so I'll just remove this line.
@@ -94,7 +94,7 @@ task: `RunCommandMessage` for `app:send-booking-reminders`. It uses a
 we can run it manually by clicking "Trigger"... and selecting our `async`
 transport.
 
-Jump back to the dashboard. We can see it ran successfully, took 58ms, and consumed
+Jump back to the dashboard. Itt ran successfully, took 58ms, and consumed
 31MB of memory. Click "Details" to see even more information! "Time in Queue",
 "Time to Handle", timestamps... lots of good stuff.
 
@@ -122,12 +122,12 @@ fixtures also cleared our message history. Click "Schedule", then "Trigger" on o
 "async" transport.
 
 Back on the dashboard, we have 2 messages now. `RunCommandMessage` again but
-click it's "Details":
+click its "Details":
 
 > Sent 1 booking reminder
 
 Now our second message: `SendEmailMessage`. This was dispatched by the
-command. Click it's "Details" to see email-related information for its
+command. Click its "Details" to see email-related information for its
 results. Note the tag, `booking_reminder`. The bundle automatically
 detected that we were sending an email with a "Mailer" tag, so it added
 it here.
