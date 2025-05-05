@@ -5,7 +5,7 @@ Hey, you're *still* here? Great! Let's do one final bonus chapter!
 When you have a bunch of messages and schedules running in the background,
 it can be hard to know what's happening. Are my workers running? Is my schedule
 running? And where is it running to? What about failures? I mean, we have logs,
-but... *logs*. Instead, let's explore a cool bundle that givesus a UI to get some
+but... *logs*. Instead, let's explore a cool bundle that gives us a UI to get some
 visibility on what's going on with our army of worker robots!
 
 At your terminal, run:
@@ -76,7 +76,7 @@ configured to run with our Symfony CLI server.
 
 Below, we see our available transports, how many messages are queued, and
 how many workers are running them. Notice it shows our `scheduler_default`
-transport as not running. This is expected as we didn't configure it to run
+transport as not running. This is expected, as we didn't configure it to run
 locally.
 
 Below that, we have a snapshot of statistics for the last 24 hours.
@@ -94,15 +94,15 @@ task: `RunCommandMessage` for `app:send-booking-reminders`. It uses a
 we can run it manually by clicking "Trigger"... and selecting our `async`
 transport.
 
-Jump back to the dashboard. Itt ran successfully, took 58ms, and consumed
+Jump back to the dashboard. It ran successfully, took 58ms, and consumed
 31MB of memory. Click "Details" to see even more information! "Time in Queue",
 "Time to Handle", timestamps... lots of good stuff.
 
 These tags are super helpful for filtering messages.
-You can add your own tags but some are added by the bundle: "manual", because
-we "manually" ran a scheduled task, "schedule", because it was a scheduled
-task, "scheduler:default", because it's part of our `default` schedule.
-This `scheduler:default:<hash>` is the unique ID for this scheduled task.
+You can add your own tags but some are added by the bundle: `manual`, because
+we "manually" ran a scheduled task, `schedule`, because it was a scheduled
+task, `schedule:default`, because it's part of our *default* schedule.
+This `schedule:default:<hash>` is the unique ID for this scheduled task.
 
 On the right here is the "result" of the message "handler" - in this case,
 `RunCommandMessageHandler`. Different handlers have different results (some
@@ -124,7 +124,7 @@ fixtures also cleared our message history. Click "Schedule", then "Trigger" on o
 Back on the dashboard, we have 2 messages now. `RunCommandMessage` again but
 click its "Details":
 
-> Sent 1 booking reminder
+> Sent 1 booking reminders
 
 Now our second message: `SendEmailMessage`. This was dispatched by the
 command. Click its "Details" to see email-related information for its
