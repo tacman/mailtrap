@@ -4,7 +4,7 @@ Hola, ¿sigues aquí? ¡Estupendo! ¡Hagamos un último capítulo extra!
 
 Cuando tienes un montón de mensajes y programaciones ejecutándose en segundo plano, puede ser difícil saber qué está pasando. ¿Se están ejecutando mis trabajadores? ¿Se está ejecutando mi programación? ¿Y hacia dónde se está ejecutando? ¿Y los fallos? Tenemos registros, pero... registros. En lugar de eso, vamos a explorar un bundle genial que nos proporciona una interfaz de usuario para saber qué está pasando con nuestro ejército de robots trabajadores
 
-Ejecuta en tu terminal:
+En tu terminal, ejecuta:
 
 ```terminal
 composer require zenstruck/messenger-monitor-bundle
@@ -60,9 +60,9 @@ Todos estos widgets se actualizan automáticamente cada 5 segundos.
 
 Vuelve al panel de control. Se ejecutó correctamente, tardó 58 ms y consumió 31 MB de memoria. Haz clic en "Detalles" para ver aún más información "Tiempo en cola", "Tiempo para gestionar", marcas de tiempo... un montón de cosas buenas.
 
-Estas etiquetas son superútiles para filtrar mensajes. Puedes añadir tus propias etiquetas, pero algunas las añade el bundle: "manual", porque ejecutamos "manualmente" una tarea programada, "programar", porque era una tarea programada, "programador:predeterminado", porque forma parte de nuestra programación `default`. Este `scheduler:default:<hash>` es el identificador único de esta tarea programada.
+Estas etiquetas son muy útiles para filtrar mensajes. Puedes añadir tus propias etiquetas, pero algunas las añade el bundle: `manual` `schedule:default:<hash>` , porque ejecutamos "manualmente" una tarea programada, `schedule`, porque era una tarea programada, `schedule:default`, porque forma parte de nuestra programación por defecto. es el identificador único de esta tarea programada.
 
-A la derecha está el "resultado" del "manejador" del mensaje - en este caso,`RunCommandMessageHandler`. Diferentes manejadores tienen diferentes resultados (algunos no tienen ninguno). En este caso, el resultado es el código de salida del comando y la salida.
+A la derecha está el "resultado" del "manejador" del mensaje - en este caso,`RunCommandMessageHandler`. Diferentes gestores tienen diferentes resultados (algunos no tienen ninguno). En este caso, el resultado es el código de salida del comando y la salida.
 
 > Enviados 0 recordatorios de reserva
 
@@ -90,7 +90,7 @@ Como probablemente puedas imaginar, si tu aplicación ejecuta muchos mensajes, n
 
 En la documentación del bundle, desplázate hasta "messenger:monitor:purge" y copia el comando. Necesitamos programar esto... ¿pero cómo? Con el Programador de Symfony, ¡por supuesto! Abre `src/Scheduler/MainSchedule.php` y añade una nueva tarea con `->add(RecurringMessage::cron())`. Utiliza `#midnight`para que se ejecute diariamente entre medianoche y las 3 de la madrugada. Añade `new RunCommandMessage()`y pega el comando. Añade la opción `--exclude-schedules`. Esto purgará los mensajes con más de 30 días de antigüedad, excepto los mensajes activados por una tarea programada. Esto es importante porque tus tareas programadas pueden ejecutarse una vez al mes o incluso una vez al año. Esto te permite mantener un historial de ellas independientemente de su frecuencia.
 
-No obstante, debemos limpiarlas. Así que, volviendo a los documentos, copia un segundo comando: `messenger:monitor:schedule:purge`. Y en la programación, añádelo con `->add(RecurringMessage::cron('#midnight', new RunCommandMessage()))`y pégalo. Esto purgará el historial de mensajes programados omitidos por el comando anterior, pero conservará las 10 últimas ejecuciones de cada uno.
+No obstante, deberíamos limpiarlas. Así que, volviendo a los documentos, copia un segundo comando: `messenger:monitor:schedule:purge`. Y en la programación, añádelo con `->add(RecurringMessage::cron('#midnight', new RunCommandMessage()))`y pégalo. Esto purgará el historial de mensajes programados omitidos por el comando anterior, pero conservará las 10 últimas ejecuciones de cada uno.
 
 Asegurémonos de que estas tareas se han añadido a nuestra programación. De vuelta en el navegador, haz clic en "Programar" y aquí están: nuestras dos nuevas tareas.
 
