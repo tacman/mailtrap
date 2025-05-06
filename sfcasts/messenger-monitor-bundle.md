@@ -8,6 +8,8 @@ running? And where is it running to? What about failures? I mean, we have logs,
 but... *logs*. Instead, let's explore a cool bundle that gives us a UI to get some
 visibility on what's going on with our army of worker robots!
 
+## Installation
+
 At your terminal, run:
 
 ```terminal
@@ -22,13 +24,19 @@ Since the last chapter, where we added the `Symfony Scheduler`, it now
 has an official recipe that adds a default schedule. Since we already
 have one, delete this file.
 
+## `MessengerMonitorController`
+
 A new controller was added: `src/Controller/Admin/MessengerMonitorController.php`.
 This is a *stub* to enable the bundle's UI. It extends this `BaseMessengerMonitorController`
 from the bundle and adds a route prefix of `/admin/messenger`. It also
 adds this `#[IsGranted('ROLE_ADMIN')]` attribute. This is *super* important
 for your *real* apps. You *only* want site admins to access the UI as it
 shows sensitive information. We don't have security configured in this app,
-so I'll just remove this line.
+so I'll just remove this line:
+
+[[[ code('56502c4e95') ]]]
+
+## `ProcessedMessage`
 
 `src/Entity/ProcessedMessage.php` is a new entity added by the recipe. This is
 also a *stub* that extends this `BaseProcessedMessage` class and
@@ -43,6 +51,8 @@ don't have migrations configured for this project. So in your terminal, run:
 ```terminal
 symfony console doctrine:schema:update --force
 ```
+
+## Install Optional Dependencies
 
 Before we check out the UI, the bundle has two optional dependencies that
 I want to install. First:
@@ -67,6 +77,8 @@ We're ready to go! Start the server with:
 symfony serve -d
 ```
 
+## Dashboard
+
 Jump over to the browser and visit: `/admin/messenger`. This is the
 Messenger Monitor dashboard!
 
@@ -86,6 +98,8 @@ empty right now.
 
 All these widgets autorefresh every 5 seconds.
 
+## Schedule
+
 Let's create some history! In the top bar, click on `Schedule` (note the
 icon is red to further indicate the schedule isn't running). This is kind
 of a "more advanced `debug:schedule` command". We see our single scheduled
@@ -93,6 +107,8 @@ task: `RunCommandMessage` for `app:send-booking-reminders`. It uses a
 `CronExpressionTrigger` to run "every day at 2:11 AM". 0 runs so far but
 we can run it manually by clicking "Trigger"... and selecting our `async`
 transport.
+
+## "Details"
 
 Jump back to the dashboard. It ran successfully, took 58ms, and consumed
 31MB of memory. Click "Details" to see even more information! "Time in Queue",
@@ -132,18 +148,26 @@ results. Note the tag, `booking_reminder`. The bundle automatically
 detected that we were sending an email with a "Mailer" tag, so it added
 it here.
 
+## Transports
+
 In the top menu, you can click "Transports" to see more details on each
 one's pending messages (if applicable). The `failed` transport shows
 failed messages and gives you the option to retry or remove them, right
 from the UI!
+
+## History
 
 "History" is where we can filter messages: Period, limit to a specific
 date range. Transport, limit to a specific transport. Status, show just
 successes or failures. Schedule, whether to include or exclude messages triggered
 by a schedule. Message type, filter by message class.
 
+## Statistics
+
 "Statistics" shows a per-message-class stat summary and can be limited
 to a specific date-range.
+
+## Purge Message History
 
 As you can probably imagine, if your app executes a lot of messages, our
 history table can get *really* big. The bundle provides some commands to
@@ -154,15 +178,25 @@ command. We need to schedule this... but how? With
 Symfony Scheduler of course! Open `src/Scheduler/MainSchedule.php` and
 add a new task with `->add(RecurringMessage::cron())`. Use `#midnight`
 so it runs daily between midnight and 3am. Add `new RunCommandMessage()`
-and paste the command. Add the `--exclude-schedules` option. This will purge
+and paste the command. Add the `--exclude-schedules` option:
+
+[[[ code('066bc292db') ]]]
+
+This will purge
 messages older than 30 days *except* messages triggered by a schedule.
 This is important because your scheduled tasks might run once a month or even
 once a year. This enables you to keep a history of them regardless of their frequency.
 
+## Purge Schedule History
+
 We should still clean these up though. So, back in the docs, copy a
 second command: `messenger:monitor:schedule:purge`. And in the schedule,
 add it with `->add(RecurringMessage::cron('#midnight', new RunCommandMessage()))`
-and paste. This will purge the history of scheduled messages
+and paste:
+
+[[[ code('65f53c81b7') ]]]
+
+This will purge the history of scheduled messages
 skipped by the command above *but* keep the last 10 runs of each.
 
 Let's make sure these tasks were added to our schedule. Back in the browser,
