@@ -58,7 +58,7 @@ symfony serve -d
 
 Salta al navegador y visita `/admin/messenger`. Éste es el panel de control de Messenger Monitor
 
-Este primer widget muestra los trabajadores en ejecución y su estado. Podemos ver que tenemos 1 trabajador en ejecución para nuestro transporte `async`. Éste es el que hemos configurado para que se ejecute con nuestro servidor Symfony CLI.
+Este primer widget muestra los trabajadores en ejecución y su estado. Podemos ver que tenemos 1 trabajador en ejecución para nuestro transporte `async`. Este es el que hemos configurado para que se ejecute con nuestro servidor Symfony CLI.
 
 A continuación, vemos nuestros transportes disponibles, cuántos mensajes están en cola y cuántos trabajadores los están ejecutando. Observa que nuestro transporte `scheduler_default`no se está ejecutando. Esto es de esperar, ya que no lo hemos configurado para que se ejecute localmente.
 
@@ -78,7 +78,7 @@ Vuelve al panel de control. Se ejecutó correctamente, tardó 58 ms y consumió 
 
 Estas etiquetas son muy útiles para filtrar mensajes. Puedes añadir tus propias etiquetas, pero algunas las añade el bundle: `manual` `schedule:default:<hash>` , porque ejecutamos "manualmente" una tarea programada, `schedule`, porque era una tarea programada, `schedule:default`, porque forma parte de nuestra programación por defecto. es el identificador único de esta tarea programada.
 
-A la derecha está el "resultado" del "manejador" del mensaje - en este caso,`RunCommandMessageHandler`. Diferentes gestores tienen diferentes resultados (algunos no tienen ninguno). En este caso, el resultado es el código de salida del comando y la salida.
+A la derecha está el "resultado" del "manejador" del mensaje - en este caso,`RunCommandMessageHandler`. Diferentes gestores tienen diferentes resultados (algunos no tienen ninguno). Para éste, el resultado es el código de salida del comando y la salida.
 
 > Enviados 0 recordatorios de reserva
 
