@@ -122,7 +122,7 @@ This `schedule:default:<hash>` is the unique ID for this scheduled task.
 
 On the right here is the "result" of the message "handler" - in this case,
 `RunCommandMessageHandler`. Different handlers have different results (some
-have none). In this case, the result is the command's exit code and output.
+have none). For this one, the result is the command's exit code and output.
 
 > Sent 0 booking reminders
 
