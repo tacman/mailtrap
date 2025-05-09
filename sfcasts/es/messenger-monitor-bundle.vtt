@@ -1,0 +1,503 @@
+WEBVTT
+
+00:00:01.066 --> 00:00:02.366 align:middle
+Eh, ¿sigues aquí?
+
+00:00:02.606 --> 00:00:05.136 align:middle
+¡Estupendo! ¡Hagamos un
+último capítulo extra!
+
+00:00:05.646 --> 00:00:08.626 align:middle
+Cuando tienes un montón de mensajes y
+programaciones ejecutándose en segundo plano,
+
+00:00:08.886 --> 00:00:10.336 align:middle
+puede ser difícil saber qué está pasando.
+
+00:00:10.776 --> 00:00:11.856 align:middle
+¿Se están ejecutando mis trabajadores?
+
+00:00:12.086 --> 00:00:13.236 align:middle
+¿Se está ejecutando mi programación?
+
+00:00:13.466 --> 00:00:14.476 align:middle
+¿Y hacia dónde se está ejecutando?
+
+00:00:14.956 --> 00:00:15.896 align:middle
+¿Y los fallos?
+
+00:00:15.896 --> 00:00:17.466 align:middle
+Tenemos registros, pero...
+
+00:00:17.786 --> 00:00:23.056 align:middle
+registros. En lugar de eso, vamos a explorar un bundle
+genial que nos proporciona una interfaz de usuario para saber
+
+00:00:23.056 --> 00:00:25.556 align:middle
+qué está pasando con nuestro
+ejército de robots trabajadores
+
+00:00:26.096 --> 00:00:34.136 align:middle
+En tu terminal, ejecuta: composer require
+zenstruck/messenger-monitor-bundle Te pide
+
+00:00:34.136 --> 00:00:36.186 align:middle
+que instales una receta, di que sí.
+
+00:00:38.056 --> 00:00:40.326 align:middle
+Vuelve a nuestro IDE y
+mira lo que se ha añadido.
+
+00:00:41.036 --> 00:00:43.866 align:middle
+En primer lugar, se ha
+añadido un src/Schedule.php.
+
+00:00:44.336 --> 00:00:45.766 align:middle
+Esto no está relacionado con este bundle.
+
+00:00:46.286 --> 00:00:49.036 align:middle
+Desde el último capítulo, en el
+que añadimos el Symfony Scheduler,
+
+00:00:49.246 --> 00:00:52.296 align:middle
+ahora tiene una receta oficial que
+añade una programación por defecto.
+
+00:00:52.636 --> 00:00:54.766 align:middle
+Como ya tenemos uno, elimina este archivo.
+
+00:00:55.616 --> 00:01:00.816 align:middle
+Se ha añadido un nuevo controlador:
+src/Controller/Admin/MessengerMonitorController.php.
+
+00:01:00.816 --> 00:01:04.906 align:middle
+Se trata de un stub para habilitar
+la interfaz de usuario del bundle.
+
+00:01:04.906 --> 00:01:08.136 align:middle
+Extiende este
+BaseMessengerMonitorController del bundle y
+
+00:01:08.346 --> 00:01:11.596 align:middle
+añade un prefijo de ruta de /admin/messenger.
+
+00:01:12.156 --> 00:01:15.336 align:middle
+También añade este atributo
+#[IsGranted('ROLE_ADMIN')]. Esto
+
+00:01:15.726 --> 00:01:17.826 align:middle
+es muy importante para tus aplicaciones reales.
+
+00:01:17.996 --> 00:01:22.436 align:middle
+Sólo quieres que los administradores del sitio
+accedan a la IU, ya que muestra información sensible.
+
+00:01:22.956 --> 00:01:26.616 align:middle
+No tenemos seguridad configurada en esta app, así que
+eliminaré esta línea: src/Entity/ProcessedMessage.php
+
+00:01:28.096 --> 00:01:33.036 align:middle
+es una nueva entidad añadida por la receta.
+
+00:01:33.616 --> 00:01:37.546 align:middle
+También es un stub que extiende
+esta clase BaseProcessedMessage y
+
+00:01:37.716 --> 00:01:38.866 align:middle
+añade una columna ID.
+
+00:01:39.456 --> 00:01:42.286 align:middle
+Se utiliza para hacer un seguimiento del
+historial de tus mensajes de Messenger. Por
+
+00:01:42.696 --> 00:01:46.326 align:middle
+cada mensaje procesado, se persiste
+una nueva de estas entidades.
+
+00:01:46.956 --> 00:01:49.666 align:middle
+Pero no te preocupes, esto se hace
+en tu proceso worker, por lo que
+
+00:01:49.666 --> 00:01:51.436 align:middle
+no ralentizará el frontend
+de tu aplicación. Como
+
+00:01:52.156 --> 00:01:55.096 align:middle
+tenemos una nueva entidad, deberíamos
+añadir una migración, pero
+
+00:01:55.296 --> 00:01:57.796 align:middle
+no tengo migraciones configuradas
+para este proyecto. Así que
+
+00:01:58.256 --> 00:02:03.506 align:middle
+en tu terminal, ejecuta: symfony
+console doctrine:schema:update --force
+
+00:02:03.616 --> 00:02:08.726 align:middle
+Antes de comprobar la interfaz de usuario,
+el bundle tiene dos dependencias opcionales
+
+00:02:08.726 --> 00:02:09.696 align:middle
+que quiero instalar. La primera:
+
+00:02:10.126 --> 00:02:18.296 align:middle
+composer require knplabs/knp-time-bundle Esto hace que las
+marcas de tiempo de la interfaz de usuario sean legibles, como
+
+00:02:18.416 --> 00:02:19.596 align:middle
+"hace 4 minutos". Siguiente:
+
+00:02:20.336 --> 00:02:24.696 align:middle
+composer require
+lorisleiva/cron-translator Como
+
+00:02:25.286 --> 00:02:28.126 align:middle
+estamos utilizando expresiones cron
+para nuestras tareas programadas, este
+
+00:02:28.416 --> 00:02:30.196 align:middle
+paquete las hace legibles. Así,
+
+00:02:30.466 --> 00:02:36.636 align:middle
+en lugar de "11 2 * * * *", lo mostrará como
+"todos los días a las 2:11 AM". ¡Estupendo!
+
+00:02:37.016 --> 00:02:39.166 align:middle
+¡Ya estamos listos! Inicia
+
+00:02:39.386 --> 00:02:46.936 align:middle
+el servidor con: symfony serve -d Salta al
+navegador y visita /admin/messenger. ¡ Éste
+
+00:02:47.226 --> 00:02:49.096 align:middle
+es el panel de control de
+Messenger Monitor! Este
+
+00:02:49.766 --> 00:02:52.576 align:middle
+primer widget muestra los trabajadores
+en ejecución y su estado.
+
+00:02:52.966 --> 00:02:56.276 align:middle
+Podemos ver que tenemos 1 trabajador en
+ejecución para nuestro transporte async.
+
+00:02:56.646 --> 00:02:59.866 align:middle
+Éste es el que hemos configurado para que se ejecute
+con nuestro servidor Symfony CLI. A continuación,
+
+00:03:00.426 --> 00:03:04.266 align:middle
+vemos nuestros transportes disponibles,
+cuántos mensajes están en cola y
+
+00:03:04.506 --> 00:03:05.966 align:middle
+cuántos trabajadores los
+están ejecutando. Observa
+
+00:03:06.576 --> 00:03:09.696 align:middle
+que nuestro transporte scheduler_default
+no se está ejecutando.
+
+00:03:10.056 --> 00:03:12.766 align:middle
+Esto es de esperar, ya que no lo hemos
+configurado para que se ejecute localmente. Debajo
+
+00:03:13.496 --> 00:03:17.096 align:middle
+, tenemos una instantánea de las
+estadísticas de las últimas 24 horas.
+
+00:03:17.616 --> 00:03:20.836 align:middle
+A la derecha, veremos los
+últimos 15 mensajes procesados.
+
+00:03:21.226 --> 00:03:22.596 align:middle
+Por supuesto, ahora está vacío. Todos
+
+00:03:23.306 --> 00:03:26.116 align:middle
+estos widgets se actualizan
+automáticamente cada 5 segundos. ¡
+
+00:03:26.616 --> 00:03:27.936 align:middle
+Vamos a crear un historial! En
+
+00:03:28.426 --> 00:03:31.786 align:middle
+la barra superior, haz clic en Schedule
+(observa que el icono está en rojo para
+
+00:03:31.786 --> 00:03:33.796 align:middle
+indicar que la programación
+no se está ejecutando).
+
+00:03:34.356 --> 00:03:37.356 align:middle
+Es una especie de "comando
+debug:schedule más avanzado".
+
+00:03:37.666 --> 00:03:39.536 align:middle
+Vemos nuestra única tarea
+programada: RunCommandMessage
+
+00:03:39.716 --> 00:03:43.166 align:middle
+app:send-booking-reminders.
+
+00:03:43.556 --> 00:03:47.736 align:middle
+Utiliza un CronExpressionTrigger para ejecutarse "todos
+los días a las 2:11 AM". hasta ahora se ha ejecutado 0
+
+00:03:48.456 --> 00:03:52.236 align:middle
+, pero podemos ejecutarla manualmente
+haciendo clic en "Activar"... y
+
+00:03:52.546 --> 00:03:54.366 align:middle
+seleccionando nuestro transporte async.
+
+00:03:55.166 --> 00:03:56.336 align:middle
+Vuelve al panel de control.
+
+00:03:57.066 --> 00:04:02.096 align:middle
+Se ejecutó correctamente, tardó 58 ms
+y consumió 31 MB de memoria. Haz clic en
+
+00:04:02.626 --> 00:04:04.856 align:middle
+"Detalles" para ver aún
+más información "Tiempo
+
+00:04:05.166 --> 00:04:08.366 align:middle
+en cola", "Tiempo para gestionar",
+marcas de tiempo... un montón
+
+00:04:08.456 --> 00:04:09.406 align:middle
+de cosas buenas. Estas
+
+00:04:09.936 --> 00:04:12.626 align:middle
+etiquetas son muy útiles
+para filtrar mensajes.
+
+00:04:13.006 --> 00:04:16.536 align:middle
+Puedes añadir tus propias etiquetas,
+pero algunas las añade el bundle: manual,
+
+00:04:16.746 --> 00:04:21.736 align:middle
+porque ejecutamos "manualmente" una tarea programada,
+schedule, porque era una tarea programada, schedule:default,
+
+00:04:21.986 --> 00:04:25.266 align:middle
+porque forma parte de nuestra
+programación por defecto. Este
+
+00:04:25.706 --> 00:04:29.996 align:middle
+schedule:default:<hash> es el
+ID único de esta tarea programada.
+
+00:04:30.926 --> 00:04:33.736 align:middle
+A la derecha está el "resultado"
+del "manejador" del mensaje - en
+
+00:04:34.116 --> 00:04:36.836 align:middle
+este caso, RunCommandMessageHandler. Diferentes
+
+00:04:37.326 --> 00:04:40.136 align:middle
+gestores tienen diferentes resultados
+(algunos no tienen ninguno). Para
+
+00:04:40.626 --> 00:04:43.766 align:middle
+éste, el resultado es el código de
+salida del comando y la salida. Enviados
+
+00:04:44.556 --> 00:04:48.966 align:middle
+0 recordatorios de reserva Vamos a ejecutar
+de nuevo esta tarea, pero esta vez, con
+
+00:04:48.966 --> 00:04:50.866 align:middle
+una reserva que necesita que
+se le envíe un recordatorio.
+
+00:04:51.456 --> 00:04:53.626 align:middle
+De vuelta a tu terminal, vuelve a
+cargar nuestras instalaciones: symfony
+
+00:04:53.866 --> 00:04:58.896 align:middle
+console doctrine:fixtures:load
+Vuelve al navegador. El
+
+00:04:59.256 --> 00:05:01.536 align:middle
+panel de control está vacío ahora,
+pero eso era de esperar: al recargar
+
+00:05:01.916 --> 00:05:04.536 align:middle
+nuestros dispositivos también se ha borrado
+nuestro historial de mensajes. Haz clic en
+
+00:05:05.036 --> 00:05:08.136 align:middle
+"Programar" y luego en "Activar"
+en nuestro transporte "asíncrono".
+
+00:05:08.726 --> 00:05:11.466 align:middle
+De nuevo en el panel de control, ahora
+tenemos 2 mensajes. RunCommandMessage
+
+00:05:11.836 --> 00:05:14.696 align:middle
+de nuevo, pero haz clic
+en sus "Detalles": Enviado
+
+00:05:15.056 --> 00:05:20.416 align:middle
+1 recordatorio de reserva Ahora nuestro
+segundo mensaje: SendEmailMessage. Este
+
+00:05:20.936 --> 00:05:22.516 align:middle
+fue enviado por el comando. Haz clic en
+
+00:05:22.956 --> 00:05:26.616 align:middle
+sus "Detalles" para ver la información relacionada
+con el correo electrónico de sus resultados. Fíjate
+
+00:05:27.046 --> 00:05:28.866 align:middle
+en la etiqueta, booking_reminder. El
+
+00:05:29.336 --> 00:05:32.406 align:middle
+bundle detectó automáticamente que estábamos
+enviando un correo electrónico con la etiqueta "Mailer"
+
+00:05:32.406 --> 00:05:34.396 align:middle
+y la añadió aquí. En
+
+00:05:35.286 --> 00:05:38.606 align:middle
+el menú superior, puedes hacer clic en
+"Transportes" para ver más detalles sobre
+
+00:05:38.606 --> 00:05:41.366 align:middle
+los mensajes pendientes de
+cada uno (si procede). El
+
+00:05:42.096 --> 00:05:46.066 align:middle
+transportefailed muestra los mensajes
+fallidos y te da la opción de reintentarlos o
+
+00:05:46.066 --> 00:05:48.026 align:middle
+eliminarlos, ¡directamente desde
+la interfaz de usuario! "Historial"
+
+00:05:48.616 --> 00:05:53.366 align:middle
+es donde podemos filtrar los mensajes: Periodo,
+limitar a un intervalo de fechas concreto. Transporte,
+
+00:05:53.546 --> 00:05:55.916 align:middle
+limitar a un transporte específico. Estado,
+
+00:05:56.276 --> 00:05:58.986 align:middle
+mostrar sólo éxitos o
+fracasos. Programación,
+
+00:05:59.326 --> 00:06:03.366 align:middle
+incluir o excluir los mensajes
+activados por una programación.
+
+00:06:03.726 --> 00:06:06.166 align:middle
+Tipo de mensaje, filtrar por
+clase de mensaje. "Estadísticas
+
+00:06:06.646 --> 00:06:09.566 align:middle
+muestra un resumen de estadísticas
+por clase de mensaje y
+
+00:06:09.566 --> 00:06:11.686 align:middle
+puede limitarse a un intervalo
+de fechas específico. Como
+
+00:06:12.286 --> 00:06:15.746 align:middle
+probablemente puedas imaginar, si tu
+aplicación ejecuta muchos mensajes, nuestra
+
+00:06:15.746 --> 00:06:17.736 align:middle
+tabla de historial puede llegar
+a ser realmente grande. El
+
+00:06:18.346 --> 00:06:21.446 align:middle
+bundle proporciona algunos comandos para
+purgar los mensajes más antiguos. En
+
+00:06:22.066 --> 00:06:27.496 align:middle
+la documentación del bundle, desplázate hasta
+"messenger:monitor:purge" y copia el comando.
+
+00:06:28.716 --> 00:06:30.126 align:middle
+Necesitamos programar esto... ¿pero
+
+00:06:30.346 --> 00:06:32.986 align:middle
+cómo? Con el Programador de
+Symfony, ¡por supuesto! Abre
+
+00:06:33.416 --> 00:06:41.066 align:middle
+src/Scheduler/MainSchedule.php y añade una nueva
+tarea con ->add(RecurringMessage::cron()). Utiliza
+
+00:06:42.006 --> 00:06:45.636 align:middle
+#midnight para que se ejecute diariamente entre
+medianoche y las 3 de la madrugada. Añade
+
+00:06:46.396 --> 00:06:49.306 align:middle
+new RunCommandMessage()
+y pega el comando. Añade
+
+00:06:49.946 --> 00:06:54.206 align:middle
+la opción --exclude-schedules: Esto
+purgará los mensajes de más de
+
+00:06:54.206 --> 00:06:57.366 align:middle
+30 días, excepto los mensajes
+activados por una tarea programada. Esto
+
+00:06:57.886 --> 00:07:02.266 align:middle
+es importante porque tus tareas programadas pueden
+ejecutarse una vez al mes o incluso una vez al año.
+
+00:07:02.686 --> 00:07:05.896 align:middle
+Esto te permite mantener un historial de
+ellas independientemente de su frecuencia.
+
+00:07:06.576 --> 00:07:07.866 align:middle
+No obstante, debemos limpiarlas. Así que,
+
+00:07:08.216 --> 00:07:13.256 align:middle
+volviendo a los documentos, copia un segundo
+comando: messenger:monitor:schedule:purge. Y
+
+00:07:13.636 --> 00:07:19.966 align:middle
+en la programación, añádelo con
+->add(RecurringMessage::cron('#midnight', new
+
+00:07:20.646 --> 00:07:26.706 align:middle
+RunCommandMessage())) y pégalo: Esto purgará
+el historial de mensajes programados omitidos por
+
+00:07:26.706 --> 00:07:30.326 align:middle
+el comando anterior, pero conservará
+las 10 últimas ejecuciones de cada uno.
+
+00:07:30.866 --> 00:07:33.066 align:middle
+Asegurémonos de que estas tareas se han
+añadido a nuestra programación. De vuelta
+
+00:07:33.466 --> 00:07:38.706 align:middle
+en el navegador, haz clic en "Programar" y
+aquí están: nuestras dos nuevas tareas. Para
+
+00:07:39.206 --> 00:07:41.036 align:middle
+la tarea que ejecutamos manualmente antes,
+
+00:07:41.236 --> 00:07:45.166 align:middle
+podemos ver el resumen de la última ejecución,
+los detalles e incluso su historial. Muy bien,
+
+00:07:45.896 --> 00:07:46.646 align:middle
+amigos
+
+00:07:46.806 --> 00:07:49.836 align:middle
+Esto es un rápido repaso a
+zenstruck/messenger-monitor-bundle.
+
+00:07:50.306 --> 00:07:53.156 align:middle
+Consulta la documentación para obtener más
+información sobre todas sus funciones. hasta
+
+00:07:53.536 --> 00:07:55.466 align:middle
+la próxima, ¡feliz monitorización!
