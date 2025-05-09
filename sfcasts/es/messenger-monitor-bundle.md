@@ -58,7 +58,7 @@ symfony serve -d
 
 Salta al navegador y visita `/admin/messenger`. Éste es el panel de control de Messenger Monitor
 
-Este primer widget muestra los trabajadores en ejecución y su estado. Podemos ver que tenemos 1 trabajador en ejecución para nuestro transporte `async`. Este es el que hemos configurado para que se ejecute con nuestro servidor Symfony CLI.
+Este primer widget muestra los trabajadores en ejecución y su estado. Podemos ver que tenemos 1 trabajador en ejecución para nuestro transporte `async`. Éste es el que hemos configurado para que se ejecute con nuestro servidor Symfony CLI.
 
 A continuación, vemos nuestros transportes disponibles, cuántos mensajes están en cola y cuántos trabajadores los están ejecutando. Observa que nuestro transporte `scheduler_default`no se está ejecutando. Esto es de esperar, ya que no lo hemos configurado para que se ejecute localmente.
 
