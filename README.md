@@ -26,6 +26,8 @@ on how you installed Composer.
 
 Create the database (SQLite by default), the schema, and load the fixtures:
 
+![Database Diagram](assets/docs/database.svg)
+
 ```
 symfony console doctrine:database:create
 symfony console doctrine:schema:create
@@ -72,4 +74,3 @@ on this repository or comment on the course itself. We're watching both :).
 And as always, thanks so much for your support and letting us do what we love!
 
 <3 Your friends at SymfonyCasts
-![Database Diagram](assets/docs/database.svg)
