@@ -25,6 +25,9 @@
             "src/DataFixtures/AppFixtures.php"
         ]
     },
+    "jawira/doctrine-diagram-bundle": {
+        "version": "dev-main"
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
